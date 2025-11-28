@@ -1,0 +1,257 @@
+/* --- Shared Variables (Assuming they are available via styles.scss or import) --- */
+$sidebar-w: var(--sidebar-w);
+$sidebar-mini: var(--sidebar-mini);
+
+
+.sidebar {
+    width: $sidebar-w;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    z-index: 50;
+    /* ✅ FIX: Included 'transform' for smooth mobile sliding transition */
+    transition: width 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    box-shadow: var(--shadow-md);
+    height: 100vh;
+}
+
+/* Logo */
+.logo {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    font-weight: 800;
+    font-size: 20px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-main);
+    overflow: hidden;
+
+    i {
+        font-size: 24px;
+        margin-right: 12px;
+        color: var(--primary);
+    }
+}
+
+/* Navigation */
+.nav {
+    padding: 20px 10px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    user-select: none;
+    position: relative;
+
+    i {
+        font-size: 20px;
+        margin-right: 12px;
+        min-width: 24px;
+    }
+
+    &:hover {
+        background: var(--primary-bg);
+        color: var(--text-main);
+
+        i {
+            color: var(--primary);
+        }
+    }
+
+    /* Active state for routerLinkActive */
+    &.active {
+        background: var(--primary-bg);
+        color: var(--primary);
+        font-weight: 600;
+        border: 1px solid var(--primary);
+        box-shadow: 0 0 0 1px var(--primary);
+
+        i {
+            color: var(--primary);
+        }
+    }
+}
+
+/* Arrow Rotation */
+.arrow {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+    font-size: 16px !important;
+    margin-right: 0 !important;
+}
+
+.nav-item.open .arrow {
+    transform: rotate(180deg);
+}
+
+/* --- SUBMENU STYLES --- */
+.submenu-wrapper {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+
+    &.open {
+        max-height: 500px;
+    }
+}
+
+.submenu-item {
+    padding: 10px 15px 10px 50px;
+    font-size: 13px;
+    color: var(--text-muted);
+    border-radius: 8px;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 2px;
+
+    &:hover {
+        color: var(--text-main);
+        background: var(--bg-body);
+    }
+
+    /* Active state for routerLinkActive */
+    &.active {
+        color: var(--primary);
+        font-weight: 600;
+    }
+}
+
+/* User Profile */
+.user-mini {
+    padding: 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: 0.3s;
+    overflow: hidden;
+
+    .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: var(--surface);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        flex-shrink: 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+}
+
+
+/* --- COLLAPSED LOGIC (Uses host-context to read global body.collapsed class) --- */
+:host-context(body.collapsed) {
+    .logo {
+        justify-content: center;
+        padding: 0;
+
+        span {
+            display: none;
+        }
+
+        i {
+            margin: 0;
+            font-size: 28px;
+        }
+    }
+
+    .nav-item {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        padding: 12px 5px;
+        gap: 4px;
+
+        i {
+            margin-right: 0;
+            font-size: 22px;
+            margin-bottom: 2px;
+        }
+
+        span {
+            font-size: 10px;
+            font-weight: 600;
+            display: block !important;
+        }
+
+        /* Hide Arrows and Submenus when collapsed */
+        .arrow {
+            display: none !important;
+        }
+    }
+
+    .submenu-wrapper {
+        display: none !important;
+    }
+
+    .user-mini {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px 5px;
+        gap: 5px;
+
+        .text-info {
+            display: none;
+        }
+
+        .user-name {
+            font-size: 10px;
+            display: block !important;
+            white-space: wrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+    }
+}
+
+
+/* --- MOBILE OVERRIDES --- */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        /* The starting position for the mobile menu */
+        transform: translateX(-100%);
+        height: 100%;
+        width: 250px !important;
+        // box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+        box-shadow: var(--shadow-md);
+    }
+
+    .sidebar.mobile-open {
+        /* The ending position, animated by the transition property above */
+        transform: translateX(0);
+    }
+
+    /* When the sidebar is open on mobile, it should always look expanded */
+    :host-context(body.collapsed) {
+        .nav-item {
+            flex-direction: row;
+            justify-content: flex-start;
+            text-align: left;
+            gap: 12px;
+
+            span {
+                font-size: 14px;
+            }
+        }
+    }
+}

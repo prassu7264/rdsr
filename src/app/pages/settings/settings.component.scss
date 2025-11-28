@@ -1,0 +1,86 @@
+/* Use the standard card/page padding from main-layout.scss */
+:host {
+    display: block;
+}
+
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 15px;
+}
+
+.theme-option {
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+    background: var(--surface);
+
+    &:hover {
+        border-color: var(--primary);
+    }
+
+    &.selected {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px var(--primary-bg);
+
+        .check-icon {
+            display: block;
+            color: var(--primary);
+        }
+    }
+}
+
+.color-preview {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 8px;
+    border: 3px solid var(--border);
+    background: var(--primary);
+    /* Uses the CURRENT active primary color by default */
+}
+
+.check-icon {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 24px;
+    background: var(--surface);
+    border-radius: 50%;
+    display: none;
+    box-shadow: var(--shadow-sm);
+}
+
+/* 💡 VISUAL THEME MAPPING (Ensure these IDs match your theme list) 💡 */
+
+.color-preview[data-theme-id="original"] {
+    background: #2563EB;
+}
+
+.color-preview[data-theme-id="forest"] {
+    background: #059669;
+}
+
+.color-preview[data-theme-id="teal"] {
+    background: #14B8A6;
+}
+
+.color-preview[data-theme-id="mono"] {
+    background: #292a2c;
+}
+
+.color-preview[data-theme-id="earthy"] {
+    background: #FF7043;
+}
+
+.color-preview[data-theme-id="indigo"] {
+    background: #5C6BC0;
+    /* Standard Indigo/Purple */
+}

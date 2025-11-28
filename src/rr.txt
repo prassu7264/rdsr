@@ -1,0 +1,65 @@
+.
+├── app
+│   ├── app.component.html
+│   ├── app.component.scss
+│   ├── app.component.spec.ts
+│   ├── app.component.ts
+│   ├── app.module.ts
+│   ├── app-routing.module.ts
+│   ├── core
+│   │   └── services
+│   │       └── layout.service.ts
+│   ├── layout
+│   │   ├── header
+│   │   │   ├── header.component.html
+│   │   │   ├── header.component.scss
+│   │   │   └── header.component.ts
+│   │   ├── main-layout
+│   │   │   ├── main-layout.component.html
+│   │   │   ├── main-layout.component.scss
+│   │   │   └── main-layout.component.ts
+│   │   └── sidebar
+│   │       ├── sidebar.component.html
+│   │       ├── sidebar.component.scss
+│   │       └── sidebar.component.ts
+│   └── pages
+│       ├── analytics
+│       │   ├── analytics.component.html
+│       │   ├── analytics.component.scss
+│       │   └── analytics.component.ts
+│       ├── billing
+│       │   ├── billing.component.html
+│       │   ├── billing.component.scss
+│       │   └── billing.component.ts
+│       ├── dashboard
+│       │   ├── dashboard.component.html
+│       │   ├── dashboard.component.scss
+│       │   └── dashboard.component.ts
+│       ├── general
+│       │   ├── general.component.html
+│       │   ├── general.component.scss
+│       │   └── general.component.ts
+│       ├── logout
+│       │   ├── logout.component.html
+│       │   ├── logout.component.scss
+│       │   └── logout.component.ts
+│       ├── logs
+│       │   ├── logs.component.html
+│       │   ├── logs.component.scss
+│       │   └── logs.component.ts
+│       ├── profile
+│       │   ├── profile.component.html
+│       │   ├── profile.component.scss
+│       │   └── profile.component.ts
+│       └── security
+│           ├── security.component.html
+│           ├── security.component.scss
+│           └── security.component.ts
+├── assets
+├── favicon.ico
+├── index.html
+├── main.ts
+├── rr.txt
+└── styles.scss
+
+17 directories, 45 files

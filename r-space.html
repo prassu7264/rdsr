@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R-SPACE</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <style>
+        /* --- 1. VARIABLES --- */
+        :root {
+            /* Color Palette */
+            --bg-body: #F9FAFB;
+            /* Lighter Background */
+            --surface: #FFFFFF;
+            /* White Surfaces */
+            --text-main: #111827;
+            --text-muted: #6B7280;
+            --border: #E5E7EB;
+            --primary: #2563EB;
+            /* Bright Blue for primary action */
+            --primary-bg: #E0E7FF;
+            /* Light Blue background for active/hover states */
+            --accent: #10B981;
+            /* Green Accent (Avatar/Success) */
+
+            /* Shadows (Softer, modern, and lifted) */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.15);
+            --shadow-xl: 0 30px 60px rgba(0, 0, 0, 0.2);
+
+            /* Layout */
+            --sidebar-w: 260px;
+            --sidebar-mini: 90px;
+        }
+
+        /* Dark Mode Overrides */
+        body.dark-mode {
+            --bg-body: #0E101A;
+            /* Very Dark Background */
+            --surface: #1E293B;
+            /* Dark Blue-Gray Surface */
+            --text-main: #FFFFFF;
+            --text-muted: #94A3B8;
+            --border: #334155;
+            --primary: #60A5FA;
+            --primary-bg: #1E40AF;
+            /* Dark Blue background for active/hover states */
+            --accent: #34D399;
+
+            /* Dark Mode Shadows */
+            --shadow-sm: 0 1px 3px rgba(255, 255, 255, 0.05);
+            --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.7);
+            --shadow-xl: 0 30px 60px rgba(0, 0, 0, 0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* --- 2. SIDEBAR --- */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            z-index: 50;
+            transition: width 0.3s ease, box-shadow 0.3s;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Collapsed State */
+        body.collapsed .sidebar {
+            width: var(--sidebar-mini);
+        }
+
+        /* Logo */
+        .logo {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            font-weight: 800;
+            font-size: 20px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        .logo i {
+            font-size: 24px;
+            margin-right: 12px;
+            color: var(--primary);
+            /* Logo icon uses primary color */
+        }
+
+        body.collapsed .logo {
+            justify-content: center;
+            padding: 0;
+        }
+
+        body.collapsed .logo span {
+            display: none;
+        }
+
+        body.collapsed .logo i {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        /* Navigation */
+        .nav {
+            padding: 20px 10px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            user-select: none;
+            /* Added position relative for focus ring effect */
+            position: relative;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            margin-right: 12px;
+            min-width: 24px;
+        }
+
+        .nav-item:hover {
+            background: var(--primary-bg);
+            /* Use primary background for hover */
+            color: var(--primary);
+            /* Text uses primary color on hover */
+            /* Transitioning icon color as well */
+            color: var(--text-main);
+        }
+
+        .nav-item:hover i {
+            color: var(--primary);
+        }
+
+        .nav-item.active {
+            /* Active state uses border + background for subtle focus */
+            background: var(--primary-bg);
+            color: var(--primary);
+            font-weight: 600;
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 0 1px var(--primary);
+        }
+
+        .nav-item.active i {
+            color: var(--primary);
+        }
+
+        /* Arrow Rotation */
+        .arrow {
+            margin-left: auto;
+            transition: transform 0.3s ease;
+            font-size: 16px !important;
+            margin-right: 0 !important;
+        }
+
+        .nav-item.open .arrow {
+            transform: rotate(180deg);
+        }
+
+        /* --- SUBMENU STYLES --- */
+        .submenu-wrapper {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+
+        /* Adjusted for potentially multiple items */
+        .submenu-wrapper.open {
+            max-height: 500px;
+        }
+
+        .submenu-item {
+            padding: 10px 15px 10px 50px;
+            /* Indent */
+            font-size: 13px;
+            color: var(--text-muted);
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .submenu-item:hover {
+            color: var(--text-main);
+            background: var(--bg-body);
+        }
+
+        .submenu-item.active {
+            color: var(--primary);
+            /* Submenu active uses primary color */
+            font-weight: 600;
+        }
+
+        /* --- COLLAPSED LOGIC --- */
+        body.collapsed .nav-item {
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            padding: 12px 5px;
+            gap: 4px;
+        }
+
+        body.collapsed .nav-item i {
+            margin-right: 0;
+            font-size: 22px;
+            margin-bottom: 2px;
+        }
+
+        body.collapsed .nav-item span {
+            font-size: 10px;
+            font-weight: 600;
+            display: block !important;
+        }
+
+        /* Hide Arrows and Submenus when collapsed */
+        body.collapsed .arrow {
+            display: none !important;
+        }
+
+        body.collapsed .submenu-wrapper {
+            display: none !important;
+        }
+
+        /* User Profile */
+        .user-mini {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.3s;
+            overflow: hidden;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        body.collapsed .user-mini {
+            flex-direction: column;
+            text-align: center;
+            padding: 15px 5px;
+            gap: 5px;
+        }
+
+        body.collapsed .user-mini .text-info {
+            display: none;
+        }
+
+        body.collapsed .user-mini .user-name {
+            font-size: 10px;
+            display: block !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            height: 70px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 60;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .menu-btn {
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-main);
+            margin-right: 15px;
+            transition: transform 0.2s;
+        }
+
+        .menu-btn:hover {
+            transform: scale(1.1);
+            color: var(--primary);
+        }
+
+        .header-actions button {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+            margin-left: 15px;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .header-actions button:hover {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .page-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--shadow-xl);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: box-shadow 0.3s;
+        }
+
+        /* Search */
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 10px 10px 40px;
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            outline: none;
+            color: var(--text-main);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        /* Focus state polish (Primary color glow) */
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+            /* Blue color with opacity */
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                transform: translateX(-100%);
+                height: 100%;
+                width: 250px !important;
+                box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            body.collapsed .sidebar {
+                width: 250px;
+            }
+
+            body.collapsed .nav-item {
+                flex-direction: row;
+                justify-content: flex-start;
+                text-align: left;
+                gap: 12px;
+            }
+
+            body.collapsed .nav-item span {
+                font-size: 14px;
+            }
+
+            .search-container {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <i class="ri-command-fill"></i>
+            <span>Nexus Pro</span>
+        </div>
+        <nav class="nav">
+            <div class="nav-item active" onclick="showPage('dashboard', this)">
+                <i class="ri-layout-grid-line"></i> <span>Dashboard</span>
+            </div>
+            <div class="nav-item" onclick="showPage('analytics', this)">
+                <i class="ri-bar-chart-box-line"></i> <span>Analytics</span>
+            </div>
+
+            <div class="nav-item" onclick="toggleSubmenu('sub1', this)">
+                <i class="ri-user-settings-line"></i>
+                <span style="flex:1;">Settings 1</span>
+                <i class="ri-arrow-down-s-line arrow"></i>
+            </div>
+
+            <div class="submenu-wrapper" id="sub1">
+                <div class="submenu-item" onclick="showPage('profile', this)">User Profile</div>
+                <div class="submenu-item" onclick="showPage('security', this)">Security</div>
+            </div>
+
+            <div class="nav-item" onclick="toggleSubmenu('sub2', this)">
+                <i class="ri-settings-line"></i>
+                <span style="flex:1;">Settings 2</span>
+                <i class="ri-arrow-down-s-line arrow"></i>
+            </div>
+
+            <div class="submenu-wrapper" id="sub2">
+                <div class="submenu-item" onclick="showPage('general', this)">General</div>
+                <div class="submenu-item" onclick="showPage('billing', this)">Billing</div>
+                <div class="submenu-item" onclick="showPage('logs', this)">System Logs</div>
+            </div>
+            <div class="nav-item" onclick="showPage('logout', this)">
+                <i class="ri-logout-box-line"></i> <span>Logout</span>
+            </div>
+
+        </nav>
+        <div class="user-mini">
+            <div class="avatar">PG</div>
+            <div class="user-details">
+                <div class="user-name" style="font-weight: 600; font-size: 13px;">Prasadarao Gajula</div>
+                <div class="text-info" style="color: var(--text-muted); font-size: 12px;">Admin</div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="header">
+            <div style="display:flex; align-items:center;">
+                <i class="ri-menu-fold-line menu-btn" onclick="handleMenuToggle()"></i>
+                <h3 id="page-title" style="font-size: 16px; font-weight: 600;">Dashboard</h3>
+            </div>
+
+            <div class="search-container">
+                <i class="ri-search-line search-icon"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search...">
+            </div>
+
+            <div class="header-actions">
+                <button onclick="toggleTheme()"><i class="ri-moon-line" id="theme-icon"></i></button>
+            </div>
+        </header>
+
+        <div class="content">
+            <div id="dashboard" class="page-section active">
+                <div class="card">
+                    <h2>Dashboard</h2>
+                    <p style="color:var(--text-muted)">Welcome to the main dashboard.</p>
+                </div>
+            </div>
+            <div id="analytics" class="page-section">
+                <div class="card">
+                    <h2>Analytics</h2>
+                    <p style="color:var(--text-muted)">Deep dive into your system metrics.</p>
+                </div>
+            </div>
+
+            <div id="profile" class="page-section">
+                <div class="card">
+                    <h2>User Profile (Settings 1)</h2>
+                    <p style="color:var(--text-muted)">Manage your personal information.</p>
+                </div>
+            </div>
+            <div id="security" class="page-section">
+                <div class="card">
+                    <h2>Security (Settings 1)</h2>
+                    <p style="color:var(--text-muted)">Manage security and access controls.</p>
+                </div>
+            </div>
+
+            <div id="general" class="page-section">
+                <div class="card">
+                    <h2>General Settings (Settings 2)</h2>
+                    <p style="color:var(--text-muted)">Configure basic application settings.</p>
+                </div>
+            </div>
+            <div id="billing" class="page-section">
+                <div class="card">
+                    <h2>Billing (Settings 2)</h2>
+                    <p style="color:var(--text-muted)">View your payment history and plans.</p>
+                </div>
+            </div>
+            <div id="logs" class="page-section">
+                <div class="card">
+                    <h2>System Logs (Settings 2)</h2>
+                    <p style="color:var(--text-muted)">Review system events and diagnostics.</p>
+                </div>
+            </div>
+
+            <div id="logout" class="page-section">
+                <div class="card">
+                    <h2>Logout</h2>
+                    <p style="color:var(--text-muted)">Ending your current session.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 1. SIDEBAR TOGGLE
+        function handleMenuToggle() {
+            if (window.innerWidth > 768) {
+                // Desktop
+                document.body.classList.toggle('collapsed');
+                // Cleanup open menus on collapse
+                if (document.body.classList.contains('collapsed')) {
+                    closeAllSubmenus();
+                }
+            } else {
+                // Mobile
+                document.getElementById('sidebar').classList.toggle('mobile-open');
+            }
+        }
+
+        // 2. SUBMENU TOGGLE (Generic for both menus)
+        function toggleSubmenu(id, triggerElement) {
+            // Auto-expand sidebar if collapsed
+            if (document.body.classList.contains('collapsed')) {
+                document.body.classList.remove('collapsed');
+            }
+
+            const submenu = document.getElementById(id);
+            const isOpen = submenu.classList.contains('open');
+
+            // IMPORTANT: Close ALL other submenus first (Strict Accordion)
+            closeAllSubmenus();
+
+            if (!isOpen) {
+                submenu.classList.add('open');
+                triggerElement.classList.add('open'); // Rotate arrow
+            }
+        }
+
+        // Helper
+        function closeAllSubmenus() {
+            document.querySelectorAll('.submenu-wrapper').forEach(el => el.classList.remove('open'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('open'));
+        }
+
+        // 3. NAVIGATION
+        function showPage(pageId, navElement) {
+            // Switch Page
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+
+            // Update UI State
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.submenu-item').forEach(el => el.classList.remove('active'));
+
+            navElement.classList.add('active');
+            document.getElementById('page-title').innerText = navElement.innerText;
+
+            // If a top-level item is clicked (not inside a submenu), close submenus
+            if (!navElement.classList.contains('submenu-item')) {
+                closeAllSubmenus();
+            }
+
+            // Check if the clicked item is a submenu item and set its parent group to active
+            const parentSubmenu = navElement.closest('.submenu-wrapper');
+            if (parentSubmenu) {
+                const parentId = parentSubmenu.id;
+                document.querySelector(`.nav-item[onclick*='${parentId}']`).classList.add('active');
+            }
+
+            // Mobile close
+            if (window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.remove('mobile-open');
+            }
+        }
+
+        // 4. THEME
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            let icon = document.getElementById('theme-icon');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.className = 'ri-sun-line';
+            } else {
+                icon.className = 'ri-moon-line';
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                document.getElementById('sidebar').classList.remove('mobile-open');
+            }
+        });
+    </script>
+</body>
+
+</html>
