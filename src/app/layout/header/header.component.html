@@ -1,17 +1,17 @@
 <header class="header">
     <div style="display:flex; align-items:center;">
-      <i class="ri-menu-fold-line menu-btn" (click)="onMenuToggle()"></i>
-      <h3 style="font-size: 16px; font-weight: 600;">{{ currentPageTitle$ | async }}</h3>
+        <i class="ri-menu-fold-line menu-btn" (click)="onMenuToggle()"></i>
+        <h3 style="font-size: 16px; font-weight: 600;">{{ currentPageTitle$ | async }}</h3>
     </div>
-  
-    <!-- <div class="search-container">
-      <i class="ri-search-line search-icon"></i>
-      <input type="text" class="search-input" placeholder="Search...">
-    </div> -->
-  
+
+    <div class="search-container">
+        <i class="ri-search-line search-icon"></i>
+        <input type="text" class="search-input" placeholder="Search...">
+    </div>
+
     <!-- <div class="header-actions">
       <button (click)="onThemeToggle()">
         <i [ngClass]="(isDarkMode$ | async) ? 'ri-sun-line' : 'ri-moon-line'"></i>
       </button>
     </div> -->
-  </header>
+</header>

@@ -13,14 +13,12 @@ export class MainLayoutComponent implements OnInit {
   constructor(private layoutService: LayoutService) { }
 
   ngOnInit(): void {
-    // Apply global classes (collapsed/dark-mode) to the body element
-    // so CSS rules defined in styles.scss work globally.
     this.layoutService.isDarkMode$.subscribe(isDark => {
       document.body.classList.toggle('dark-mode', isDark);
     });
 
     this.layoutService.isCollapsed$.subscribe(isCollapsed => {
-        document.body.classList.toggle('collapsed', isCollapsed);
+      document.body.classList.toggle('collapsed', isCollapsed);
     });
   }
 }

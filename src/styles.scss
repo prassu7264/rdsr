@@ -1,15 +1,15 @@
 /* --- 1. VARIABLES --- */
-/* The default variables will be Theme 1 (Original Blue) - LIGHT MODE BASE */
 :root {
-    /* Theme 1: Original Blue (Default Light) */
+
     --bg-body: #F9FAFB;
     --surface: #FFFFFF;
     --text-main: #111827;
     --text-muted: #6B7280;
     --border: #E5E7EB;
     --primary: #2563EB;
-    --primary-bg: #E0E7FF;
-    --accent: #10B981;
+    // --primary-bg: #E0E7FF;
+    --primary-bg: #ffffff;
+    --accent: #2563EB;
 
     /* Shadows and Layout (Shared) */
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -19,149 +19,6 @@
     --sidebar-w: 260px;
     --sidebar-mini: 90px;
 }
-
-/* ---------------------------------------------------- */
-/* --- 2. LIGHT MODE THEME SWAPPING (Applies to :root) --- */
-/* ---------------------------------------------------- */
-
-/* Theme 2: Forest Green Light Mode */
-body.theme-light-forest {
-    --primary: #059669;
-    /* Primary Green */
-    --primary-bg: #D1FAE5;
-    --bg-body: #F0FDF4;
-    --text-main: #164E63;
-    --accent: #FBBF24;
-}
-
-/* Theme 3: Muted Teal Light Mode */
-body.theme-light-teal {
-    --primary: #14B8A6;
-    /* Vibrant Teal */
-    --primary-bg: #CCFBF1;
-    --bg-body: #F9FAFB;
-    --text-main: #1F2937;
-    --accent: #F97316;
-}
-
-/* Theme 4: Standard Indigo Light Mode (Used the Indigo from previous requests) */
-body.theme-light-indigo {
-    --primary: #5C6BC0;
-    /* Standard Indigo/Purple */
-    --primary-bg: #E8EAF6;
-    --bg-body: #F4F7F9;
-    --text-main: #212121;
-    --accent: #FFB300;
-}
-
-/* 💡 ADDED: Theme 5: High-Contrast Monochromatic Light Mode */
-body.theme-light-mono {
-    --primary: #1F2937;
-    /* Use a deep gray/blue as primary for a stark look */
-    --primary-bg: #E5E7EB;
-    --bg-body: #FFFFFF;
-    --text-main: #111827;
-    --accent: #10B981;
-}
-
-/* 💡 ADDED: Theme 6: Warm, Earthy Light Mode */
-body.theme-light-earthy {
-    --primary: #FF7043;
-    /* Warm Coral/Orange */
-    --primary-bg: #FFE0B2;
-    --bg-body: #FFFDF9;
-    --text-main: #3E2723;
-    /* Deep Brown Text */
-    --accent: #FBC02D;
-}
-
-/* ---------------------------------------------------- */
-/* --- 3. DARK MODE THEME SWAPPING (Applies to body.dark-mode) --- */
-/* ---------------------------------------------------- */
-
-/* Theme 1: Original Blue (Dark) - BASE DARK MODE */
-/* 💡 REVISED: Now uses specific class for swapping consistency */
-body.dark-mode.theme-dark-original {
-    --bg-body: #0E101A;
-    --surface: #1E293B;
-    --text-main: #FFFFFF;
-    --text-muted: #94A3B8;
-    --border: #334155;
-    --primary: #60A5FA;
-    --primary-bg: #1E40AF;
-    --accent: #34D399;
-
-    /* Dark Mode Shadows (Shared) */
-    --shadow-sm: 0 1px 3px rgba(255, 255, 255, 0.05);
-    --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.5);
-    --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.7);
-    --shadow-xl: 0 30px 60px rgba(0, 0, 0, 0.9);
-}
-
-/* Theme 2: Forest Green Dark Mode */
-body.dark-mode.theme-dark-forest {
-    --bg-body: #101E2B;
-    --surface: #1C3545;
-    --text-main: #E0F2F1;
-    --text-muted: #94A3B8;
-    --border: #374151;
-    --primary: #34D399;
-    --primary-bg: #064E3B;
-    --accent: #FCD34D;
-}
-
-/* Theme 3: Muted Teal Dark Mode */
-body.dark-mode.theme-dark-teal {
-    --bg-body: #1F2937;
-    --surface: #2C394B;
-    --text-main: #FFFFFF;
-    --text-muted: #9AAABF;
-    --border: #4D5869;
-    --primary: #5AD8FF;
-    --primary-bg: #143657;
-    --accent: #FFD700;
-}
-
-/* Theme 4: High-Contrast Monochromatic Dark Mode */
-body.dark-mode.theme-dark-mono {
-    --bg-body: #0D1117;
-    --surface: #161B22;
-    --text-main: #F0F6FC;
-    --text-muted: #8B949E;
-    --border: #30363D;
-    --primary: #58A6FF;
-    --primary-bg: #1A3E6E;
-    --accent: #3FB950;
-}
-
-/* Theme 5: Warm, Earthy Dark Mode */
-body.dark-mode.theme-dark-earthy {
-    --bg-body: #28242A;
-    --surface: #3C363C;
-    --text-main: #FDF4E3;
-    --text-muted: #C7C0B2;
-    --border: #575154;
-    --primary: #FF7043;
-    --primary-bg: #573024;
-    --accent: #FFD54F;
-}
-
-/* 💡 ADDED: Theme 6: Standard Indigo Dark Mode (Matching the theme-light-indigo) */
-body.dark-mode.theme-dark-indigo {
-    --bg-body: #1F2937;
-    --surface: #2E3A4A;
-    --text-main: #F5F5F5;
-    --text-muted: #A0AEC0;
-    --border: #4A5568;
-    --primary: #9FA8DA;
-    --primary-bg: #37475a;
-    --accent: #FFCA28;
-}
-
-/* ---------------------------------------------------- */
-/* --- 4. DEFAULT DARK MODE (Fallback) --- */
-/* This block is necessary to handle the body.dark-mode class when NO specific theme-dark-* class is applied.
-   We set it to use the default 'Original Blue' dark colors. */
 body.dark-mode {
     --bg-body: #0E101A;
     --surface: #1E293B;
@@ -170,8 +27,123 @@ body.dark-mode {
     --border: #334155;
     --primary: #60A5FA;
     --primary-bg: #1E40AF;
+    --accent: #60A5FA;
+}
+
+
+body.theme-light-forest {
+    --primary: #059669;
+    --primary-bg: #ffffff;
+    --bg-body: #F0FDF4;
+    --text-main: #164E63;
+    --accent: #059669;
+}
+
+body.theme-light-teal {
+    --primary: #14B8A6;
+    --primary-bg: #ffffff;
+    --bg-body: #F9FAFB;
+    --text-main: #1F2937;
+    --accent: #14B8A6;
+}
+
+body.theme-light-indigo {
+    --primary: #5C6BC0;
+    --primary-bg: #ffffff;
+    --bg-body: #F4F7F9;
+    --text-main: #212121;
+    --accent: #5C6BC0;
+}
+
+body.theme-light-mono {
+    --primary: #1F2937;
+    --primary-bg: #ffffff;
+    --bg-body: #FFFFFF;
+    --text-main: #111827;
+    --accent: #1F2937;
+}
+
+body.theme-light-earthy {
+    --primary: #FF7043;
+    --primary-bg: #ffffff;
+    --bg-body: #FFFDF9;
+    --text-main: #3E2723;
+    --accent: #FF7043;
+}
+
+
+body.dark-mode.theme-dark-original {
+    --bg-body: #0E101A;
+    --surface: #1E293B;
+    --text-main: #FFFFFF;
+    --text-muted: #94A3B8;
+    --border: #334155;
+    --primary: #60A5FA;
+    --primary-bg: #1E40AF;
+    --accent: #60A5FA;
+
+}
+
+body.dark-mode.theme-dark-forest {
+    --bg-body: #101E2B;
+    --surface: #1C3545;
+    --text-main: #E0F2F1;
+    --text-muted: #94A3B8;
+    --border: #374151;
+    --primary: #10B981;
+    --primary-bg: #064E3B;
     --accent: #34D399;
 }
+
+body.dark-mode.theme-dark-teal {
+    --bg-body: #1F2937;
+    --surface: #2C394B;
+    --text-main: #FFFFFF;
+    --text-muted: #9AAABF;
+    --border: #4D5869;
+    --primary: #4DB6AC;
+
+    --primary-bg: #143657;
+    --accent: #4DB6AC;
+}
+
+
+body.dark-mode.theme-dark-mono {
+    --bg-body: #0D1117;
+    --surface: #161B22;
+    --text-main: #F0F6FC;
+    --text-muted: #8B949E;
+    --border: #30363D;
+    --primary: #58A6FF;
+    --primary-bg: #1A3E6E;
+    --accent: #58A6FF;
+}
+
+body.dark-mode.theme-dark-earthy {
+    --bg-body: #28242A;
+    --surface: #3C363C;
+    --text-main: #FDF4E3;
+    --text-muted: #C7C0B2;
+    --border: #575154;
+    --primary: #FF7043;
+    --primary-bg: #573024;
+    --accent: #FF7043;
+}
+
+
+body.dark-mode.theme-dark-indigo {
+    --bg-body: #1F2937;
+    --surface: #2E3A4A;
+    --text-main: #F5F5F5;
+    --text-muted: #A0AEC0;
+    --border: #4A5568;
+    --primary: #5C6BC0;
+
+    --primary-bg: #37475a;
+    --accent: #5C6BC0;
+}
+
+
 
 * {
     margin: 0;
@@ -188,7 +160,7 @@ body {
     font-family: 'Inter', sans-serif;
     background: var(--bg-body);
     color: var(--text-main);
-    display: flex;
+    // display: flex;
     overflow: hidden;
     transition: background 0.3s, color 0.3s;
 }

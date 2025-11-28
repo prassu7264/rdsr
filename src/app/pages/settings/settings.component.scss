@@ -1,4 +1,3 @@
-/* Use the standard card/page padding from main-layout.scss */
 :host {
     display: block;
 }
@@ -44,7 +43,6 @@
     margin-bottom: 8px;
     border: 3px solid var(--border);
     background: var(--primary);
-    /* Uses the CURRENT active primary color by default */
 }
 
 .check-icon {
@@ -57,8 +55,6 @@
     display: none;
     box-shadow: var(--shadow-sm);
 }
-
-/* 💡 VISUAL THEME MAPPING (Ensure these IDs match your theme list) 💡 */
 
 .color-preview[data-theme-id="original"] {
     background: #2563EB;
@@ -82,5 +78,4 @@
 
 .color-preview[data-theme-id="indigo"] {
     background: #5C6BC0;
-    /* Standard Indigo/Purple */
 }

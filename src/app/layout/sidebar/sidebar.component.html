@@ -1,7 +1,7 @@
 <aside class="sidebar" [class.mobile-open]="isMobileOpen$ | async">
     <div class="logo">
         <i class="ri-command-fill"></i>
-        <span>R-SPACE</span>
+        <span>RSPACE</span>
     </div>
 
     <nav class="nav">
@@ -27,6 +27,7 @@
                 User Profile</div>
             <div class="submenu-item" routerLink="/security" routerLinkActive="active" (click)="closeSubmenus($event)">
                 Security</div>
+
         </div>
 
         <div class="nav-item"
@@ -46,12 +47,9 @@
         </div>
 
         <div class="nav-item" routerLink="/settings" routerLinkActive="active" (click)="closeSubmenus($event)">
-            <i class="ri-settings-line"></i><span>Settings</span>
+            <i class="ri-t-shirt-2-line"></i> <span>Themes</span>
         </div>
 
-        <div class="nav-item" routerLink="/logout" routerLinkActive="active" (click)="closeSubmenus($event)">
-            <i class="ri-logout-box-line"></i> <span>Logout</span>
-        </div>
     </nav>
 
     <div class="user-mini">
