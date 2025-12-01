@@ -14,25 +14,30 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
   {
     path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  { path: 'login', component: LoginComponent },
+  {
+    path: 'main',
     component: MainLayoutComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'analytics', component: AnalyticsComponent },
       { path: 'projects', component: ProjectsComponent },
-
       { path: 'profile', component: ProfileComponent },
       { path: 'security', component: SecurityComponent },
-
       { path: 'general', component: GeneralComponent },
       { path: 'billing', component: BillingComponent },
       { path: 'logs', component: LogsComponent },
       { path: 'settings', component: SettingsComponent }
     ]
-  }
+  },
+  // Wildcard Route
+  { path: '**', component: LoginComponent }
 ];
 
 @NgModule({
