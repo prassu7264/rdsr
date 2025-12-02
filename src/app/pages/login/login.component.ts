@@ -1,8 +1,11 @@
-import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { URL } from 'src/app/api-base';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { LayoutService } from 'src/app/core/services/layout.service';
+import { StorageService } from 'src/app/core/services/storage.service';
+import { ToasterService } from 'src/app/core/services/toaster.service';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +13,8 @@ import { LayoutService } from 'src/app/core/services/layout.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
+  VERSION = URL.CURRENT_VERSION();
+  today = new Date();
   // State Management
   currentView: 'login' | 'register' | 'forgot' = 'login';
   isDarkMode = false;
@@ -23,21 +27,25 @@ export class LoginComponent implements OnInit {
   forgotForm!: FormGroup;
 
   constructor(
-    @Inject(DOCUMENT) private document: Document,
     private layoutService: LayoutService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private storageService: StorageService,
+    private authService: AuthService,
+    private toaster: ToasterService
   ) { }
 
   ngOnInit(): void {
     this.initForms();
+    this.autoFillRemembered();
   }
 
   // Initialize all forms
   initForms() {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      rememberme: ['']
     });
 
     this.registerForm = this.fb.group({
@@ -71,27 +79,95 @@ export class LoginComponent implements OnInit {
     this.showRegPassword = !this.showRegPassword;
   }
 
+
   // Submit handler
   onSubmit(action: string) {
+
+    console.log(this.loginForm.value);
+
+
+    // -----------------------------
+    // VALIDATION BLOCK
+    // -----------------------------
     if (action === 'Login' && this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
     }
+
     if (action === 'Registration' && this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
       return;
     }
+
     if (action === 'Reset' && this.forgotForm.invalid) {
       this.forgotForm.markAllAsTouched();
       return;
     }
 
-    console.log(this.loginForm);
+    // -----------------------------
+    // LOGIN BLOCK
+    // -----------------------------
+    if (action === 'Login') {
 
+      const payload = this.loginForm.value;
+      const user = {
+        username: this.loginForm.get("email")?.value,
+        password: this.loginForm.get("password")?.value
+      }
+      this.authService.signin(user).subscribe({
+        next: (res: any) => {
+          // Save token
+          this.storageService.setToken(res.accessToken);
 
-    alert(`${action} Successful!`);
-    this.router.navigate(['/main/dashboard']);
+          // Save user
+          this.storageService.setUser(res.user);
+
+          // Handle Remember Me
+          if (this.loginForm.value.rememberme) {
+            this.storageService.rememberMe(true);
+            this.storageService.setRememberUsername(payload.email);
+            this.storageService.setRememberPassword(payload.password);
+          } else {
+            this.storageService.clearRememberMe();
+          }
+
+          // Redirect
+          this.toaster.success('You have logged in successfully', 'Success!');
+          this.router.navigate(['/main/dashboard']);
+        },
+
+        error: (err) => {
+          console.error(err);
+          if (err.status == 401) {
+            this.toaster.error('Invalid credentials. Please try again.', 'Login Failed!');
+          } else {
+            this.toaster.error('Something went wrong. Please try again.', 'Login Failed!');
+          }
+        }
+      });
+
+      return; // STOP further flow
+    }
+
+    // -----------------------------
+    // REGISTRATION BLOCK
+    // -----------------------------
+    if (action === 'Registration') {
+      // TODO: call registration API
+      console.log('Registration submitted');
+      return;
+    }
+
+    // -----------------------------
+    // RESET PASSWORD BLOCK
+    // -----------------------------
+    if (action === 'Reset') {
+      // TODO: call forgot/reset API
+      console.log('Password reset submitted');
+      return;
+    }
   }
+
 
   get lf() {
     return {
@@ -112,5 +188,20 @@ export class LoginComponent implements OnInit {
     return {
       email: this.forgotForm.get('email')
     };
+  }
+
+  autoFillRemembered() {
+    if (this.storageService.isRememberMe()) {
+
+      const savedEmail = this.storageService.getRememberUsername();
+      const savedPassword = this.storageService.getRememberPassword();
+
+      // Patch form values
+      this.loginForm.patchValue({
+        email: savedEmail,
+        password: savedPassword,
+        rememberme: true
+      });
+    }
   }
 }

@@ -24,6 +24,11 @@
     --pattern-color: #E5E7EB;
 }
 
+.toast-top-right {
+    top: 75px !important;
+    right: 12px;
+}
+
 body.dark-mode {
     --bg-body: #0E101A;
     --surface: #1E293B;
@@ -177,7 +182,7 @@ body {
     overflow: hidden;
     transition: background 0.3s, color 0.3s;
 
-   
+
 }
 
 body.collapsed .sidebar {
@@ -190,5 +195,3 @@ body.collapsed .sidebar {
         width: 250px !important;
     }
 }
-
-

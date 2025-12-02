@@ -107,7 +107,7 @@
                         <!-- Actions -->
                         <div class="form-actions">
                             <label class="checkbox-label">
-                                <input type="checkbox"> Remember me
+                                <input type="checkbox" formControlName="rememberme"> Remember me
                             </label>
                             <span class="forgot-link" (click)="switchView('forgot')">Forgot password?</span>
                         </div>
@@ -229,7 +229,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        &copy; 2025 • Powered by RiDSYS Corp. v1.0
+        &copy; {{ today | date:'yyyy' }} • Powered by RiDSYS Corp. {{VERSION}}
     </footer>
 
 </section>
