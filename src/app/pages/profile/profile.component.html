@@ -1,2 +1,2 @@
-<app-tabulator-employee [data]="users" [columns]="columns" [viewOptions]="viewOptions"
+<app-tabulator-employee [data]="users" (cellEdit)="cellEdit($event)" [columns]="columns" [viewOptions]="viewOptions"
     [options]="options"></app-tabulator-employee>

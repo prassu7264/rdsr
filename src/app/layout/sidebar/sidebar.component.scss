@@ -92,8 +92,9 @@ $sidebar-mini: var(--sidebar-mini);
         background: var(--primary-bg);
         color: var(--primary);
         font-weight: 600;
-        border: 1px solid var(--primary);
-        box-shadow: 0 0 0 1px var(--primary);
+        // border: 1px solid var(--primary);
+        // box-shadow: 0 0 0 1px var(--primary);
+        box-shadow: 0 0 2px 0px var(--primary);
 
         i {
             color: var(--primary);

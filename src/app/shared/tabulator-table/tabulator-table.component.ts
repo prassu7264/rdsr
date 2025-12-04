@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 
@@ -12,6 +12,9 @@ export class TabulatorTableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() columns: any[] = [];
   @Input() options: any = {};
   @Input() viewOptions = [];
+  @Output() cellEdit = new EventEmitter();
+  @Output() editRow = new EventEmitter<any>();
+  @Output() deleteRow = new EventEmitter<any>();
 
   private table: Tabulator | undefined;
   constructor(private el: ElementRef) { }
@@ -32,31 +35,67 @@ export class TabulatorTableComponent implements OnInit, OnDestroy, OnChanges {
 
   private initTable(viewby: any = "") {
 
+    const actionColumn = {
+      title: "Actions",
+      field: "actions",
+      headerSort: false,
+      hozAlign: "center",
+      width: 150,
+      formatter: () => {
+        return `
+          <button class="tbtn edit">Edit</button> 
+          <button class="tbtn delete">Delete</button>
+        `;
+      },
+      cellClick: (e: any, cell: any) => {
+        const rowData = cell.getRow().getData();
 
+        if (e.target.classList.contains("edit")) {
+          console.log("Edit clicked:", rowData);
+          this.editRow.emit(rowData);
+        }
+
+        if (e.target.classList.contains("delete")) {
+          console.log("Delete clicked:", rowData);
+          this.deleteRow.emit(rowData);
+        }
+      }
+    };
+
+    // Insert at end or beginning
+    const updatedColumns = [...this.columns, actionColumn];
 
     const defaultOptions = {
       data: this.data,
-      columns: this.columns,
+      columns: updatedColumns,
       movableColumns: true,
       resizableRows: true,
       movableRows: true,
       pagination: "local",
       paginationSize: 15,
+      columnDefaults: {
+        tooltip: true,
+      }, editTriggerEvent: "dblclick",
       paginationSizeSelector: [5, 10, 15, 25, 35, 45, 100],
       groupBy: viewby,
-      rowClick: (e: any, row: any) => console.log("Row clicked:", row.getData()),
-      cellEdited: (cell: any) => console.log("Cell edited:", cell.getField(), cell.getValue()),
-      rowHeader: {
-        headerSort: false, resizable: false, frozen: true, headerHozAlign: "center", hozAlign: "center", formatter: "rowSelection", titleFormatter: "rowSelection", cellClick: function (e: any, cell: any) {
-          cell.getRow().toggleSelect();
-          console.log(e);
+      // rowHeader: {
+      //   headerSort: false, resizable: false, frozen: true, headerHozAlign: "center", hozAlign: "center", formatter: "rowSelection", titleFormatter: "rowSelection", cellClick: function (e: any, cell: any) {
+      //     cell.getRow().toggleSelect();
+      //     console.log(e);
 
-        }
-      },
+      //   }
+      // },
+      
     };
 
-    const tableOptions = { ...defaultOptions, ...this.options };
+    const tableOptions = {
+      ...defaultOptions, ...this.options
+    };
     this.table = new Tabulator(this.el.nativeElement.querySelector('.tabulator-table'), tableOptions);
+    this.table.on("cellEdited", (cell: any) => {
+      console.log(cell.getRow().getData());
+      this.cellEdit.emit(cell.getRow().getData());
+    })
   }
 
   onViewSelected(item: any) {
@@ -66,7 +105,6 @@ export class TabulatorTableComponent implements OnInit, OnDestroy, OnChanges {
 
   onCreateCustomView() {
     console.log('Parent received Create Custom View click!');
-
   }
 
 }

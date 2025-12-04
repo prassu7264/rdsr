@@ -1,0 +1,537 @@
+/* =========================================
+   1. GLOBAL VARIABLES
+   ========================================= */
+
+:root {
+    /* --- Colors --- */
+    --bg-body: #F9FAFB;
+    --surface: #FFFFFF;
+    --text-main: #111827;
+    --text-muted: #6B7280;
+    --border: #E5E7EB;
+    --primary: #2563EB;
+    --primary-bg: #ffffff;
+    --accent: #2563EB;
+
+    /* --- Shadows & Layout --- */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.15);
+    --radius: 5px;
+
+    /* --- State --- */
+    --bg-hover: #F3F4F6;
+    --bg-selected: rgba(37, 99, 235, 0.05);
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    --error-color: red;
+    /* --- Table Specific Defaults (Mapped to above) --- */
+    --tblr-header-height: 44px;
+    --tblr-row-height: 48px;
+    --tblr-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --tblr-font-size: 13px;
+}
+
+/* --- Dark Mode --- */
+body.dark-mode {
+    --bg-body: #0E101A;
+    --surface: #1E293B;
+    --text-main: #FFFFFF;
+    --text-muted: #94A3B8;
+    --border: #334155;
+    --primary: #60A5FA;
+    --primary-bg: #1E40AF;
+    --accent: #60A5FA;
+    --bg-hover: #2D3748;
+    --bg-selected: rgba(96, 165, 250, 0.15);
+}
+
+/* =========================================
+   THEME VARIATIONS
+   ========================================= */
+
+/* --- Light Themes --- */
+
+body.theme-light-forest {
+    --primary: #059669;
+    --bg-body: #F0FDF4;
+    --text-main: #164E63;
+    --accent: #059669;
+    --bg-selected: rgba(5, 150, 105, 0.1);
+    --border: #D1FAE5;
+}
+
+body.theme-light-teal {
+    --primary: #14B8A6;
+    --bg-body: #F9FAFB;
+    --text-main: #1F2937;
+    --accent: #14B8A6;
+    --bg-selected: rgba(20, 184, 166, 0.1);
+}
+
+body.theme-light-indigo {
+    --primary: #5C6BC0;
+    --bg-body: #F4F7F9;
+    --text-main: #212121;
+    --accent: #5C6BC0;
+    --bg-selected: rgba(92, 107, 192, 0.1);
+}
+
+body.theme-light-mono {
+    --primary: #1F2937;
+    --bg-body: #FFFFFF;
+    --text-main: #111827;
+    --accent: #1F2937;
+    --bg-selected: rgba(31, 41, 55, 0.1);
+}
+
+body.theme-light-earthy {
+    --primary: #FF7043;
+    --bg-body: #FFFDF9;
+    --text-main: #3E2723;
+    --accent: #FF7043;
+    --bg-selected: rgba(255, 112, 67, 0.1);
+    --border: #E7D8C9;
+}
+
+/* --- Dark Themes --- */
+
+body.dark-mode.theme-dark-original {}
+
+body.dark-mode.theme-dark-forest {
+    --bg-body: #101E2B;
+    --surface: #1C3545;
+    --text-main: #E0F2F1;
+    --text-muted: #94A3B8;
+    --border: #374151;
+    --primary: #10B981;
+    --primary-bg: #064E3B;
+    --accent: #34D399;
+    --bg-hover: #264653;
+    --bg-selected: rgba(16, 185, 129, 0.2);
+}
+
+body.dark-mode.theme-dark-teal {
+    --bg-body: #1F2937;
+    --surface: #2C394B;
+    --text-main: #FFFFFF;
+    --text-muted: #9AAABF;
+    --border: #4D5869;
+    --primary: #4DB6AC;
+    --primary-bg: #143657;
+    --accent: #4DB6AC;
+    --bg-hover: #37475A;
+    --bg-selected: rgba(77, 182, 172, 0.2);
+}
+
+body.dark-mode.theme-dark-mono {
+    --bg-body: #0D1117;
+    --surface: #161B22;
+    --text-main: #F0F6FC;
+    --text-muted: #8B949E;
+    --border: #30363D;
+    --primary: #b8d9ff;
+    --primary-bg: #1A3E6E;
+    --accent: #30363D;
+    --bg-hover: #21262D;
+    --bg-selected: rgba(184, 217, 255, 0.15);
+}
+
+body.dark-mode.theme-dark-earthy {
+    --bg-body: #28242A;
+    --surface: #3C363C;
+    --text-main: #FDF4E3;
+    --text-muted: #C7C0B2;
+    --border: #575154;
+    --primary: #FF7043;
+    --primary-bg: #573024;
+    --accent: #FF7043;
+    --bg-hover: #4A434A;
+    --bg-selected: rgba(255, 112, 67, 0.2);
+}
+
+body.dark-mode.theme-dark-indigo {
+    --bg-body: #1F2937;
+    --surface: #2E3A4A;
+    --text-main: #F5F5F5;
+    --text-muted: #A0AEC0;
+    --border: #4A5568;
+    --primary: #5C6BC0;
+    --primary-bg: #37475a;
+    --accent: #5C6BC0;
+    --bg-hover: #3B4758;
+    --bg-selected: rgba(92, 107, 192, 0.2);
+}
+
+/* =========================================
+   2. TABLE CONTAINER
+   ========================================= */
+
+.tabulator {
+    font-family: var(--tblr-font-family);
+    font-size: var(--tblr-font-size);
+    color: var(--text-main);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-sm);
+
+    &:focus {
+        outline: none;
+    }
+
+    /* =========================================
+     3. HEADER
+     ========================================= */
+    .tabulator-header {
+        background-color: var(--bg-body);
+        border-bottom: 1px solid var(--border);
+        font-weight: 400;
+        color: var(--text-muted);
+        user-select: none;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+        .tabulator-col {
+            background-color: var(--bg-body);
+            border-right: 1px solid transparent;
+            padding: 0;
+            height: var(--tblr-header-height);
+            position: relative;
+            transition: background-color 0.2s;
+
+            .tabulator-col-content {
+                padding: 0 16px;
+                height: 100%;
+                display: flex;
+                align-items: center;
+
+                .tabulator-col-title {
+                    font-size: 11px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    font-weight: 500;
+                    color: var(--text-muted);
+                }
+
+                /* --- BEST SORT ICON (Solid Arrow) --- */
+                .tabulator-arrow {
+                    display: inline-block;
+                    width: 8px;
+                    height: 10px;
+                    margin-left: 8px;
+                    position: relative;
+
+                    /* CRITICAL: Override Tabulator default borders */
+                    border: none !important;
+                    background: none !important;
+
+                    opacity: 0.3;
+                    transition: all 0.2s ease;
+
+                    /* Draw Custom Arrow using CSS Borders */
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        left: 0;
+                        transform: translateY(-50%);
+                        border-left: 4px solid transparent;
+                        border-right: 4px solid transparent;
+                        border-top: 5px solid currentColor;
+                        /* Down pointing by default */
+                        border-bottom: none;
+                    }
+                }
+            }
+
+            /* Hover State */
+            &:hover {
+                background-color: var(--bg-hover);
+
+                .tabulator-col-title {
+                    color: var(--text-main);
+                }
+
+                .tabulator-arrow {
+                    opacity: 0.6;
+                    color: var(--text-main);
+                }
+            }
+
+            /* Ascending (Up) */
+            &[aria-sort="ascending"] {
+                background-color: var(--bg-hover);
+
+                .tabulator-col-title {
+                    color: var(--primary);
+                }
+
+                .tabulator-arrow {
+                    opacity: 1;
+                    color: var(--primary);
+
+                    &::after {
+                        border-top: none;
+                        border-bottom: 5px solid currentColor;
+                        /* Point Up */
+                    }
+                }
+            }
+
+            /* Descending (Down) */
+            &[aria-sort="descending"] {
+                background-color: var(--bg-hover);
+
+                .tabulator-col-title {
+                    color: var(--primary);
+                }
+
+                .tabulator-arrow {
+                    opacity: 1;
+                    color: var(--primary);
+
+                    &::after {
+                        border-top: 5px solid currentColor;
+                        /* Point Down */
+                        border-bottom: none;
+                    }
+                }
+            }
+
+            /* Resize Handle */
+            .tabulator-col-resize-handle {
+                width: 4px;
+                right: 0;
+                opacity: 0;
+                transition: opacity 0.2s;
+
+                &:hover {
+                    background-color: var(--primary);
+                    opacity: 1;
+                }
+            }
+
+            &:hover .tabulator-col-resize-handle {
+                opacity: 0.5;
+            }
+        }
+    }
+
+    /* =========================================
+     4. BODY
+     ========================================= */
+    .tabulator-tableholder {
+
+        /* Custom Scrollbar */
+        &::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--border);
+            border-radius: 4px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background-color: var(--text-muted);
+        }
+
+        .tabulator-table {
+            background-color: var(--surface);
+            width: 100%;
+            border-collapse: collapse;
+
+            .tabulator-row {
+                background-color: var(--surface);
+                border-bottom: 1px solid var(--border);
+                min-height: var(--tblr-row-height);
+                transition: background-color 0.1s ease;
+
+                .tabulator-cell {
+                    padding: 0 16px;
+                    border-right: 1px solid transparent;
+                    vertical-align: middle;
+                    height: var(--tblr-row-height);
+                    color: var(--text-main);
+                    display: inline-flex;
+                    align-items: center;
+
+                    &.checkbox-col {
+                        justify-content: center;
+                    }
+
+                    /* NATIVE CHECKBOX (No Custom Styles) */
+                    input[type="checkbox"] {
+                        cursor: pointer;
+                        width: 14px;
+                        height: 14px;
+                        accent-color: var(--primary);
+                    }
+
+                    /* Editable Indicator */
+                    &.tabulator-editable {
+                        cursor: pointer;
+
+                        &:hover {
+                            box-shadow: inset 0 0 0 1px var(--border);
+                            background-color: var(--bg-body);
+                            border-radius: 4px;
+                        }
+                    }
+                }
+
+                /* Hover */
+                &:hover {
+                    background-color: var(--bg-hover);
+                    z-index: 1;
+                }
+
+                /* Selected */
+                &.tabulator-selected {
+                    background-color: var(--bg-selected);
+                    border-bottom-color: rgba(0, 0, 0, 0.05);
+                }
+            }
+        }
+    }
+
+    /* =========================================
+     5. EDITING
+     ========================================= */
+    .tabulator-editing {
+        padding: 0 !important;
+        border: none !important;
+
+        /* Inputs match cell aesthetics */
+        input:not([type="checkbox"]),
+        select,
+        textarea {
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--primary) !important;
+            border-radius: var(--radius);
+            padding: 0 14px;
+            font-family: inherit;
+            font-size: inherit;
+            background: var(--surface);
+            color: var(--text-main);
+            box-sizing: border-box;
+            box-shadow: var(--shadow-sm);
+            outline: none;
+        }
+
+        input[type="checkbox"] {
+            display: block;
+            margin: auto;
+        }
+    }
+}
+
+/* =========================================
+   6. HELPER CLASSES (Badges)
+   ========================================= */
+
+.status-pill {
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+
+    &.active {
+        background-color: rgba(16, 185, 129, 0.15);
+        color: var(--success);
+
+        .dot {
+            background-color: var(--success);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+    }
+
+    &.inactive {
+        background-color: var(--bg-hover);
+        color: var(--text-muted);
+        border: 1px solid var(--border);
+
+        .dot {
+            background-color: var(--text-muted);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+    }
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    width: 100%;
+
+    .icon-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 4px;
+        border: none;
+        background: transparent;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+            background-color: var(--bg-hover);
+            color: var(--primary);
+        }
+
+        &.delete:hover {
+            color: var(--danger);
+        }
+    }
+}
+
+.tabulator .tabulator-footer {
+    background-color: var(--bg-body);
+}
+
+.tabulator .tabulator-footer .tabulator-page.active {
+    color: var(--primary);
+}
+
+.tabulator .tabulator-footer .tabulator-paginator {
+    color: var(--primary);
+    font-weight: 400;
+}
+
+.tabulator .tabulator-footer .tabulator-page:not(disabled):hover {
+    background: var(--primary);
+    color: var(--bg-body);
+    cursor: pointer;
+}
+
+.tabulator-row.tabulator-group span {
+    color: var(--primary);
+}
+
+.tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
+    padding-right: 14px;
+}

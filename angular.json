@@ -26,9 +26,12 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "src/styles.scss",
-              "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css",
+              "src/assets/scss/tabulator.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/tabulator-tables/dist/js/tabulator.min.js"
+            ]
           },
           "configurations": {
             "production": {

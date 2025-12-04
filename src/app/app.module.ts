@@ -23,7 +23,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './_helper/auth.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { TabulatorTableComponent } from './shared/tabulator-table/tabulator-table.component';
-import { MatMaterialModule } from './core/modules/mat-material/mat-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewSelectorComponent } from './shared/components/view-selector/view-selector.component';
 import { UserFormComponent } from './shared/components/user-form/user-form.component';
