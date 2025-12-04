@@ -19,11 +19,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { ProjectsComponent } from './pages/projects/projects.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { LoginComponent } from './pages/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './_helper/auth.interceptor';
 import { ToastrModule } from 'ngx-toastr';
-
+import { TabulatorTableComponent } from './shared/tabulator-table/tabulator-table.component';
+import { MatMaterialModule } from './core/modules/mat-material/mat-material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ViewSelectorComponent } from './shared/components/view-selector/view-selector.component';
+import { UserFormComponent } from './shared/components/user-form/user-form.component';
 
 @NgModule({
   declarations: [
@@ -41,21 +44,25 @@ import { ToastrModule } from 'ngx-toastr';
     ProjectsComponent,
     SettingsComponent,
     LoginComponent,
+    TabulatorTableComponent,
+    ViewSelectorComponent,
+    UserFormComponent,
 
   ],
   imports: [
-    BrowserModule,
     BrowserAnimationsModule,
+    BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule,
+    // MatMaterialModule,
     ToastrModule.forRoot({
       positionClass: 'toast-top-right',
       preventDuplicates: true,
       closeButton: true,
       progressBar: true,
-    })
-
+    }),
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

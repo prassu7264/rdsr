@@ -1,3 +1,5 @@
+@import "~tabulator-tables/dist/css/tabulator.min.css";
+
 /* --- 1. VARIABLES --- */
 :root {
 
@@ -19,14 +21,11 @@
     --sidebar-w: 260px;
     --sidebar-mini: 90px;
 
-    --radius: 12px;
+    --radius: 5px;
 
     --pattern-color: #E5E7EB;
-}
 
-.toast-top-right {
-    top: 75px !important;
-    right: 12px;
+    --error-color: #ff0000;
 }
 
 body.dark-mode {
@@ -42,6 +41,10 @@ body.dark-mode {
     --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.5);
 }
 
+.toast-top-right {
+    top: 75px !important;
+    right: 12px;
+}
 
 body.theme-light-forest {
     --primary: #059669;
@@ -189,9 +192,185 @@ body.collapsed .sidebar {
     width: var(--sidebar-mini);
 }
 
+
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-xl);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: box-shadow 0.3s;
+}
+
+// tabulator
+.tabulator .tabulator-header .tabulator-col {
+    background: var(--primary) !important;
+    color: var(--primary-bg) !important;
+    // border: 1px solid var(--primary-bg);
+}
+
+.tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-content .tabulator-col-sorter {
+    color: var(--primary-bg) !important;
+}
+
+.tabulator {
+    border: 1px solid var(--accent);
+    background-color: var(--primary-bg);
+    border-radius: 4px;
+}
+
+.tabulator-row .tabulator-cell.tabulator-editing {
+    border: 0px solid var(--primary);
+    outline: none;
+    padding: 0;
+
+}
+
+.tabulator .tabulator-tableholder::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+}
+
+.tabulator .tabulator-tableholder::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    background-color: #F5F5F5;
+}
+
+.tabulator .tabulator-tableholder::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+}
+
+.tabulator-row.tabulator-selectable:hover {
+    background-color: var(--primary-bg) !important;
+    cursor: pointer;
+}
+
+/* --- SIDE DRAWER --- */
+.filter-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 900;
+    animation: fadeIn 0.2s;
+}
+
+.filter-drawer {
+    position: fixed;
+    top: 0;
+    right: -520px;
+    /* Start hidden */
+    width: 500px;
+    height: 100vh;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.filter-drawer.open {
+    right: 0;
+}
+
+.drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.drawer-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.drawer-content {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.fake-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-main);
+    font-size: 14px;
+    background: var(--bg-body);
+    cursor: pointer;
+}
+
+.drawer-footer {
+    padding: 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background: var(--bg-body);
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
 @media (max-width: 768px) {
 
     body.collapsed .sidebar {
         width: 250px !important;
+    }
+
+    .filter-drawer {
+        position: fixed;
+        top: 0;
+        right: -320px;
+        /* Start hidden */
+        width: 300px;
+        height: 100vh;
+        background: var(--surface);
+        border-left: 1px solid var(--border);
+        box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 }

@@ -1,0 +1,123 @@
+<div class="toolbar-container">
+
+    <!-- LEFT SECTION: Main Dropdown -->
+    <div class="select-wrapper">
+
+        <!-- Trigger Button -->
+        <button class="view-trigger" [class.active]="isOpen" (click)="toggleDropdown($event)" type="button">
+
+            <span class="trigger-text">{{ selectedItem?.label || 'Select View' }}</span>
+
+            <svg class="trigger-arrow" viewBox="0 0 24 24">
+                <path d="M7 10l5 5 5-5z" fill="currentColor" />
+            </svg>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div class="dropdown-menu" *ngIf="isOpen" (click)="$event.stopPropagation()">
+
+            <!-- Search -->
+            <div class="search-container">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input type="text" class="search-input" placeholder="Search..." [(ngModel)]="searchText"
+                    (input)="filterItems()" #searchInput>
+            </div>
+
+            <!-- Scrollable List -->
+            <div class="list-container">
+
+                <!-- Group Header -->
+                <div class="section-header" (click)="toggleSection()">
+                    <svg class="section-arrow" [class.collapsed-arrow]="isCollapsed" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path d="M7 10l5 5 5-5z" />
+                    </svg>
+                    Predefined Views
+                </div>
+
+                <!-- Items List -->
+                <ul class="options-list" *ngIf="!isCollapsed">
+                    <li *ngFor="let item of filteredItems" class="menu-item"
+                        [class.selected]="item.id === selectedItem?.id" (click)="selectItem(item)">
+
+                        {{ item.label }}
+
+                        <!-- Anchor Icon (Only visible if selected) -->
+                        <svg class="item-icon" viewBox="0 0 24 24" *ngIf="item.id === selectedItem?.id">
+                            <path
+                                d="M12 22a8 8 0 0 1-8-8v-3h2v3a6 6 0 1 0 12 0v-3h2v3a8 8 0 0 1-8 8zm0-12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
+                                fill="currentColor" />
+                        </svg>
+                    </li>
+
+                    <!-- Empty State -->
+                    <li class="menu-item no-results" *ngIf="filteredItems.length === 0">
+                        No views found
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Footer -->
+            <div class="menu-footer" (click)="onCreateCustom()">
+                <span class="plus-icon">+</span> Create Custom View
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT SECTION: Filter Icon & Actions -->
+    <div class="right-section">
+
+        <!-- List View Dropdown -->
+        <!-- <button class="icon-text-btn">
+            <svg class="btn-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+            List
+            <svg class="btn-arrow" viewBox="0 0 24 24">
+                <path d="M7 10l5 5 5-5z" fill="currentColor" />
+            </svg>
+        </button> -->
+
+
+        <!-- Filter Button (Triggers Drawer) -->
+        <button class="icon-btn filter-btn" [class.active]="isFilterOpen" (click)="toggleFilter()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </svg>
+        </button>
+        <div class="divider"></div>
+        <button class="icon-text-btn" [class.active]="isFilterOpen" (click)="toggleFilter()">
+            + add user
+        </button>
+
+    </div>
+
+</div>
+
+<!-- Filter Side Drawer & Backdrop -->
+<div class="filter-backdrop" *ngIf="isFilterOpen" (click)="toggleFilter()"></div>
+
+<div class="filter-drawer" [class.open]="isFilterOpen">
+    <div class="drawer-header">
+        <button class="icon-btn close-btn" (click)="toggleFilter()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+
+    <div class="drawer-content">
+        <app-user-form (toggleEmitor)="toggleFilter()"></app-user-form>
+    </div>
+
+
+</div>

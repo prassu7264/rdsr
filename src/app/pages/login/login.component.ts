@@ -120,8 +120,8 @@ export class LoginComponent implements OnInit {
           this.storageService.setToken(res.accessToken);
 
           // Save user
-          this.storageService.setUser(res.user);
-
+          this.storageService.setUser(res);
+          this.storageService.setUsername(user.username)
           // Handle Remember Me
           if (this.loginForm.value.rememberme) {
             this.storageService.rememberMe(true);

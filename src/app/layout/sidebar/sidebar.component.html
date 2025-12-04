@@ -14,14 +14,17 @@
         <div class="nav-item" routerLink="/main/analytics" routerLinkActive="active" (click)="closeSubmenus($event)">
             <i class="ri-bar-chart-box-line"></i> <span>Analytics</span>
         </div>
-
-        <div class="nav-item"
-            [class.active]="router.isActive('/main/profile', {paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored'}) || router.isActive('/security', {paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored'})"
+        <div class="nav-item" routerLink="/main/profile" routerLinkActive="active" (click)="closeSubmenus($event)">
+            <i class="ri-folder-user-line"></i> <span>User Profile</span>
+        </div>
+        <!-- <div class="nav-item"
+            [class.active]="router.isActive('/main/profile', {paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored'}) || router.isActive('/main/security', {paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored'})"
             [class.open]="openMenuId === 'sub1'" (click)="toggleSubmenu('sub1')">
             <i class="ri-user-settings-line"></i>
             <span style="flex:1;">Settings 1</span>
             <i class="ri-arrow-down-s-line arrow"></i>
         </div>
+
         <div class="submenu-wrapper" [class.open]="openMenuId === 'sub1'">
             <div class="submenu-item" routerLink="/main/profile" routerLinkActive="active"
                 (click)="closeSubmenus($event)">
@@ -30,15 +33,16 @@
                 (click)="closeSubmenus($event)">
                 Security</div>
 
-        </div>
+        </div> -->
 
         <div class="nav-item"
-            [class.active]="router.isActive('/main/general', {paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored'}) || router.isActive('/billing', {paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored'}) || router.isActive('/logs', {paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored'})"
+            [class.active]="router.isActive('/main/general', {paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored'}) || router.isActive('/main/logs', {paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored'}) || router.isActive('/main/billing', {paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored'})"
             [class.open]="openMenuId === 'sub2'" (click)="toggleSubmenu('sub2')">
             <i class="ri-settings-line"></i>
             <span style="flex:1;">Settings 2</span>
             <i class="ri-arrow-down-s-line arrow"></i>
         </div>
+
         <div class="submenu-wrapper" [class.open]="openMenuId === 'sub2'">
             <div class="submenu-item" routerLink="/main/general" routerLinkActive="active"
                 (click)="closeSubmenus($event)">

@@ -18,7 +18,7 @@ export class URL {
     }
 
     static BASE_URL(): String {
-        return 'http://192.168.1.105:8081';
+        return 'http://192.168.1.105:8081/api/v1';
         // return 'https://ds.iqtv.in:8080/iqworld';
     }
 

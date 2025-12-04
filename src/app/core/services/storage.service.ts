@@ -8,6 +8,7 @@ export class StorageService {
 
   private ACCESS_TOKEN = 'access_token';
   private USER = 'user_data';
+  private USERNAME = 'username';
   private REMEMBER_USERNAME = 'remember_username';
   private REMEMBER_PASSWORD = 'remember_password';
   private REMEMBER_ME = 'remember_me';
@@ -20,15 +21,15 @@ export class StorageService {
   // TOKEN
   // -----------------------------
   setToken(token: string): void {
-    localStorage.setItem(this.ACCESS_TOKEN, token);
+    sessionStorage.setItem(this.ACCESS_TOKEN, token);
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.ACCESS_TOKEN);
+    return sessionStorage.getItem(this.ACCESS_TOKEN);
   }
 
   clearToken(): void {
-    localStorage.removeItem(this.ACCESS_TOKEN);
+    sessionStorage.removeItem(this.ACCESS_TOKEN);
   }
 
   hasToken(): boolean {
@@ -39,14 +40,20 @@ export class StorageService {
   // USER
   // -----------------------------
   setUser(user: any): void {
-    localStorage.setItem(this.USER, JSON.stringify(user));
+    sessionStorage.setItem(this.USER, JSON.stringify(user));
   }
 
   getUser(): any {
-    const data = localStorage.getItem(this.USER);
+    const data = sessionStorage.getItem(this.USER);
     return data ? JSON.parse(data) : null;
   }
-
+  setUsername(username: any): void {
+    sessionStorage.setItem(this.USERNAME, username);
+  }
+  getUsername(): any {
+    const username = sessionStorage.getItem(this.USERNAME);
+    return username;
+  }
   updateUser(partialUser: any): void {
     const current = this.getUser();
     if (!current) return;
@@ -64,7 +71,7 @@ export class StorageService {
   }
 
   clearUser(): void {
-    localStorage.removeItem(this.USER);
+    sessionStorage.removeItem(this.USER);
   }
 
   // -----------------------------

@@ -420,7 +420,7 @@ body.dark-mode .info-panel {
 }
 
 .error {
-    color: #ff0000;
+    color: var(--error-color);
     font-size: 0.75rem;
     margin-left: 4px;
     display: block;
@@ -428,5 +428,5 @@ body.dark-mode .info-panel {
 }
 
 input.ng-invalid.ng-touched {
-    border-color: #ff0000;
+    border-color: var(--error-color);
 }

@@ -1,0 +1,351 @@
+<!-- Main Scrollable Content -->
+<div class="page-container">
+
+    <!-- Header -->
+    <header class="form-header">
+        <div class="header-content">
+            <h1>Create New User</h1>
+            <p>Enter the details to onboard a new employee</p>
+        </div>
+    </header>
+
+    <form [formGroup]="userForm" class="main-form">
+
+        <!-- SECTION 1: Identity & Profile -->
+        <section class="form-section">
+            <h2 class="section-title">Personal Details</h2>
+
+            <div class="profile-layout">
+                <!-- Image Upload -->
+                <div class="avatar-upload">
+                    <div class="avatar-preview" [style.backgroundImage]="'url(' + (previewUrl) + ')'"
+                        [class.invalid-upload]="rf.image_url?.invalid && (rf.image_url?.dirty || rf.image_url?.touched)">
+                    </div>
+                    <label class="upload-btn">
+                        Change Photo <span class="required">*</span>
+                        <input type="file" (change)="onFileChange($event)" accept="image/*" hidden>
+                    </label>
+                    <div class="error-msg center-text"
+                        *ngIf="rf.image_url?.invalid && (rf.image_url?.dirty || rf.image_url?.touched)">
+                        Photo required.
+                    </div>
+                </div>
+
+                <!-- Basic Info Grid -->
+                <div class="fields-grid">
+                    <div class="form-group">
+                        <label>First Name <span class="required">*</span></label>
+                        <input type="text" formControlName="firstname" placeholder="e.g. John">
+                        <div class="error-msg"
+                            *ngIf="rf.firstname?.invalid && (rf.firstname?.dirty || rf.firstname?.touched)">
+                            First Name is required.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Last Name <span class="required">*</span></label>
+                        <input type="text" formControlName="lastname" placeholder="e.g. Doe">
+                        <div class="error-msg"
+                            *ngIf="rf.lastname?.invalid && (rf.lastname?.dirty || rf.lastname?.touched)">
+                            Last Name is required.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date of Birth <span class="required">*</span></label>
+                        <input type="date" formControlName="date_of_birth">
+                        <div class="error-msg"
+                            *ngIf="rf.date_of_birth?.invalid && (rf.date_of_birth?.dirty || rf.date_of_birth?.touched)">
+                            Date of Birth is required.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Gender <span class="required">*</span></label>
+                        <div class="select-wrapper">
+                            <select formControlName="gender">
+                                <option value="" disabled selected>Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <svg class="select-arrow" viewBox="0 0 24 24">
+                                <path d="M7 10l5 5 5-5z" fill="currentColor" />
+                            </svg>
+                        </div>
+                        <div class="error-msg" *ngIf="rf.gender?.invalid && (rf.gender?.dirty || rf.gender?.touched)">
+                            Gender is required.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Marital Status
+                            <!-- <span class="required">*</span> -->
+                        </label>
+                        <div class="select-wrapper">
+                            <select formControlName="marital_status">
+                                <option value="" disabled selected>Select Status</option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Divorced">Divorced</option>
+                            </select>
+                            <svg class="select-arrow" viewBox="0 0 24 24">
+                                <path d="M7 10l5 5 5-5z" fill="currentColor" />
+                            </svg>
+                        </div>
+                        <div class="error-msg"
+                            *ngIf="rf.marital_status?.invalid && (rf.marital_status?.dirty || rf.marital_status?.touched)">
+                            Status is required.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Blood Group
+                            <!-- <span class="required">*</span> -->
+                        </label>
+                        <div class="select-wrapper">
+                            <select formControlName="blood_group">
+                                <option value="" disabled selected>Select Group</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                            <svg class="select-arrow" viewBox="0 0 24 24">
+                                <path d="M7 10l5 5 5-5z" fill="currentColor" />
+                            </svg>
+                        </div>
+                        <div class="error-msg"
+                            *ngIf="rf.blood_group?.invalid && (rf.blood_group?.dirty || rf.blood_group?.touched)">
+                            Blood Group is required.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- SECTION 2: Contact Info -->
+        <section class="form-section">
+            <h2 class="section-title">Contact Information</h2>
+            <div class="fields-grid three-col">
+                <div class="form-group">
+                    <label>Official Email <span class="required">*</span></label>
+                    <input type="email" formControlName="email" placeholder="john.doe@company.com">
+                    <div class="error-msg" *ngIf="rf.email?.invalid && (rf.email?.dirty || rf.email?.touched)">
+                        <span *ngIf="rf.email?.errors?.['required']">Email is required.</span>
+                        <span *ngIf="rf.email?.errors?.['email']">Invalid email format.</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Alternate Email
+                        <!-- <span class="required">*</span> -->
+                    </label>
+                    <input type="email" formControlName="alternate_email" placeholder="Personal email">
+                    <div class="error-msg"
+                        *ngIf="rf.alternate_email?.invalid && (rf.alternate_email?.dirty || rf.alternate_email?.touched)">
+                        <span *ngIf="rf.alternate_email?.errors?.['required']">Alt Email is required.</span>
+                        <span *ngIf="rf.alternate_email?.errors?.['email']">Invalid email format.</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Mobile Number <span class="required">*</span></label>
+                    <input type="tel" formControlName="mobile" placeholder="9876543210">
+                    <div class="error-msg" *ngIf="rf.mobile?.invalid && (rf.mobile?.dirty || rf.mobile?.touched)">
+                        <span *ngIf="rf.mobile?.errors?.['required']">Mobile is required.</span>
+                        <span *ngIf="rf.mobile?.errors?.['pattern']">Min 10 digits required.</span>
+                    </div>
+                </div>
+
+                <div class="form-group" *ngIf="false">
+                    <label>Skype ID <span class="required">*</span></label>
+                    <input type="text" formControlName="skypeid" placeholder="live:john.doe">
+                    <div class="error-msg" *ngIf="rf.skypeid?.invalid && (rf.skypeid?.dirty || rf.skypeid?.touched)">
+                        Skype ID is required.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- SECTION 3: Employment Details -->
+        <section class="form-section">
+            <h2 class="section-title">Employment Details</h2>
+            <div class="fields-grid three-col">
+                <div class="form-group">
+                    <label>Role <span class="required">*</span></label>
+                    <div class="select-wrapper">
+                        <select formControlName="role">
+                            <option [ngValue]="null" disabled selected>Select Role</option>
+                            <option [ngValue]="'manager'"> Manager </option>
+                            <option [ngValue]="'employee'">Employee</option>
+                        </select>
+                        <svg class="select-arrow" viewBox="0 0 24 24">
+                            <path d="M7 10l5 5 5-5z" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <div class="error-msg" *ngIf="rf.role?.invalid && (rf.role?.dirty || rf.role?.touched)">
+                        Role is required.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Department <span class="required">*</span></label>
+                    <div class="select-wrapper">
+                        <select formControlName="deptid" (ngModelChange)="getDesignationByDepartment($event)">
+                            <option [ngValue]="null" disabled selected>Select Dept</option>
+                            <option *ngFor="let d of departments" [ngValue]="d.id">{{d.department_name}}</option>
+                        </select>
+                        <svg class="select-arrow" viewBox="0 0 24 24">
+                            <path d="M7 10l5 5 5-5z" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <div class="error-msg" *ngIf="rf.deptid?.invalid && (rf.deptid?.dirty || rf.deptid?.touched)">
+                        Department is required.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Position / Role <span class="required">*</span></label>
+                    <div class="select-wrapper">
+                        <select formControlName="positionid">
+                            <option [ngValue]="null" disabled selected>Select Position</option>
+                            <option *ngFor="let d of designation" [ngValue]="d.id">{{d.position}}</option>
+                        </select>
+                        <svg class="select-arrow" viewBox="0 0 24 24">
+                            <path d="M7 10l5 5 5-5z" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <div class="error-msg"
+                        *ngIf="rf.positionid?.invalid && (rf.positionid?.dirty || rf.positionid?.touched)">
+                        Position is required.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Joining Date <span class="required">*</span></label>
+                    <input type="date" formControlName="joining_date">
+                    <div class="error-msg"
+                        *ngIf="rf.joining_date?.invalid && (rf.joining_date?.dirty || rf.joining_date?.touched)">
+                        Joining Date is required.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Shift <span class="required">*</span></label>
+                    <div class="select-wrapper">
+                        <select formControlName="shiftid">
+                            <option [ngValue]="null" disabled selected>Select Shift</option>
+                            <option *ngFor="let s of shifts" [ngValue]="s.id">{{s.shift_type}}</option>
+                        </select>
+                        <svg class="select-arrow" viewBox="0 0 24 24">
+                            <path d="M7 10l5 5 5-5z" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <div class="error-msg" *ngIf="rf.shiftid?.invalid && (rf.shiftid?.dirty || rf.shiftid?.touched)">
+                        Shift is required.
+                    </div>
+                </div>
+
+                <div class="form-group" *ngIf="false">
+                    <label>Reporting Manager <span class="required">*</span></label>
+                    <div class="select-wrapper">
+                        <select formControlName="managerid">
+                            <option [ngValue]="null" disabled selected>Select Manager</option>
+                            <option [ngValue]="55">Sarah Connor</option>
+                            <option [ngValue]="56">Kyle Reese</option>
+                        </select>
+                        <svg class="select-arrow" viewBox="0 0 24 24">
+                            <path d="M7 10l5 5 5-5z" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <div class="error-msg"
+                        *ngIf="rf.managerid?.invalid && (rf.managerid?.dirty || rf.managerid?.touched)">
+                        Manager is required.
+                    </div>
+                </div>
+
+                <div class="form-group" *ngIf="false">
+                    <label>Sub Manager <span class="required">*</span></label>
+                    <div class="select-wrapper">
+                        <select formControlName="sub_manager_id">
+                            <option [ngValue]="null" disabled selected>Select Sub Manager</option>
+                            <option [ngValue]="57">John Henry</option>
+                        </select>
+                        <svg class="select-arrow" viewBox="0 0 24 24">
+                            <path d="M7 10l5 5 5-5z" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <div class="error-msg"
+                        *ngIf="rf.sub_manager_id?.invalid && (rf.sub_manager_id?.dirty || rf.sub_manager_id?.touched)">
+                        Sub Manager is required.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Attendance ID (Biometric) <span class="required">*</span></label>
+                    <input type="text" formControlName="attendanceid" placeholder="BIO-10293">
+                    <div class="error-msg"
+                        *ngIf="rf.attendanceid?.invalid && (rf.attendanceid?.dirty || rf.attendanceid?.touched)">
+                        Attendance ID is required.
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label>Password <span class="required">*</span></label>
+                    <input type="tel" formControlName="password" placeholder="Admin@123">
+                    <div class="error-msg" *ngIf="rf.password?.invalid && (rf.password?.dirty || rf.password?.touched)">
+                        <span *ngIf="rf.password?.errors?.['required']">Password is required.</span>
+                        <span *ngIf="rf.password?.errors?.['minlength']">Min 6 digits required.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toggles Row -->
+            <div class="toggles-row">
+
+                <!-- Work From Home -->
+                <div class="toggle-group">
+                    <label class="switch">
+                        <input type="checkbox" formControlName="wfh">
+                        <span class="slider round"></span>
+                    </label>
+                    <div class="toggle-label">
+                        <span>Work From Home Enabled</span>
+                        <small>Allow this user to mark attendance from home</small>
+                    </div>
+                </div>
+
+                <!-- Is Active -->
+                <div class="toggle-group">
+                    <label class="switch">
+                        <input type="checkbox" formControlName="isactive">
+                        <span class="slider round"></span>
+                    </label>
+                    <div class="toggle-label">
+                        <span>Active Status</span>
+                        <small>User can login to the portal</small>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </form>
+</div>
+
+<!-- Sticky Footer -->
+<div class="drawer-footer">
+    <div class="header-actions">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">Save User</button>
+    </div>
+</div>
