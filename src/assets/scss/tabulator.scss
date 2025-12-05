@@ -349,12 +349,12 @@ body.dark-mode.theme-dark-indigo {
 
         .tabulator-table {
             background-color: var(--surface);
-            width: 100%;
+            // width: 100vw;
             border-collapse: collapse;
 
             .tabulator-row {
                 background-color: var(--surface);
-                border-bottom: 1px solid var(--border);
+                border-bottom: 0px solid var(--border);
                 min-height: var(--tblr-row-height);
                 transition: background-color 0.1s ease;
 
@@ -534,4 +534,18 @@ body.dark-mode.theme-dark-indigo {
 
 .tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
     padding-right: 14px;
+}
+
+.tabulator .tabulator-header .tabulator-frozen.tabulator-frozen-right {
+    border-right: 1px solid #aaa;
+    border-left: 0;
+}
+
+.tabulator-row .tabulator-cell.tabulator-frozen.tabulator-frozen-right {
+    border-right: 1px solid #aaa !important;
+    border-left: 0;
+}
+
+.tabulator-row .tabulator-cell {
+    white-space: wrap;
 }

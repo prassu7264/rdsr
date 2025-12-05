@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { StorageService } from 'src/app/core/services/storage.service';
@@ -9,17 +9,58 @@ import { ToasterService } from 'src/app/core/services/toaster.service';
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss']
 })
-export class UserFormComponent implements OnInit {
+export class UserFormComponent implements OnInit, OnChanges {
   @Output() toggleEmitor = new EventEmitter<void>();
+  @Input() user: any
   departments: any = []
   shifts: any = [];
   designation: any = [];
   previewUrl: string | ArrayBuffer | null = null;
+  showRegPassword = false;
   constructor(private fb: FormBuilder, private authService: AuthService, private storageService: StorageService, private toasterService: ToasterService) { }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["user"] && this.user) {
+      console.log("User received:", this.user);
+      this.userForm.patchValue({
+        firstname: this.user.firstname,
+        lastname: this.user.lastname,
+        gender: this.user.gender,
+        marital_status: this.user.marital_status,
+        blood_group: this.user.blood_group,
+        date_of_birth: this.user.date_of_birth,
+        image_url: this.user.image_url,
+        email: this.user.email,
+        password: this.user.password,
+        alternate_email: this.user.alternate_email,
+        mobile: this.user.mobile,
+        skypeid: this.user.skypeid,
+        role: this.user.role,
+        deptid: this.user.deptid,
+        positionid: this.user.positionid,
+        shiftid: this.user.shiftid,
+        managerid: this.user.managerid,
+        sub_manager_id: this.user.sub_manager_id,
+        attendanceid: this.user.attendanceid,
+        joining_date: this.user.joining_date,
+        wfh: this.user.wfh,
+        isactive: this.user.isactive,
+        username: this.storageService.getUsername()
+      });
+
+      // Show preview image
+      this.previewUrl = this.user.profile_image_url;
+      // this.userForm.get('password')?.disable();
+    } else {
+      // this.userForm.get('password')?.enable();
+      this.userForm.reset();
+    }
+  }
+
   ngOnInit(): void {
     this.getAllShifts();
     this.getAllDepartments();
   }
+
   userForm: FormGroup = this.fb.group({
     // Identity
     firstname: ['', Validators.required],
@@ -96,21 +137,39 @@ export class UserFormComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.userForm.valid) {
-      console.log('Form Data:', this.userForm.value);
-      this.authService.createUser(this.userForm.value).subscribe((res: any) => {
-        this.toasterService.success(res?.message)
-        this.toggleFilter();
-      }, err => {
-        this.toasterService.error(err?.error?.message)
-      })
-    } else {
-      // Mark all as touched to trigger error states
+    if (!this.userForm.valid) {
       this.userForm.markAllAsTouched();
+      return;
     }
+    this.userForm.patchValue({
+      username: this.storageService.getUsername()
+    });
 
+    const payload = { ...this.userForm.value };
 
+    // If `user` exists (edit mode), call update, else create
+    if (this.user && this.user.id) {
+      payload.id = this.user.id; // include ID for update
+      this.authService.updateUser(payload).subscribe({
+        next: (res: any) => {
+          this.toasterService.success(res?.message || 'User updated successfully');
+          this.toggleFilter();
+          this.userForm.reset();
+        },
+        error: (err) => this.toasterService.error(err?.error?.message || 'Error updating user')
+      });
+    } else {
+      this.authService.createUser(payload).subscribe({
+        next: (res: any) => {
+          this.toasterService.success(res?.message || 'User created successfully');
+          this.toggleFilter();
+          this.userForm.reset();
+        },
+        error: (err) => this.toasterService.error(err?.error?.message || 'Error creating user')
+      });
+    }
   }
+
 
   onCancel() {
     this.userForm.reset();
@@ -139,4 +198,8 @@ export class UserFormComponent implements OnInit {
       this.designation = res
     })
   }
+  toggleRegPassword() {
+    this.showRegPassword = !this.showRegPassword;
+  }
+
 }
