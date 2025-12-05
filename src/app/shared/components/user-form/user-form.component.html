@@ -4,9 +4,11 @@
     <!-- Header -->
     <header class="form-header">
         <div class="header-content">
-            <h1>Create New User</h1>
-            <p>Enter the details to onboard a new employee</p>
+            <h1> {{ user?.id ? "Update User" : "Create New User" }} </h1>
+            <p> {{ user?.id ? "Edit the details to onboard employee" : "Enter the details to onboard a new employee" }}
+            </p>
         </div>
+
     </header>
 
     <form [formGroup]="userForm" class="main-form">
@@ -185,8 +187,8 @@
                     <div class="select-wrapper">
                         <select formControlName="role">
                             <option [ngValue]="null" disabled selected>Select Role</option>
-                            <option [ngValue]="'manager'"> Manager </option>
-                            <option [ngValue]="'employee'">Employee</option>
+                            <option [ngValue]="'ROLE_MANAGER'"> Manager </option>
+                            <option [ngValue]="'ROLE_EMPLOYEE'"> Employee </option>
                         </select>
                         <svg class="select-arrow" viewBox="0 0 24 24">
                             <path d="M7 10l5 5 5-5z" fill="currentColor" />
@@ -213,7 +215,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Position / Role <span class="required">*</span></label>
+                    <label>Position<span class="required">*</span></label>
                     <div class="select-wrapper">
                         <select formControlName="positionid">
                             <option [ngValue]="null" disabled selected>Select Position</option>
@@ -301,7 +303,13 @@
                 <!-- Password -->
                 <div class="form-group">
                     <label>Password <span class="required">*</span></label>
-                    <input type="tel" formControlName="password" placeholder="Admin@123">
+                    <div style="position: relative;">
+                        <input [type]="showRegPassword ? 'text' : 'password'" formControlName="password"
+                            placeholder="Admin@123">
+                        <i class="input-icon" style="position: absolute;right: 10px; bottom: 12px; cursor: pointer;"
+                            [class.ri-eye-line]="!showRegPassword" [class.ri-eye-off-line]="showRegPassword"
+                            (click)="toggleRegPassword()"></i>
+                    </div>
                     <div class="error-msg" *ngIf="rf.password?.invalid && (rf.password?.dirty || rf.password?.touched)">
                         <span *ngIf="rf.password?.errors?.['required']">Password is required.</span>
                         <span *ngIf="rf.password?.errors?.['minlength']">Min 6 digits required.</span>

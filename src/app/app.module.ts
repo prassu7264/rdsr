@@ -22,11 +22,13 @@ import { LoginComponent } from './pages/login/login.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './_helper/auth.interceptor';
 import { ToastrModule } from 'ngx-toastr';
-import { TabulatorTableComponent } from './shared/tabulator-table/tabulator-table.component';
+import {MatIconModule} from '@angular/material/icon';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewSelectorComponent } from './shared/components/view-selector/view-selector.component';
 import { UserFormComponent } from './shared/components/user-form/user-form.component';
-
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +45,6 @@ import { UserFormComponent } from './shared/components/user-form/user-form.compo
     ProjectsComponent,
     SettingsComponent,
     LoginComponent,
-    TabulatorTableComponent,
     ViewSelectorComponent,
     UserFormComponent,
 
@@ -55,6 +56,9 @@ import { UserFormComponent } from './shared/components/user-form/user-form.compo
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    MatIconModule,
+    MatDialogModule,
+    MatButtonModule,
     // MatMaterialModule,
     ToastrModule.forRoot({
       positionClass: 'toast-top-right',

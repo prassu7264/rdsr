@@ -20,4 +20,18 @@ export class CommonService {
         label: `viewed by ${key}`
       }));
   }
+  formatForTabulatorObj(list: any[], key: string, value: string): any {
+    const obj: any = {};
+    list.forEach(item => {
+      obj[item[key]] = item[value];
+    });
+    return obj;
+  }
+  formatForTabulator(list: any[], value: string): any[] {
+    return list.map(item => item[value]);
+  }
+  getObjectByField(list: any[], field: string, value: any): any | null {
+    if (!Array.isArray(list) || !field) return null;
+    return list.find(item => item[field] === value) || null;
+  }
 }

@@ -43,10 +43,17 @@ export class AuthService {
     return this.http.get(`${BASE_URL}/department/designationbydepartment?department_id=${department_id}`);
   }
   createUser(payload: any) {
-    return this.http.post(`${BASE_URL}/user/usercreate`, payload);
+    return this.http.post(`${BASE_URL}/user/create`, payload);
   }
   getUsersAll() {
     return this.http.get(`${BASE_URL}/user/all`);
+  }
+
+  updateUser(payload: any) {
+    return this.http.post(`${BASE_URL}/user/update`, payload);
+  }
+  deleteUser(employee_id: any, username: any) {
+    return this.http.delete(`${BASE_URL}/user/delete?employee_id=${employee_id}&username=${username}`);
   }
 
 }

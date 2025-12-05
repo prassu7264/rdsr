@@ -18,13 +18,12 @@ export class ViewSelectorComponent implements OnChanges {
   isCollapsed = false;
   searchText = '';
 
-  constructor( private elementRef: ElementRef) {
-
-  }
+  constructor(private elementRef: ElementRef) { }
   @Input() items: ViewOption[] = [];
+  @Input() data: any = {};
   @Output() selectionChange = new EventEmitter<ViewOption>();
-  @Output() createCustom = new EventEmitter<void>(); // NEW
-
+  @Output() editClick = new EventEmitter<any>();
+  @Output() createCustom = new EventEmitter<void>();
   filteredItems: ViewOption[] = [];
   selectedItem: ViewOption | null = null;
 
@@ -75,6 +74,7 @@ export class ViewSelectorComponent implements OnChanges {
   }
 
   toggleFilter() {
+    this.data = []
     this.isFilterOpen = !this.isFilterOpen;
   }
 

@@ -7,7 +7,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class LayoutService {
 
-  private isCollapsedSubject = new BehaviorSubject<boolean>(false);
+  private isCollapsedSubject = new BehaviorSubject<boolean>(true);
   private isDarkModeSubject = new BehaviorSubject<boolean>(false);
   private isMobileMenuOpenSubject = new BehaviorSubject<boolean>(false);
   private currentPageTitleSubject = new BehaviorSubject<string>('Dashboard');
