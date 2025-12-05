@@ -87,7 +87,12 @@
     background-color: var(--border);
     margin: 0 4px;
 }
-
+.divider {
+    width: 1px;
+    height: 20px;
+    background-color: var(--border);
+    margin: 0 4px;
+}
 /* Trigger (Main Dropdown) */
 .view-trigger {
     display: flex;
