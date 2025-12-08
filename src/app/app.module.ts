@@ -29,6 +29,7 @@ import { ViewSelectorComponent } from './shared/components/view-selector/view-se
 import { UserFormComponent } from './shared/components/user-form/user-form.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
+import { TableFilterComponent } from './shared/components/table-filter/table-filter.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,6 +48,7 @@ import {MatButtonModule} from '@angular/material/button';
     LoginComponent,
     ViewSelectorComponent,
     UserFormComponent,
+    TableFilterComponent,
 
   ],
   imports: [

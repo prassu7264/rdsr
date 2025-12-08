@@ -11,7 +11,7 @@ export class CommonService {
     if (!data || data.length === 0) return [];
     return Object.keys(data[0])
       .filter(key =>
-        !(key === "id" ||
+        !(key.includes("id") ||
           key.startsWith("is") ||
           key.toLowerCase().includes("url"))
       )
@@ -34,4 +34,17 @@ export class CommonService {
     if (!Array.isArray(list) || !field) return null;
     return list.find(item => item[field] === value) || null;
   }
+
+  taskNameFormatter = function (cell: any) {
+    const row = cell.getData();
+    return `
+        <div class="flex items-center gap-2">
+            <span class="text-gray-400"><i class="fa-regular fa-file-lines"></i></span>
+            <div class="flex flex-col">
+                <span class="font-medium text-gray-700 hover:text-blue-600 cursor-pointer">${row.firstname} ${row.lastname}</span>
+                <span class="text-[10px] text-gray-400">${row.position}</span>
+            </div>
+        </div>
+    `;
+  };
 }

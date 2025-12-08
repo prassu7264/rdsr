@@ -56,4 +56,27 @@ export class AuthService {
     return this.http.delete(`${BASE_URL}/user/delete?employee_id=${employee_id}&username=${username}`);
   }
 
+  getManagerList() {
+    return this.http.get(`${BASE_URL}/user/getmanagerlist`);
+  }
+
+  getEmployeeList() {
+    return this.http.get(`${BASE_URL}/user/getemployeelist`);
+  }
+
+  getAllProjects() {
+    return this.http.get(`${BASE_URL}/project/all`);
+  }
+
+  createProject(payload: any) {
+    return this.http.post(`${BASE_URL}/project/create`, payload);
+  }
+
+  updateProject(payload: any) {
+    return this.http.put(`${BASE_URL}/project/update`, payload);
+  }
+
+  deleteProject(id: number, username: string) {
+    return this.http.delete(`${BASE_URL}/project/delete/${id}?username=${username}`);
+  }
 }

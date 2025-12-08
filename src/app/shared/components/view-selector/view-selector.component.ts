@@ -22,7 +22,7 @@ export class ViewSelectorComponent implements OnChanges {
   @Input() items: ViewOption[] = [];
   @Input() data: any = {};
   @Output() selectionChange = new EventEmitter<ViewOption>();
-  @Output() editClick = new EventEmitter<any>();
+  @Output() initTable = new EventEmitter<any>();
   @Output() createCustom = new EventEmitter<void>();
   filteredItems: ViewOption[] = [];
   selectedItem: ViewOption | null = null;
@@ -73,9 +73,12 @@ export class ViewSelectorComponent implements OnChanges {
     }
   }
 
-  toggleFilter() {
+  toggleFilter(type: any = '') {
     this.data = []
     this.isFilterOpen = !this.isFilterOpen;
+    if (type) {
+      this.initTable.emit()
+    }
   }
 
 

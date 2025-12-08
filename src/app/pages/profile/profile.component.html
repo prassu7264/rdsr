@@ -1,9 +1,7 @@
 <div class="card">
-
-    <h2 style="margin-bottom: 15px;">Dashboard</h2>
-
-    <app-view-selector [items]="viewOptions" [data]="selectedUser" (selectionChange)="onViewSelected($event)"
-        (createCustom)="onCreateCustomView()">
+    <h2 style="margin-bottom: 15px;">User management</h2>
+    <app-view-selector [items]="viewOptions" [data]="selectedUser" (initTable)="getUsersAll()"
+        (selectionChange)="onViewSelected($event)" (createCustom)="onCreateCustomView()">
     </app-view-selector>
     <div
         style="margin-bottom: 15px; margin-top: 10px; font-size: 15px; border-top: 1px solid var(--border); padding-top: 10px;">

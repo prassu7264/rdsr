@@ -509,6 +509,31 @@ body.dark-mode.theme-dark-indigo {
     }
 }
 
+/* Specific Component Styles */
+.status-badge-open {
+    background-color: #4ade80;
+    color: white;
+    padding: 2px 12px;
+    border-radius: 2px;
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: capitalize;
+    display: inline-block;
+    min-width: 60px;
+    text-align: center;
+}
+
+.status-badge-closed {
+    background-color: #9ca3af;
+    color: white;
+    padding: 2px 12px;
+    border-radius: 2px;
+    font-size: 11px;
+    text-align: center;
+    min-width: 60px;
+    display: inline-block;
+}
+
 .tabulator .tabulator-footer {
     background-color: var(--bg-body);
 }

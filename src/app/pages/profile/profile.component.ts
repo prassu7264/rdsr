@@ -35,6 +35,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   options: any = {};
   viewOptions: any = [];
   selectedUser: any;
+  
   private table: Tabulator | undefined;
 
   constructor(
@@ -68,7 +69,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   /* ------------------------------------------------------
       LOAD ALL BASIC DATA FIRST
   ------------------------------------------------------ */
-  private loadInitialData() {
+  loadInitialData() {
     this.getAllDepartments(() => {
       this.getUsersAll(() => {
         this.initTable();
@@ -190,7 +191,8 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
       { title: "Releaving Remarks", field: "releaving_remarks", editor: "textarea" },
 
       {
-        title: "Created Date", field: "createddate", sorter: "datetime"      },
+        title: "Created Date", field: "createddate", sorter: "datetime"
+      },
       { title: "Updated Date", field: "updateddate", sorter: "datetime" },
       {
         title: "Actions",
@@ -251,11 +253,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     this.table.on("cellEdited", (cell: any) => {
       this.updateUser(cell.getRow().getData())
       if (cell.getColumn().getField() == 'department_name') {
-        console.log("departmentList", this.departmentList);
-
-        let obj = this.commonService.getObjectByField(this.departmentList, 'department_name', cell.getRow().getData().department_name)
-        console.log(obj);
-
+        let obj = this.commonService.getObjectByField(this.departmentList, 'department_name', cell.getRow().getData().department_name);
         this.getDesignationByDepartment(obj.id);
       }
 
@@ -284,6 +282,9 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
         this.users = res;
         this.viewOptions = this.commonService.getFieldLabels(this.users);
         if (callback) callback();
+        if (this.table) {
+          this.table.replaceData(this.users);
+        }
       }
     });
   }
@@ -329,7 +330,8 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     const username = this.storageService.getUsername();
     this.authService.deleteUser(userId, username).subscribe({
       next: (res: any) => {
-        this.toasterService.success(res.message)
+        this.toasterService.success(res.message);
+        this.getUsersAll();
       }, error: (err => {
         this.toasterService.error(err?.error?.message);
       })

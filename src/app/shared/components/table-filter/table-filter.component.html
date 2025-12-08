@@ -95,29 +95,9 @@
         </button>
         <div class="divider"></div>
         <button class="icon-text-btn" [class.active]="isFilterOpen" (click)="toggleFilter()">
-            + add user
+            + add project
         </button>
 
     </div>
-
-</div>
-
-<!-- Filter Side Drawer & Backdrop -->
-<div class="filter-backdrop" *ngIf="isFilterOpen" (click)="toggleFilter()"></div>
-
-<div class="filter-drawer" [class.open]="isFilterOpen">
-    <div class="drawer-header">
-        <button class="icon-btn close-btn" (click)="toggleFilter()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-        </button>
-    </div>
-
-    <div class="drawer-content">
-        <app-user-form (toggleEmitor)="toggleFilter($event)" [user]="data"></app-user-form>
-    </div>
-
 
 </div>

@@ -10,7 +10,7 @@ import { ToasterService } from 'src/app/core/services/toaster.service';
   styleUrls: ['./user-form.component.scss']
 })
 export class UserFormComponent implements OnInit, OnChanges {
-  @Output() toggleEmitor = new EventEmitter<void>();
+  @Output() toggleEmitor = new EventEmitter<any>();
   @Input() user: any
   departments: any = []
   shifts: any = [];
@@ -153,7 +153,7 @@ export class UserFormComponent implements OnInit, OnChanges {
       this.authService.updateUser(payload).subscribe({
         next: (res: any) => {
           this.toasterService.success(res?.message || 'User updated successfully');
-          this.toggleFilter();
+          this.toggleFilter('submit');
           this.userForm.reset();
         },
         error: (err) => this.toasterService.error(err?.error?.message || 'Error updating user')
@@ -162,7 +162,7 @@ export class UserFormComponent implements OnInit, OnChanges {
       this.authService.createUser(payload).subscribe({
         next: (res: any) => {
           this.toasterService.success(res?.message || 'User created successfully');
-          this.toggleFilter();
+          this.toggleFilter('submit');
           this.userForm.reset();
         },
         error: (err) => this.toasterService.error(err?.error?.message || 'Error creating user')
@@ -175,11 +175,8 @@ export class UserFormComponent implements OnInit, OnChanges {
     this.userForm.reset();
     this.toggleFilter();
   }
-
-
-
-  toggleFilter() {
-    this.toggleEmitor.emit();
+  toggleFilter(type: any = '') {
+    this.toggleEmitor.emit(type);
   }
 
   getAllShifts() {
@@ -194,9 +191,11 @@ export class UserFormComponent implements OnInit, OnChanges {
     })
   }
   getDesignationByDepartment(e: any) {
-    this.authService.getDesignationByDepartment(e).subscribe(res => {
-      this.designation = res
-    })
+    if (e) {
+      this.authService.getDesignationByDepartment(e).subscribe(res => {
+        this.designation = res
+      })
+    }
   }
   toggleRegPassword() {
     this.showRegPassword = !this.showRegPassword;
