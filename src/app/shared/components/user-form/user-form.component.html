@@ -1,15 +1,6 @@
 <!-- Main Scrollable Content -->
 <div class="page-container">
 
-    <!-- Header -->
-    <header class="form-header">
-        <div class="header-content">
-            <h1> {{ user?.id ? "Update User" : "Create New User" }} </h1>
-            <p> {{ user?.id ? "Edit the details to onboard employee" : "Enter the details to onboard a new employee" }}
-            </p>
-        </div>
-
-    </header>
 
     <form [formGroup]="userForm" class="main-form">
 

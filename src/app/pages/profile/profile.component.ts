@@ -17,7 +17,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { ViewSelectorComponent } from 'src/app/shared/components/view-selector/view-selector.component';
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
-
+declare var luxon: any
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -35,7 +35,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   options: any = {};
   viewOptions: any = [];
   selectedUser: any;
-  
+
   private table: Tabulator | undefined;
 
   constructor(
@@ -82,99 +82,96 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
   ------------------------------------------------------ */
   private initTable(viewby: any = "") {
     this.departments = this.commonService.formatForTabulator(this.departmentList, "department_name");
+
+    // --- FORMATTERS ---
+    const profileFormatter = (cell: any) => {
+      const row = cell.getData();
+      const initials = (row.firstname[0] + (row.lastname ? row.lastname[0] : '')).toUpperCase();
+
+      // Random-ish but consistent color based on ID
+      const hues = [220, 260, 320, 160, 40]; // Blue, Purple, Pink, Green, Orange
+      const hue = hues[row.id % hues.length];
+
+      // Inline style for dynamic avatar color (HSL for ease)
+      const style = `background-color: hsl(${hue}, 80%, 95%); color: hsl(${hue}, 70%, 40%);`;
+
+      return `
+          <div class="profile-wrapper">
+              <div class="avatar" style="${style}">
+                  ${row.profile_image_url
+          ? `<img height="40" width="40" src="${row.profile_image_url}" onerror="this.style.display='none'; this.parentElement.innerText='${initials}'" />`
+          : initials}
+              </div>
+              <div class="flex-col">
+                  <span class="text-bold">${row.firstname} ${row.lastname}</span>
+                  <span class="text-muted">${row.position}</span>
+              </div>
+          </div>
+      `;
+    };
+
+    const contactFormatter = (cell: any) => {
+      const row = cell.getData();
+      return `
+        <div class="flex-col">
+            <div style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-primary);">
+                <i class="ri-mail-line" style="color:var(--text-tertiary)"></i> ${row.email}
+            </div>
+            <div style="display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-secondary);">
+                <i class="ri-phone-line" style="color:var(--text-tertiary)"></i> ${row.mobile || '--'}
+            </div>
+        </div>
+    `;
+    };
+
+    const statusFormatter = function (cell: any) {
+      const val = cell.getValue();
+      if (val) {
+        return `<span class="status-pill status-active"><i class="ri-checkbox-circle-fill"></i> Active</span>`;
+      }
+      return `<span class="status-pill status-closed"><i class="ri-close-circle-fill"></i> Closed</span>`;
+    };
+
+    const wfhFormatter = (cell: any) => {
+      const isRemote = cell.getValue() == 1;
+      return isRemote
+        ? `<span class="badge badge-info"><i class="ri-home-wifi-line"></i> Remote</span>`
+        : `<span class="text-sub" style="margin-left:8px;">In Office</span>`;
+    };
+
+    const dateFormatter = (cell: any) => {
+      const val = cell.getValue();
+      if (!val) return "-";
+      const dt = luxon.DateTime.fromISO(val);
+      return `<div class="flex-col"><span class="text-bold" style="font-size:12px;">${dt.toFormat('dd MMM yyyy')}</span><span class="text-muted">${dt.toRelative()}</span></div>`;
+    };
     this.columns = [
-      { title: "ID", field: "id", sorter: "number", width: 60, hozAlign: "center" },
+      { title: "ID", field: "id", sorter: "number", hozAlign: "center", formatter: (cell: any) => `<span class="text-light-gray">EMP-${cell.getValue()}</span>` },
       {
-        title: "Profile Image",
-        field: "profile_image_url",
-        formatter: "image",
-        frozen: true,
-        formatterParams: { height: "40px", width: "40px" }
+        title: "Employee", field: "firstname", formatter: profileFormatter, widthGrow: 2, minWidth: 240, headerSort: false, edit: "input"
       },
-
-      { title: "First Name", field: "firstname", editor: "input" },
-      { title: "Last Name", field: "lastname", editor: "input" },
-
       {
-        title: "Date of Birth",
-        field: "date_of_birth",
-        sorter: "date",
-        editor: "date",
-        editorParams: { min: "1900-01-01", max: "2100-12-31", format: "yyyy-MM-dd" }
+        title: "Contact Info", field: "email", formatter: contactFormatter, width: 220, headerSort: false
+      },
+      {
+        title: "Shift", field: "shift_type", width: 140,
+        editor: "list", editorParams: { values: ["Day Shift", "Night Shift", "Rotational"] },
+        formatter: (cell: any) => `<span style="font-weight:500; font-size:12px;">${cell.getValue()}</span>`
       },
 
       {
-        title: "Joining Date",
-        field: "joining_date",
-        sorter: "date",
-        editor: "date",
-        editorParams: { min: "1900-01-01", max: "2100-12-31", format: "yyyy-MM-dd" }
+        title: "Joined", field: "joining_date", formatter: dateFormatter, width: 150,
+        editor: "date", editorParams: { format: "yyyy-MM-dd" }
       },
-
       {
-        title: "Gender",
-        field: "gender",
-        editor: "list",
-        editorParams: { values: ["male", "female", "other"] }
+        title: "Location", field: "wfh", formatter: wfhFormatter, width: 130, hozAlign: "center",
+        editor: "list", editorParams: { values: [{ label: "Remote", value: 1 }, { label: "Office", value: 0 }] }
       },
-
       {
-        title: "Blood Group",
-        field: "blood_group",
-        editor: "list",
-        editorParams: {
-          values: ["A+", "A-", "O+", "O-", "B+", "B-", "AB+", "AB-"]
-        }
+        title: "Status", field: "isactive", formatter: statusFormatter, width: 120, hozAlign: "center",
+        editor: "list", editorParams: { values: [{ label: "Active", value: 1 }, { label: "Inactive", value: 0 }] }
       },
-
-      {
-        title: "Department",
-        field: "department_name",
-        editor: "list",
-        editorParams: {
-          values: this.departments
-        }
-      },
-
-      {
-        title: "Position",
-        field: "position",
-        editor: "list",
-        editorParams: {
-          values: this.designations
-        }
-      },
-
-      {
-        title: "Shift Type",
-        field: "shift_type",
-        editor: "list",
-        editorParams: { values: ["Morning", "General", "Night"] }
-      },
-
-      {
-        title: "Marital Status",
-        field: "marital_status",
-        editor: "list",
-        editorParams: {
-          values: ["Single", "Married", "Divorced", "Widow"]
-        }
-      },
-
-      { title: "Mobile", field: "mobile", editor: "input" },
-      { title: "Email", field: "email", editor: "input" },
-      { title: "Alternate Email", field: "alternate_email", editor: "input" },
-      { title: "Skype ID", field: "skypeid", editor: "input" },
-
       { title: "Attendance ID", field: "attendanceid", editor: "input" },
-
-      {
-        title: "WFH",
-        field: "wfh",
-        editor: "list",
-        editorParams: { values: ["No", "Yes"] }
-      },
-
       {
         title: "Releaving Date",
         field: "releaving_date",
@@ -188,8 +185,10 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
         }
       },
 
-      { title: "Releaving Remarks", field: "releaving_remarks", editor: "textarea" },
-
+      {
+        title: "Releaving Remarks", field: "releaving_remarks", formatter: dateFormatter, width: 150,
+        editor: "date", editorParams: { format: "yyyy-MM-dd" }
+      },
       {
         title: "Created Date", field: "createddate", sorter: "datetime"
       },
@@ -239,10 +238,20 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
       movableRows: true,
       pagination: "local",
       paginationSize: 15,
-      editTriggerEvent: "dblclick",
+      // editTriggerEvent: "dblclick",
       paginationSizeSelector: [5, 10, 15, 25, 35, 45, 100],
       columnDefaults: { tooltip: true },
       groupBy: viewby,
+      groupStartOpen: true,
+      groupHeader: function (value: any, count: any, data: any, group: any) {
+        return `
+              <div class="flex-row">
+                  <i class="ri-stack-line" style="color: var(--primary); font-size: 16px;"></i>
+                  <span class="text-main text-bold">${value || 'Unassigned'}</span>
+                  <span class="text-muted" style="font-weight: 400;">(${count} projects)</span>
+              </div>
+          `;
+      },
     };
 
     this.table = new Tabulator(

@@ -30,6 +30,7 @@ import { UserFormComponent } from './shared/components/user-form/user-form.compo
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import { TableFilterComponent } from './shared/components/table-filter/table-filter.component';
+import { ProjectsContentComponent } from './pages/projects/projects-content/projects-content.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,6 +50,7 @@ import { TableFilterComponent } from './shared/components/table-filter/table-fil
     ViewSelectorComponent,
     UserFormComponent,
     TableFilterComponent,
+    ProjectsContentComponent,
 
   ],
   imports: [

@@ -13,6 +13,7 @@ import { ProjectsComponent } from './pages/projects/projects.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './core/services/auth.guard';
+import { ProjectsContentComponent } from './pages/projects/projects-content/projects-content.component';
 
 const routes: Routes = [
   {
@@ -34,7 +35,8 @@ const routes: Routes = [
       { path: 'general', component: GeneralComponent },
       { path: 'billing', component: BillingComponent },
       { path: 'logs', component: LogsComponent },
-      { path: 'settings', component: SettingsComponent }
+      { path: 'settings', component: SettingsComponent },
+      { path: 'projects/projects-content', component: ProjectsContentComponent },
     ]
   },
   // Wildcard Route

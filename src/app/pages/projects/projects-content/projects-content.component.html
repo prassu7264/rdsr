@@ -1,0 +1,39 @@
+<div class="card">
+    <h2 style="margin-bottom: 15px;">{{projectDetails?.project_title}}</h2>
+    <!-- Responsive Tabs Structure -->
+    <div class="tabs-wrapper">
+        <!-- Visible Tabs Area -->
+        <div class="tab-list" id="tab-list">
+            <div class="tab-item active" data-id="dashboard">Dashboard</div>
+            <div class="tab-item" data-id="tasks">Tasks</div>
+            <div class="tab-item" data-id="users">Users</div>
+            <div class="tab-item" data-id="reports">Reports</div>
+            <div class="tab-item" data-id="phases">Phases</div>
+            <div class="tab-item" data-id="time-logs">Time Logs</div>
+            <div class="tab-item" data-id="timesheet">Timesheet</div>
+            <div class="tab-item" data-id="documents">Documents</div>
+            <div class="tab-item" data-id="issues">Issues</div>
+            <!-- <div class="tab-item" data-id="bugs">Bugs</div> -->
+            <!-- <div class="tab-item" data-id="finance">Finance</div> -->
+            <!-- <div class="tab-item" data-id="gantt">Gantt & Reports</div> -->
+        </div>
+
+        <!-- "More" Button & Dropdown -->
+        <div class="tab-more" id="tab-more">
+            <i class="ri-more-fill"></i>
+            <div class="more-dropdown" id="more-dropdown">
+
+            </div>
+        </div>
+    </div>
+    <ng-container [ngSwitch]="activeProjectTab">
+
+        <!-- <app-overview-tab *ngSwitchCase="'overview'"></app-overview-tab>
+    <app-tasks-tab *ngSwitchCase="'tasks'"></app-tasks-tab>
+    <app-files-tab *ngSwitchCase="'files'"></app-files-tab> -->
+
+        <div *ngSwitchDefault>Select a tab</div>
+
+    </ng-container>
+
+</div>

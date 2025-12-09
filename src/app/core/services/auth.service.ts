@@ -73,7 +73,7 @@ export class AuthService {
   }
 
   updateProject(payload: any) {
-    return this.http.put(`${BASE_URL}/project/update`, payload);
+    return this.http.post(`${BASE_URL}/project/update`, payload);
   }
 
   deleteProject(id: number, username: string) {

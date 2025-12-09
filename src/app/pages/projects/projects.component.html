@@ -15,6 +15,11 @@
 
 <div class="filter-drawer" [class.open]="isFilterOpen">
     <div class="drawer-header">
+        <div class="header-content">
+            <h1>{{ isEditMode ? 'Update Project' : 'Create New Project' }}</h1>
+            <p>{{ isEditMode ? 'Modify project details and assignments' :
+                'Define scope, timeline, and team for a new project' }}</p>
+        </div>
         <button class="icon-btn close-btn" (click)="toggleSideTab()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -28,13 +33,13 @@
         <div class="page-container">
 
             <!-- Header -->
-            <header class="form-header">
+            <!-- <header class="form-header">
                 <div class="header-content">
                     <h1>{{ isEditMode ? 'Update Project' : 'Create New Project' }}</h1>
                     <p>{{ isEditMode ? 'Modify project details and assignments' :
                         'Define scope, timeline, and team for a new project' }}</p>
                 </div>
-            </header>
+            </header> -->
 
             <form [formGroup]="projectForm" class="main-form">
 
@@ -90,7 +95,7 @@
                             <div class="select-wrapper">
                                 <select formControlName="assigned_manager">
                                     <option [ngValue]="null" disabled>Select Manager</option>
-                                    <option *ngFor="let m of departmentList" [value]="m.id">{{ m.department_name }}
+                                    <option *ngFor="let m of managerList" [value]="m.id">{{ m.employee_name }}
                                     </option>
                                 </select>
                                 <svg class="select-arrow" viewBox="0 0 24 24">

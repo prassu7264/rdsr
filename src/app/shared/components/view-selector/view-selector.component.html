@@ -107,6 +107,12 @@
 
 <div class="filter-drawer" [class.open]="isFilterOpen">
     <div class="drawer-header">
+        <div class="header-content">
+            <h1> {{ data?.id ? "Update User" : "Create New User" }} </h1>
+            <p> {{ data?.id ? "Edit the details to onboard employee" : "Enter the details to onboard a new employee"
+                }}
+            </p>
+        </div>
         <button class="icon-btn close-btn" (click)="toggleFilter()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
