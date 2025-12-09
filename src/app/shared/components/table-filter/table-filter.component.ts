@@ -11,6 +11,7 @@ interface ViewOption {
 })
 export class TableFilterComponent {
   @Input() viewOptions: ViewOption[] = [];
+  @Input() btntext: any;
   @Output() selectionChange = new EventEmitter<ViewOption>();
   @Output() createCustom = new EventEmitter<void>();
   @Output() toggleSideTab = new EventEmitter<any>();
@@ -21,7 +22,7 @@ export class TableFilterComponent {
   selectedItem: ViewOption | null = null;
   filteredItems: ViewOption[] = [];
 
-constructor(private elementRef: ElementRef){}
+  constructor(private elementRef: ElementRef) { }
 
   toggleSection() {
     this.isCollapsed = !this.isCollapsed;
@@ -53,8 +54,7 @@ constructor(private elementRef: ElementRef){}
 
   toggleFilter(type: any = '') {
     this.isFilterOpen = !this.isFilterOpen;
-    this.toggleSideTab.emit(this.isFilterOpen)
-
+    this.toggleSideTab.emit('New')
   }
 
   @HostListener('document:click', ['$event'])

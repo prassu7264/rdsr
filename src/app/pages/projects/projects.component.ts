@@ -22,6 +22,9 @@ export class ProjectsComponent {
   selectedProject: any;
   toggleSideTab(type?: any) {
     this.isFilterOpen = !this.isFilterOpen;
+    if (type === 'New') {
+      this.onCancel();
+    }
   }
   constructor(
     private el: ElementRef,
@@ -134,7 +137,7 @@ export class ProjectsComponent {
                   </div>
                   <div class="flex-col">
                       <span class="text-main text-bold">${row.project_title}</span>
-                      
+                      <span class="text-muted">${row.description || 'No description'}</span>
                   </div>
               </div>
               <button class="access-btn">
@@ -214,7 +217,7 @@ export class ProjectsComponent {
             e.stopPropagation();
             const rowData = cell.getRow().getData();
             localStorage.setItem('projectDetails', JSON.stringify(rowData));
-            this.router.navigate(['/main/projects/projects-content']);
+            this.router.navigate([`/main/projects/projects-content/${rowData.id}`]);
           }
         }
       },
@@ -304,7 +307,7 @@ export class ProjectsComponent {
             console.log("Edit:", rowData);
             this.selectedProject = rowData;
             this.patchProjectForm(rowData);
-            this.viewSelector.toggleFilter();
+            this.toggleSideTab();
           }
 
           if (e.target.classList.contains("delete")) {
@@ -454,8 +457,6 @@ export class ProjectsComponent {
   onCancel() {
     this.projectForm.reset({
       username: this.storageService.getUsername(),
-      ispublic: false,
-      employee_list: []
     });
   }
 

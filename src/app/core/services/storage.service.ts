@@ -47,6 +47,18 @@ export class StorageService {
     const data = sessionStorage.getItem(this.USER);
     return data ? JSON.parse(data) : null;
   }
+  getEmpId(): string | null {
+    const data = sessionStorage.getItem(this.USER);
+    if (!data) return null;
+
+    try {
+      const obj = JSON.parse(data);
+      return obj?.empid ?? null;
+    } catch {
+      console.error("Invalid USER JSON in sessionStorage");
+      return null;
+    }
+  }
   setUsername(username: any): void {
     sessionStorage.setItem(this.USERNAME, username);
   }

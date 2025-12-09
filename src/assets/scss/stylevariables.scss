@@ -1,0 +1,165 @@
+/* =========================================
+   1. GLOBAL VARIABLES
+   ========================================= */
+
+:root {
+    /* --- Colors --- */
+    --bg-body: #F9FAFB;
+    --surface: #FFFFFF;
+    --text-main: #111827;
+    --text-muted: #6B7280;
+    --border: #E5E7EB;
+    --primary: #2563EB;
+    --primary-bg: #ffffff;
+    --accent: #2563EB;
+
+    /* --- Shadows & Layout --- */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.15);
+    --radius: 5px;
+
+    /* --- State --- */
+    --bg-hover: #F3F4F6;
+    --bg-selected: rgba(37, 99, 235, 0.05);
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    --error-color: red;
+    /* --- Table Specific Defaults (Mapped to above) --- */
+    --tblr-header-height: 44px;
+    --tblr-row-height: 48px;
+    // --tblr-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --tblr-font-size: 13px;
+}
+
+/* --- Dark Mode --- */
+body.dark-mode {
+    --bg-body: #0E101A;
+    --surface: #1E293B;
+    --text-main: #FFFFFF;
+    --text-muted: #94A3B8;
+    --border: #334155;
+    --primary: #60A5FA;
+    --primary-bg: #1E40AF;
+    --accent: #60A5FA;
+    --bg-hover: #2D3748;
+    --bg-selected: rgba(96, 165, 250, 0.15);
+}
+
+/* =========================================
+   THEME VARIATIONS
+   ========================================= */
+
+/* --- Light Themes --- */
+
+body.theme-light-forest {
+    --primary: #059669;
+    --bg-body: #F0FDF4;
+    --text-main: #164E63;
+    --accent: #059669;
+    --bg-selected: rgba(5, 150, 105, 0.1);
+    --border: #D1FAE5;
+}
+
+body.theme-light-teal {
+    --primary: #14B8A6;
+    --bg-body: #F9FAFB;
+    --text-main: #1F2937;
+    --accent: #14B8A6;
+    --bg-selected: rgba(20, 184, 166, 0.1);
+}
+
+body.theme-light-indigo {
+    --primary: #5C6BC0;
+    --bg-body: #F4F7F9;
+    --text-main: #212121;
+    --accent: #5C6BC0;
+    --bg-selected: rgba(92, 107, 192, 0.1);
+}
+
+body.theme-light-mono {
+    --primary: #1F2937;
+    --bg-body: #FFFFFF;
+    --text-main: #111827;
+    --accent: #1F2937;
+    --bg-selected: rgba(31, 41, 55, 0.1);
+}
+
+body.theme-light-earthy {
+    --primary: #FF7043;
+    --bg-body: #FFFDF9;
+    --text-main: #3E2723;
+    --accent: #FF7043;
+    --bg-selected: rgba(255, 112, 67, 0.1);
+    --border: #E7D8C9;
+}
+
+/* --- Dark Themes --- */
+
+body.dark-mode.theme-dark-original {}
+
+body.dark-mode.theme-dark-forest {
+    --bg-body: #101E2B;
+    --surface: #1C3545;
+    --text-main: #E0F2F1;
+    --text-muted: #94A3B8;
+    --border: #374151;
+    --primary: #10B981;
+    --primary-bg: #064E3B;
+    --accent: #34D399;
+    --bg-hover: #264653;
+    --bg-selected: rgba(16, 185, 129, 0.2);
+}
+
+body.dark-mode.theme-dark-teal {
+    --bg-body: #1F2937;
+    --surface: #2C394B;
+    --text-main: #FFFFFF;
+    --text-muted: #9AAABF;
+    --border: #4D5869;
+    --primary: #4DB6AC;
+    --primary-bg: #143657;
+    --accent: #4DB6AC;
+    --bg-hover: #37475A;
+    --bg-selected: rgba(77, 182, 172, 0.2);
+}
+
+body.dark-mode.theme-dark-mono {
+    --bg-body: #0D1117;
+    --surface: #161B22;
+    --text-main: #F0F6FC;
+    --text-muted: #8B949E;
+    --border: #30363D;
+    --primary: #b8d9ff;
+    --primary-bg: #1A3E6E;
+    --accent: #30363D;
+    --bg-hover: #21262D;
+    --bg-selected: rgba(184, 217, 255, 0.15);
+}
+
+body.dark-mode.theme-dark-earthy {
+    --bg-body: #28242A;
+    --surface: #3C363C;
+    --text-main: #FDF4E3;
+    --text-muted: #C7C0B2;
+    --border: #575154;
+    --primary: #FF7043;
+    --primary-bg: #573024;
+    --accent: #FF7043;
+    --bg-hover: #4A434A;
+    --bg-selected: rgba(255, 112, 67, 0.2);
+}
+
+body.dark-mode.theme-dark-indigo {
+    --bg-body: #1F2937;
+    --surface: #2E3A4A;
+    --text-main: #F5F5F5;
+    --text-muted: #A0AEC0;
+    --border: #4A5568;
+    --primary: #5C6BC0;
+    --primary-bg: #37475a;
+    --accent: #5C6BC0;
+    --bg-hover: #3B4758;
+    --bg-selected: rgba(92, 107, 192, 0.2);
+}

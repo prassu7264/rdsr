@@ -77,30 +77,34 @@
 
                         <!-- Email -->
                         <div class="form-group">
-                            <label class="label">Email</label>
-                            <div class="input-wrapper">
-                                <input type="email" class="form-input" formControlName="email"
-                                    placeholder="you@ridsys.in" />
-                                <i class="ri-mail-line input-icon"></i>
-                            </div>
-                            <div class="error" *ngIf="lf.email?.touched && lf.email?.invalid">
-                                <small *ngIf="lf.email?.errors?.['required']">Email is required.</small>
-                                <small *ngIf="lf.email?.errors?.['email']">Invalid email format.</small>
+                            <div style="position: relative;">
+                                <label class="label">Email</label>
+                                <div class="input-wrapper">
+                                    <input type="email" class="form-input" formControlName="email"
+                                        placeholder="you@ridsys.in" />
+                                    <i class="ri-mail-line input-icon"></i>
+                                </div>
+                                <div class="error" *ngIf="lf.email?.touched && lf.email?.invalid">
+                                    <small *ngIf="lf.email?.errors?.['required']">Email is required.</small>
+                                    <small *ngIf="lf.email?.errors?.['email']">Invalid email format.</small>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Password -->
                         <div class="form-group">
-                            <label class="label">Password</label>
-                            <div class="input-wrapper">
-                                <input [type]="showPassword ? 'text' : 'password'" class="form-input"
-                                    formControlName="password" placeholder="•••••" />
-                                <i class="input-icon" [class.ri-eye-line]="!showPassword"
-                                    [class.ri-eye-off-line]="showPassword" (click)="togglePassword()"></i>
-                            </div>
+                            <div style="position: relative;">
+                                <label class="label">Password</label>
+                                <div class="input-wrapper">
+                                    <input [type]="showPassword ? 'text' : 'password'" class="form-input"
+                                        formControlName="password" placeholder="•••••" />
+                                    <i class="input-icon" [class.ri-eye-line]="!showPassword"
+                                        [class.ri-eye-off-line]="showPassword" (click)="togglePassword()"></i>
+                                </div>
 
-                            <div class="error" *ngIf="lf.password?.touched && lf.password?.invalid">
-                                <small>Password is required.</small>
+                                <div class="error" *ngIf="lf.password?.touched && lf.password?.invalid">
+                                    <small>Password is required.</small>
+                                </div>
                             </div>
                         </div>
 
@@ -135,46 +139,52 @@
 
                         <!-- Full Name -->
                         <div class="form-group">
-                            <label class="label">Full Name</label>
-                            <div class="input-wrapper">
-                                <input type="text" class="form-input" placeholder="John Doe"
-                                    formControlName="fullName" />
-                                <i class="ri-user-line input-icon"></i>
-                            </div>
-                            <div class="error" *ngIf="rf.fullName?.touched && rf.fullName?.invalid">
-                                <small>Full name is required.</small>
+                            <div style="position: relative;">
+                                <label class="label">Full Name</label>
+                                <div class="input-wrapper">
+                                    <input type="text" class="form-input" placeholder="John Doe"
+                                        formControlName="fullName" />
+                                    <i class="ri-user-line input-icon"></i>
+                                </div>
+                                <div class="error" *ngIf="rf.fullName?.touched && rf.fullName?.invalid">
+                                    <small>Full name is required.</small>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Email -->
                         <div class="form-group">
-                            <label class="label">Email</label>
-                            <div class="input-wrapper">
-                                <input type="email" class="form-input" placeholder="you@ridsys.in"
-                                    formControlName="email" />
-                                <i class="ri-mail-line input-icon"></i>
-                            </div>
-                            <div class="error" *ngIf="rf.email?.touched && rf.email?.invalid">
-                                <small *ngIf="rf.email?.errors?.['required']">Email is required.</small>
-                                <small *ngIf="rf.email?.errors?.['email']">Invalid email format.</small>
+                            <div style="position: relative;">
+                                <label class="label">Email</label>
+                                <div class="input-wrapper">
+                                    <input type="email" class="form-input" placeholder="you@ridsys.in"
+                                        formControlName="email" />
+                                    <i class="ri-mail-line input-icon"></i>
+                                </div>
+                                <div class="error" *ngIf="rf.email?.touched && rf.email?.invalid">
+                                    <small *ngIf="rf.email?.errors?.['required']">Email is required.</small>
+                                    <small *ngIf="rf.email?.errors?.['email']">Invalid email format.</small>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Password -->
                         <div class="form-group">
-                            <label class="label">Password</label>
-                            <div class="input-wrapper">
-                                <input [type]="showRegPassword ? 'text' : 'password'" class="form-input"
-                                    formControlName="password" placeholder="Min. 6 characters" />
-                                <i class="input-icon" [class.ri-eye-line]="!showRegPassword"
-                                    [class.ri-eye-off-line]="showRegPassword" (click)="toggleRegPassword()"></i>
-                            </div>
+                            <div style="position: relative;">
+                                <label class="label">Password</label>
+                                <div class="input-wrapper">
+                                    <input [type]="showRegPassword ? 'text' : 'password'" class="form-input"
+                                        formControlName="password" placeholder="Min. 6 characters" />
+                                    <i class="input-icon" [class.ri-eye-line]="!showRegPassword"
+                                        [class.ri-eye-off-line]="showRegPassword" (click)="toggleRegPassword()"></i>
+                                </div>
 
-                            <div class="error" *ngIf="rf.password?.touched && rf.password?.invalid">
-                                <small *ngIf="rf.password?.errors?.['required']">Password required.</small>
-                                <small *ngIf="rf.password?.errors?.['minlength']">
-                                    Minimum 6 characters.
-                                </small>
+                                <div class="error" *ngIf="rf.password?.touched && rf.password?.invalid">
+                                    <small *ngIf="rf.password?.errors?.['required']">Password required.</small>
+                                    <small *ngIf="rf.password?.errors?.['minlength']">
+                                        Minimum 6 characters.
+                                    </small>
+                                </div>
                             </div>
                         </div>
 
@@ -200,16 +210,18 @@
                     <form [formGroup]="forgotForm" (ngSubmit)="onSubmit('Reset')">
 
                         <div class="form-group">
-                            <label class="label">Email</label>
-                            <div class="input-wrapper">
-                                <input type="email" class="form-input" placeholder="you@ridsys.in"
-                                    formControlName="email" />
-                                <i class="ri-mail-line input-icon"></i>
-                            </div>
+                            <div style="position: relative;">
+                                <label class="label">Email</label>
+                                <div class="input-wrapper">
+                                    <input type="email" class="form-input" placeholder="you@ridsys.in"
+                                        formControlName="email" />
+                                    <i class="ri-mail-line input-icon"></i>
+                                </div>
 
-                            <div class="error" *ngIf="ff.email?.touched && ff.email?.invalid">
-                                <small *ngIf="ff.email?.errors?.['required']">Email is required.</small>
-                                <small *ngIf="ff.email?.errors?.['email']">Invalid email.</small>
+                                <div class="error" *ngIf="ff.email?.touched && ff.email?.invalid">
+                                    <small *ngIf="ff.email?.errors?.['required']">Email is required.</small>
+                                    <small *ngIf="ff.email?.errors?.['email']">Invalid email.</small>
+                                </div>
                             </div>
                         </div>
 

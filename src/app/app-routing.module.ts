@@ -36,7 +36,7 @@ const routes: Routes = [
       { path: 'billing', component: BillingComponent },
       { path: 'logs', component: LogsComponent },
       { path: 'settings', component: SettingsComponent },
-      { path: 'projects/projects-content', component: ProjectsContentComponent },
+      { path: 'projects/projects-content/:id', component: ProjectsContentComponent },
     ]
   },
   // Wildcard Route

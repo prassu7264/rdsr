@@ -1,7 +1,7 @@
 <div class="card">
     <h2 style="margin-bottom: 15px;">Project management</h2>
-    <app-table-filter (toggleSideTab)="toggleSideTab()" (selectionChange)="onViewSelected($event)"
-        [viewOptions]="viewOptions"></app-table-filter>
+    <app-table-filter (toggleSideTab)="toggleSideTab($event)" [btntext]="'project'"
+        (selectionChange)="onViewSelected($event)" [viewOptions]="viewOptions"></app-table-filter>
     <div
         style="margin-bottom: 15px; margin-top: 10px; font-size: 15px; border-top: 1px solid var(--border); padding-top: 10px;">
         <div class="theme-grid">

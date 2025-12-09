@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnChanges, OnInit } from '@angular/core';
 import { LayoutService } from 'src/app/core/services/layout.service';
 
 @Component({
@@ -21,5 +21,8 @@ export class ProjectsContentComponent implements AfterViewInit, OnInit {
       this.layoutService.initResponsiveTabs();
       this.activeProjectTab = sessionStorage.getItem("activeProjectTab") || "tasks";
     });
+  }
+  setActiveTab(tab: string) {
+    this.activeProjectTab = tab;
   }
 }

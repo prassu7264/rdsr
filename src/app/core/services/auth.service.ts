@@ -76,7 +76,23 @@ export class AuthService {
     return this.http.post(`${BASE_URL}/project/update`, payload);
   }
 
-  deleteProject(id: number, username: string) {
-    return this.http.delete(`${BASE_URL}/project/delete/${id}?username=${username}`);
+  deleteProject(username: string, project_id: number) {
+    return this.http.delete(`${BASE_URL}/project/delete/?username=${username}&project_id=${project_id}`);
+  }
+
+  getAppsTypes() {
+    return this.http.get(`${BASE_URL}/common/getapptypes`);
+  }
+  createTask(payload: any) {
+    return this.http.post(`${BASE_URL}/task/create`, payload);
+  }
+  getAllTasks() {
+    return this.http.get(`${BASE_URL}/task/all`);
+  }
+  getTasksByProjectIdNdEmployeeId(project_id: any, employee_id: any) {
+    return this.http.get(`${BASE_URL}/task/tasklist?project_id=${project_id}&employee_id=${employee_id}`);
+  }
+  deleteTask(username: string, task_id: number) {
+    return this.http.delete(`${BASE_URL}/task/delete?username=${username}&task_id=${task_id}`);
   }
 }
