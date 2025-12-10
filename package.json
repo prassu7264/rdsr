@@ -25,6 +25,7 @@
     "muuri": "^0.9.5",
     "ngx-toastr": "^15.2.2",
     "rxjs": "~7.8.0",
+    "sweetalert2": "^11.26.4",
     "tabulator-tables": "^6.3.1",
     "tslib": "^2.3.0",
     "web-animations-js": "^2.3.2",

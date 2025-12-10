@@ -95,4 +95,12 @@ export class AuthService {
   deleteTask(username: string, task_id: number) {
     return this.http.delete(`${BASE_URL}/task/delete?username=${username}&task_id=${task_id}`);
   }
+
+  updateTask(payload: any) {
+    return this.http.post(`${BASE_URL}/task/update`, payload);
+  }
+
+  getStatusList() {
+    return this.http.get(`${BASE_URL}/common/getstatuslist`);
+  }
 }

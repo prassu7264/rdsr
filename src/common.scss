@@ -1,3 +1,54 @@
+/* --- 3. GRID LAYOUT --- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Exactly 2 columns like screenshots */
+    gap: 24px;
+    // max-width: 1600px;
+    margin: 0 auto;
+
+
+    /* --- 4. CARD COMPONENT --- */
+    .card {
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: var(--shadow);
+        min-height: 320px;
+        /* Uniform height */
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .card-title {
+        font-size: 1rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* =========================================
    4. CUSTOM FORMATTER STYLES
    ========================================= */
@@ -9,11 +60,20 @@
     gap: 10px;
 }
 
+.text-light-gray {
+    color: var(--c-grey);
+}
+
 .flex-col {
     display: flex;
     flex-direction: column;
     gap: 4px;
+
+    .text-muted {
+        font-size: 10px;
+    }
 }
+
 
 /* Avatars */
 .avatar-circle {
@@ -50,42 +110,60 @@
     background-color: #14b8a6;
 }
 
-
-/* Status Pills */
 .status-pill {
-    padding: 4px 10px;
-    border-radius: 99px;
-    font-size: 10px;
-    font-weight: 600;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    text-transform: uppercase;
-
-    i {
-        font-size: medium;
-    }
+    gap: 4px;
+    padding: 3px 8px;
+    // border-radius: 12px;
+    font-size: 10px;
+    font-weight: 500;
+    color: white;
 }
 
-.status-active {
-    background-color: rgba(16, 185, 129, 0.15);
-    color: var(--success);
+.status-open {
+    background: #007bff;
 }
 
-.status-pending {
-    border: 1px solid var(--danger);
-    color: var(--danger);
+.status-inprogress {
+    background: #17a2b8;
 }
 
-.status-progress {
-    border: 1px solid var(--warning);
-    color: var(--warning);
+.status-review {
+    background: #6f42c1;
+}
+
+.status-testing {
+    background: #20c997;
+}
+
+.status-hold {
+    background: #ffc107;
+    color: #000;
+}
+
+.status-delayed {
+    background: #fd7e14;
 }
 
 .status-closed {
-    background-color: var(--bg-body);
-    color: var(--text-muted);
-    border: 1px solid var(--border);
+    background: #28a745;
+}
+
+.status-cancelled {
+    background: #dc3545;
+}
+
+.status-default {
+    background: #6c757d;
+}
+
+.text-red {
+    color: #dc3545 !important;
+}
+
+.text-green {
+    color: #06860c !important;
 }
 
 /* Client Pill */
@@ -497,4 +575,42 @@
             width: calc(100% - 20px);
         }
     }
+}
+
+.custom-select-wrapper {
+    position: relative;
+    width: 250px;
+    display: inline-block;
+}
+
+.custom-select-wrapper select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.custom-select-display {
+    padding: 10px 14px;
+    background: #ffffff;
+    border: 1px solid #c7c7c7;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #333;
+}
+
+.custom-select-arrow {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 12px;
+}
+
+.custom-select-wrapper.focus .custom-select-display {
+    border-color: #0d6efd;
 }

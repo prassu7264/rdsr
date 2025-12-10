@@ -181,9 +181,7 @@
                                 <div class="select-wrapper">
                                     <select formControlName="status">
                                         <option [ngValue]="null" disabled>Select Status</option>
-                                        <option value="In-Progress">In-Progress</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Done">Done</option>
+                                        <option *ngFor="let status of statusList" [value]="status"> {{status}}</option>
                                     </select>
                                     <svg class="select-arrow" viewBox="0 0 24 24">
                                         <path d="M7 10l5 5 5-5z" fill="currentColor" />

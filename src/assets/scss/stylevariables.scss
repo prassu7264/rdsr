@@ -31,6 +31,23 @@
     --tblr-row-height: 48px;
     // --tblr-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --tblr-font-size: 13px;
+
+
+    /* Chart/Status Colors from Images */
+    --c-orange: #FDBA74;
+    /* To be Tested */
+    --c-red: #EF4444;
+    /* Closed / Overdue */
+    --c-green: #4ADE80;
+    /* Open */
+    --c-teal: #2DD4BF;
+    /* Weekly Created */
+    --c-blue: #38BDF8;
+    /* In Progress / Still Open */
+    --c-grey: #94A3B8;
+    /* In Review */
+
+    --text-secondary: var(--c-grey)
 }
 
 /* --- Dark Mode --- */

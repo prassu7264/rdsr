@@ -121,9 +121,9 @@ export class ProjectsComponent {
     const statusFormatter = function (cell: any) {
       const val = cell.getValue();
       if (val === true) {
-        return `<span class="status-pill status-active"><i class="ri-checkbox-circle-fill"></i> Active</span>`;
+        return `<span class="status-pill status-closed"><i class="ri-checkbox-circle-fill"></i> Active</span>`;
       }
-      return `<span class="status-pill status-closed"><i class="ri-close-circle-fill"></i> Closed</span>`;
+      return `<span class="status-pill status-cancelled"><i class="ri-close-circle-fill"></i> Closed</span>`;
     };
 
     const taskNameFormatter = function (cell: any) {

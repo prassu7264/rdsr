@@ -4,8 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { TableFilterComponent } from 'src/app/shared/components/table-filter/table-filter.component';
+import Swal from 'sweetalert2';
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 
 declare var luxon: any;
@@ -21,6 +23,8 @@ export class TasksComponent {
   viewOptions: any = {};
   selectTask: any;
   projectid: any = 0;
+  statusList: any = []
+  cUsername = this.storageService.getUsername();
   empid: any = 0;
   taskForm: FormGroup | any;
   private table: Tabulator | undefined;
@@ -31,7 +35,8 @@ export class TasksComponent {
     private toasterService: ToasterService,
     private authService: AuthService,
     private commonService: CommonService,
-    private storageService: StorageService
+    private storageService: StorageService,
+
   ) {
 
     this.projectid = this.route.snapshot.paramMap.get('id');
@@ -64,7 +69,7 @@ export class TasksComponent {
     this.loadInitialData();
 
     this.taskForm = this.fb.group({
-      id: ['0'],
+      id: [0],
       projectid: [this.projectid, Validators.required],
       app_type: [null, Validators.required],
       version: ['v1.0.0', Validators.required],
@@ -107,11 +112,12 @@ export class TasksComponent {
     }
     if (this.isEditMode) {
       this.selectTask = { ...this.selectTask, ...this.taskForm.value }
-      this.authService.createTask(this.selectTask).subscribe({
+      this.authService.updateTask(this.selectTask).subscribe({
         next: ((res: any) => {
           this.toasterService.success(res?.message);
-
-          this.isEditMode = false
+          this.isEditMode = false;
+          this.toggleSideTab();
+          this.loadInitialData();
         }),
         error: (err: any) => {
           this.toasterService.error(err?.error?.message);
@@ -121,7 +127,8 @@ export class TasksComponent {
       this.authService.createTask(this.taskForm.value).subscribe({
         next: ((res: any) => {
           this.toasterService.success(res?.message);
-
+          this.toggleSideTab();
+          this.loadInitialData();
         }),
         error: (err: any) => {
           this.toasterService.error(err?.error?.message);
@@ -159,12 +166,24 @@ export class TasksComponent {
       }
     });
   }
+
+
+
+
+
   getAllTasks(callback?: Function) {
     this.authService.getAllTasks().subscribe({
       next: (res: any) => {
         this.taskList = res
         this.viewOptions = this.commonService.getFieldLabels(this.taskList);
         if (callback) callback();
+      }
+    });
+  }
+  getStatusList() {
+    this.authService.getStatusList().subscribe({
+      next: (res: any) => {
+        this.statusList = res;
       }
     });
   }
@@ -180,6 +199,7 @@ export class TasksComponent {
 
 
   loadInitialData() {
+    this.getStatusList()
     this.getTasksByProjectIdNdEmployeeId(() => {
       this.initTable();
     });
@@ -187,9 +207,9 @@ export class TasksComponent {
   onViewSelected(item: any) {
     this.initTable(item.id)
   }
-  updateProject() {
+  updateTask() {
     this.selectTask.username = this.storageService.getUsername();
-    this.authService.updateProject(this.selectTask).subscribe({
+    this.authService.updateTask(this.selectTask).subscribe({
       next: ((res: any) => {
         this.toasterService.success(res?.message);
         this.isEditMode = false
@@ -206,6 +226,7 @@ export class TasksComponent {
     this.isEditMode = true;
 
     this.taskForm.patchValue({
+      id: data?.id ?? 0,
       projectid: data.projectid ?? null,
       app_type: data.app_type ?? 1,
       version: data.version ?? 'V1.0.0',
@@ -241,13 +262,25 @@ export class TasksComponent {
 
     const statusFormatter = function (cell: any) {
       const val = cell.getValue();
-      if (val === 'Pending') {
-        return `<span class="status-pill status-pending"><i class="ri-close-circle-fill"></i> ${val}</span>`;
-      } else if (val === 'Done') {
-        return `<span class="status-pill status-closed"><i class="ri-checkbox-circle-fill"></i> ${val}</span>`;
-      }
-      return `<span class="status-pill status-progress"><i class="ri-close-circle-fill"></i> ${val}</span>`;
+
+      const config: any = {
+        "Open": { cls: "status-open", icon: "ri-door-open-fill" },
+        "In Progress": { cls: "status-inprogress", icon: "ri-loader-4-fill" },
+        "In Review": { cls: "status-review", icon: "ri-search-eye-fill" },
+        "To be Tested": { cls: "status-testing", icon: "ri-flask-fill" },
+        "On Hold": { cls: "status-hold", icon: "ri-pause-circle-fill" },
+        "Delayed": { cls: "status-delayed", icon: "ri-timer-2-fill" },
+        "Closed": { cls: "status-closed", icon: "ri-checkbox-circle-fill" },
+        "Cancelled": { cls: "status-cancelled", icon: "ri-close-circle-fill" }
+      };
+
+      const item = config[val] || { cls: "status-default", icon: "ri-information-fill" };
+
+      return `<span class="status-pill ${item.cls}">
+                <i class="${item.icon}"></i> ${val}
+              </span>`;
     };
+
 
     const taskNameFormatter = function (cell: any) {
       const row = cell.getData();
@@ -268,52 +301,6 @@ export class TasksComponent {
       `;
     };
 
-    const smartDurationFormatter = (cell: any) => {
-      const raw = cell.getValue();
-
-      if (!raw) return "-";
-
-      // Parse HH:mm or HH:mm:ss
-      const parts = raw.split(":").map(Number);
-      let hours = parts[0] || 0;
-      let minutes = parts[1] || 0;
-      let seconds = parts[2] || 0;
-
-      const dur = luxon.Duration.fromObject({ hours, minutes, seconds });
-
-      const totalHours = dur.as("hours");
-      const totalDays = dur.as("days");
-      const totalMonths = dur.as("months");
-      const totalYears = dur.as("years");
-
-      let displayValue = "";
-      let unit = "";
-
-      // MAIN LOGIC
-      if (totalHours < 24) {
-        displayValue = totalHours.toFixed(2);
-        unit = "hrs";
-      }
-      else if (totalDays < 30) {
-        displayValue = totalDays.toFixed(2);
-        unit = "days";
-      }
-      else if (totalMonths < 12) {
-        displayValue = totalMonths.toFixed(2);
-        unit = "months";
-      }
-      else {
-        displayValue = totalYears.toFixed(2);
-        unit = "years";
-      }
-
-      return `
-        <div class="client-pill">
-          <i class="ri-time-line" style="color:var(--text-muted)"></i> 
-          <span>${displayValue} ${unit}</span>
-        </div>
-      `;
-    };
 
     const officeHoursDaysFormatter = (cell: any) => {
       const raw = cell.getValue(); // example: "05:30", "12:00", "80:00"
@@ -351,22 +338,39 @@ export class TasksComponent {
       `;
     };
 
-
     const dateWithRelativeFormatter = function (cell: any) {
       const val = cell.getValue();
       if (!val) return "-";
-      const dt = luxon.DateTime.fromISO(val);
+
+      // Use exact date — no +1 day
+      let dt = luxon.DateTime.fromISO(val);
+      if (cell.getField() === 'end_date') {
+        dt = luxon.DateTime.fromISO(val).plus({ days: 2 });
+      }
       if (!dt.isValid) return val;
 
       const relative = dt.toRelative();
 
+      let relativeClass = "";
+
+      if (relative) {
+        const r = relative.toLowerCase();
+        if (r.includes("ago")) {
+          relativeClass = "text-red";
+        } else if (r.includes("in")) {
+          relativeClass = "text-green";
+        }
+      }
+
       return `
           <div class="flex-col">
               <span class="text-main">${dt.toFormat('MM-dd-yyyy')}</span>
-              <span class="text-muted">${relative}</span>
+              <span class="text-muted ${relativeClass}">
+                  ${relative}
+              </span>
           </div>
       `;
-    }
+    };
 
 
     const taskProgressFormatter = (cell: any) => {
@@ -439,11 +443,7 @@ export class TasksComponent {
         hozAlign: "center",
         editor: "list",
         editorParams: {
-          values: [
-            { label: "In-Progress", value: 'In-Progress' },
-            { label: "Pending", value: 'Pending' },
-            { label: "Done", value: 'Done' },
-          ]
+          values: this.statusList
         }
       },
       {
@@ -510,7 +510,26 @@ export class TasksComponent {
           }
 
           if (e.target.classList.contains("delete")) {
+            Swal.fire({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.authService.deleteTask(this.cUsername, rowData.id).subscribe({
+                  next: (res: any) => {
+                    this.toasterService.success(res?.message)
+                    this.loadInitialData();
+                  }
+                });
 
+
+              }
+            });
           }
 
         }
@@ -550,8 +569,10 @@ export class TasksComponent {
 
     this.table.on("cellEdited", (cell: any) => {
       this.selectTask = cell.getRow().getData();
-      this.selectTask.assigned_to = cell.getValue();
-      this.updateProject();
+      if (cell.getField() === "assigned_to_name") {
+        this.selectTask.assigned_to = cell.getValue();
+      }
+      this.updateTask();
       if (cell.getField() === "project_title" || cell.getField() === "manager_name") {
         cell.getRow().reformat();
       }
