@@ -1,5 +1,3 @@
-
-
 /* =========================================
    2. TABLE CONTAINER
    ========================================= */
@@ -415,4 +413,33 @@
 
 .tabulator-row .tabulator-cell {
     white-space: wrap;
+}
+
+
+/* --- TABULATOR CUSTOMIZATION --- */
+
+.tabulator-menu {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 4px 0;
+  
+}
+
+
+.tabulator-menu .tabulator-menu-item:not(.tabulator-menu-item-disabled):hover {
+    background-color: var(--primary);
+    color: white !important;
+}
+
+
+.tabulator-edit-list .tabulator-edit-list-item:not(.tabulator-edit-list-item-disabled):hover {
+    background-color: var(--primary);
+    color: white !important;
+}
+
+.tabulator-menu .tabulator-menu-separator {
+    border-bottom: 1px solid #eee;
+    margin: 4px 0;
 }

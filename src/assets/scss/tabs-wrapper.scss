@@ -1,0 +1,172 @@
+/* --- RESPONSIVE TABS CONTAINER --- */
+.tabs-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+    height: 48px;
+    /* Fixed height ensures stability */
+    width: 100%;
+
+    /* The visible list of tabs */
+    .tab-list {
+        display: flex;
+        flex: 1;
+        height: 100%;
+        overflow: hidden;
+        /* Hide overflow initially, JS will move them */
+        align-items: center;
+        gap: 20px;
+        padding: 0 10px;
+    }
+
+    .tab-item {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-muted);
+        cursor: pointer;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        border-bottom: 2px solid transparent;
+        transition: color 0.2s, border-bottom-color 0.2s;
+        white-space: nowrap;
+        /* Prevent breaking */
+    }
+
+    .tab-item:hover {
+        color: var(--primary);
+    }
+
+    .tab-item.active {
+        color: var(--primary);
+        border-bottom-color: var(--primary);
+        font-weight: 600;
+    }
+
+    /* The "Three Dots" More Button */
+    .tab-more {
+        display: none;
+        /* Hidden unless overflow exists */
+        align-items: center;
+        justify-content: center;
+        padding: 0 16px;
+        height: 100%;
+        cursor: pointer;
+        color: var(--text-secondary);
+        font-size: 20px;
+        position: relative;
+        border-bottom: 2px solid transparent;
+    }
+
+    .tab-more.visible {
+        display: flex;
+    }
+
+    .tab-more:hover {
+        color: var(--text-main);
+        background: var(--surface);
+    }
+
+    /* Highlight more button if active tab is inside */
+    .tab-more.active-inside {
+        color: var(--primary);
+        border-bottom-color: var(--primary);
+    }
+
+    /* Dropdown Menu */
+    .more-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: inherit;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-card);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        width: 200px;
+        z-index: 100;
+        display: none;
+        padding: 8px 0;
+        margin-top: 4px;
+    }
+
+    .more-dropdown.show {
+        display: block;
+    }
+
+    .dropdown-item {
+        padding: 10px 16px;
+        font-size: 14px;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: background 0.1s;
+    }
+
+    .dropdown-item:hover {
+        background: var(--surface);
+        color: var(--primary);
+    }
+
+    .dropdown-item.active {
+        background: var(--primary-soft);
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+
+
+    .item {
+        display: block;
+        position: absolute;
+        z-index: 1;
+        margin: 10px;
+    }
+
+    .item-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Breakpoints */
+    .item-stat {
+        width: calc(20% - 20px);
+    }
+
+    .item-widget {
+        width: calc(50% - 20px);
+    }
+
+    @media (max-width: 1400px) {
+        .item-stat {
+            width: calc(25% - 20px);
+        }
+    }
+
+    @media (max-width: 1100px) {
+        .item-stat {
+            width: calc(33.33% - 20px);
+        }
+
+        .item-widget {
+            width: calc(100% - 20px);
+        }
+    }
+
+    @media (max-width: 700px) {
+        .item-stat {
+            width: calc(50% - 20px);
+        }
+
+        .item-widget {
+            width: calc(100% - 20px);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .item-stat {
+            width: calc(100% - 20px);
+        }
+    }
+}

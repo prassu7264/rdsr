@@ -104,18 +104,60 @@ export class ProjectsComponent {
   ------------------------------------------------------ */
   private initTable(viewby: any = "") {
 
-    const ownerFormatter = function (cell: any) {
-      const name = cell.getValue();
-      const initial = name ? name.charAt(0).toUpperCase() : '?';
-      const colors = ['bg-blue', 'bg-purple', 'bg-pink', 'bg-indigo', 'bg-teal'];
-      const colorClass = colors[cell.getData().id % colors.length];
+    const myItemFormatter = function (label: any, value: any, item: any, element: any) {
+      if (!label) return "";
 
+      let hash = 0;
+      for (let i = 0; i < label.length; i++) hash = label.charCodeAt(i) + ((hash << 5) - hash);
+      const colors = ['bg-blue', 'bg-purple', 'bg-pink', 'bg-indigo', 'bg-teal'];
+
+      // Using item.id (enabled by the update to employeeEditorValues above)
+      // Fallback to 0 if id is missing to prevent errors
+      const color = colors[(item.value || 0) % colors.length];
+
+      const initials = label.split(" ").map((n: any) => n[0]).slice(0, 2).join("");
+
+      if (element) element.title = "Click to toggle selection";
+
+      // Your Custom HTML Structure
       return `
-          <div class="flex-row">
-              <div class="avatar-circle ${colorClass}">${initial}</div>
-              <span class="text-main truncate">${name}</span>
-          </div>
+      <div class="user">
+          <div class="avatar-circle ${color}">${initials}</div>
+          <span class="text-main truncate">${label}</span>
+      </div>
       `;
+    };
+
+    const ownerChipFormatter = function (cell: any, formatterParams: any) {
+      const ids = cell.getValue();
+      if (!ids || (Array.isArray(ids) && ids.length === 0)) return "";
+      const idList = Array.isArray(ids) ? ids : [ids];
+      // Container for multiple chips
+      const wrapper = document.createElement("div");
+      wrapper.className = "chip-container";
+
+      const colors = ['bg-blue', 'bg-purple', 'bg-pink', 'bg-indigo', 'bg-teal'];
+
+      idList.forEach(id => {
+        const name = formatterParams.lookup[id] || "Unknown";
+        const initial = name ? name.charAt(0).toUpperCase() : '?';
+
+        // Color Logic: Using ID for consistency (Person A is always Blue)
+        // If you prefer row-based coloring like your snippet, change 'id' to 'cell.getData().id'
+        const colorClass = colors[id % colors.length];
+
+        const chip = document.createElement("div");
+        chip.className = "flex-row"; // Your requested class
+
+        // Your requested HTML structure
+        chip.innerHTML = `
+            <div class="avatar-circle ${colorClass}">${initial}</div>
+            <span class="text-main truncate">${name}</span>
+        `;
+
+        wrapper.appendChild(chip);
+      });
+      return wrapper;
     };
 
     const statusFormatter = function (cell: any) {
@@ -159,18 +201,64 @@ export class ProjectsComponent {
     const dateWithRelativeFormatter = function (cell: any) {
       const val = cell.getValue();
       if (!val) return "-";
-      const dt = luxon.DateTime.fromISO(val);
-      if (!dt.isValid) return val;
 
-      const relative = dt.toRelative();
+      const now = luxon.DateTime.now();
+
+      let end = luxon.DateTime.fromISO(val);
+
+      // If date has no time → assume end of day
+      if (val.length <= 10) {
+        end = end.set({ hour: 23, minute: 59, second: 59 });
+      }
+
+      if (!end.isValid) return val;
+
+      let relativeText = "";
+      let relativeClass = "";
+
+      if (end > now) {
+        const diff = end.diff(now, ["days", "hours", "minutes"]).toObject();
+
+        if (diff.days && diff.days >= 1) {
+          const d = Math.floor(diff.days);
+          relativeText = `${d} ${d === 1 ? "day" : "days"} to go`;
+        } else if (diff.hours && diff.hours >= 1) {
+          const h = Math.floor(diff.hours);
+          relativeText = `${h} ${h === 1 ? "hour" : "hours"} left`;
+        } else {
+          const m = Math.floor(diff.minutes || 1);
+          relativeText = `${m} ${m === 1 ? "minute" : "minutes"} left`;
+        }
+
+        relativeClass = "text-green";
+
+      } else {
+        // Past event wording
+        const diff = now.diff(end, ["days", "hours", "minutes"]).toObject();
+
+        if (diff.days && diff.days >= 1) {
+          const d = Math.floor(diff.days);
+          relativeText = `Ended ${d} ${d === 1 ? "day" : "days"} ago`;
+        } else if (diff.hours && diff.hours >= 1) {
+          const h = Math.floor(diff.hours);
+          relativeText = `Ended ${h} ${h === 1 ? "hour" : "hours"} ago`;
+        } else {
+          const m = Math.floor(diff.minutes || 1);
+          relativeText = `Ended ${m} ${m === 1 ? "minute" : "minutes"} ago`;
+        }
+
+        relativeClass = "text-red";
+      }
 
       return `
-          <div class="flex-col">
-              <span class="text-main">${dt.toFormat('MM-dd-yyyy')}</span>
-              <span class="text-muted">${relative}</span>
-          </div>
+        <div class="flex-col">
+          <span class="text-main">${end.toFormat("MM-dd-yyyy")}</span>
+          <span class="text-muted ${relativeClass}">
+            (${relativeText})
+          </span>
+        </div>
       `;
-    }
+    };
 
 
     const taskProgressFormatter = (cell: any) => {
@@ -185,12 +273,12 @@ export class ProjectsComponent {
       // Render: [Done] [Bar with Text Inside] [Pending]
       return `
           <div class="task-progress-container">
-              <span class="task-count">${done}</span>
+              <span class="task-count left">${done}</span>
               <div class="task-bar-track">
                   <div class="task-bar-fill" style="width: ${pct}%"></div>
                   <span class="task-bar-text">${pct} %</span>
               </div>
-              <span class="task-count right">${pending}</span>
+              <span class="task-count left">${pending}</span>
           </div>
       `;
     };
@@ -223,14 +311,17 @@ export class ProjectsComponent {
       },
       {
         title: "Owner",
-        field: "manager_name",
-        formatter: ownerFormatter,
-
+        field: "assigned_manager",
+        formatter: ownerChipFormatter,
         editor: "list",
+        formatterParams: { lookup: this.commonService.formatForTabulatorObj(this.managerList, 'id', 'employee_name') },
         editorParams: {
-          values: this.commonService.formatForTabulator(this.managerList, 'employee_name'),
-          // autocomplete: true,
-          // clearable: true
+          values: this.commonService.formatForTabulatorObj(this.managerList, 'id', 'employee_name'),
+          autocomplete: true,
+          clearable: true,
+          listOnEmpty: true,
+          // multiselect: true,
+          itemFormatter: myItemFormatter
         }
       },
       {

@@ -1,3 +1,5 @@
+@import "assets/scss/tabs-wrapper.scss";
+
 * {
     margin: 0;
     padding: 0;
@@ -33,24 +35,61 @@ body {
     // display: flex;
     overflow: hidden;
     transition: background 0.3s, color 0.3s;
-
-
 }
 
 body.collapsed .sidebar {
     width: var(--sidebar-mini);
 }
 
+/* --- 1. GRID LAYOUT --- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Exactly 2 columns like screenshots */
+    gap: 24px;
+    // max-width: 1600px;
+    margin: 0 auto;
 
 
-.card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    box-shadow: var(--shadow-xl);
-    padding: 20px;
-    margin-bottom: 20px;
-    transition: box-shadow 0.3s;
+    /* --- 4. CARD COMPONENT --- */
+    .card {
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: var(--shadow);
+        min-height: 320px;
+        /* Uniform height */
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .card-title {
+        font-size: 1rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 
@@ -66,9 +105,9 @@ body.collapsed .sidebar {
 .filter-drawer {
     position: fixed;
     top: 0;
-    right: -520px;
+    right: -52%;
     /* Start hidden */
-    width: 500px;
+    width: 50%;
     height: 100vh;
     background: var(--surface);
     border-left: 1px solid var(--border);
@@ -134,28 +173,6 @@ body.collapsed .sidebar {
     justify-content: flex-end;
     gap: 12px;
     background: var(--bg-body);
-}
-
-.btn-text {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.btn-primary {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: var(--radius);
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.btn-primary:hover {
-    opacity: 0.9;
 }
 
 @media (max-width: 768px) {
