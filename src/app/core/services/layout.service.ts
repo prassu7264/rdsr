@@ -174,6 +174,8 @@ export class LayoutService {
       // ========= Adjust Tabs =========
       function adjustTabs() {
         const containerWidth = wrapper.clientWidth;
+        console.log(containerWidth);
+        
         const moreBtnWidth = 50;
 
         dropdown.innerHTML = '';

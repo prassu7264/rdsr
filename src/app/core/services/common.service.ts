@@ -47,4 +47,14 @@ export class CommonService {
         </div>
     `;
   };
+
+  getFieldValuesByTasks(data: any[], keyname: string): { id: string; label: string }[] {
+    if (!data || data.length === 0) return [];
+
+    return data.map(item => ({
+      id: item.id,
+      label: item[keyname]
+    }));
+  }
+
 }
