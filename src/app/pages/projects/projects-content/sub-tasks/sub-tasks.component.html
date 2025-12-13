@@ -1,0 +1,143 @@
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside id="sidebar">
+        <button id="closeBtn" class="close-btn mobile-close">&times;</button>
+        <div class="aside-header">
+            <span style="display:flex; align-items:center; gap:8px; font-size:1.1rem;">
+                <i class="ri-list-check" style="color:var(--primary);"></i>
+                Task List
+            </span>
+        </div>
+
+        <!-- Task Tile Group -->
+        <div class="task-tile-group">
+
+            <!-- Item 1 -->
+            <div class="input-container" *ngFor="let t of taskList">
+                <!-- Absolute Positioned Button (Overlay) -->
+                <input id="t1" class="task-button" type="radio" [value]="t.id" name="radio"
+                    (input)="onTaskSelect($event,t)" [checked]="t.id===selectedTask?.id">
+                <!-- Visual Tile -->
+                <div class="task-tile">
+                    <div class="task-tile-label">
+                        {{t?.taskcode}}
+                        <span [ngClass]="'status-badge '+t?.status">{{t?.status}}</span>
+                    </div>
+                    <div class="task-description">
+                        <h4>{{t?.task}}</h4>
+                        <p style="max-width: 320px; min-width: 320px; text-wrap: pretty;"> {{t?.description}}</p>
+                    </div>
+                    <div class="task-footer">
+                        <div>{{t?.priority}} Priority</div>
+                        <div>{{t?.assigned_to_name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+        <div class="navbar">
+            <!-- Icon that rotates based on state -->
+            <i id="toggleBtn" class="ri-menu-fold-line"></i>
+            <div style="margin-left: 10px;">
+                <h3>{{selectedTask?.project_title}}</h3>
+            </div>
+        </div>
+
+        <div class="content-scroll">
+            <!-- Detail Card -->
+            <div class="detail-card">
+                <div class="card-header">
+                    <div class="card-title-row">
+                        <div style="width:100%;">
+                            <h2 class="task-title" contentEditable="true">{{selectedTask?.task}}</h2>
+                            <div class="task-meta">
+                                <span><i class="ri-user-line"></i> By {{selectedTask?.assigned_to_name}}</span>
+                                <span><i class="ri-calendar-line"></i> {{selectedTask?.project_title}}</span>
+                                <span [ngClass]="'status-badge '+selectedTask?.status">{{selectedTask?.status}}</span>
+                            </div>
+                        </div>
+                        <div class="card-actions" style="display:flex; gap:10px;">
+                            <i class="ri-more-fill" style="color: #666; font-size: 1.2rem; cursor: pointer;"></i>
+                            <i class="ri-close-line" style="color: #666; font-size: 1.2rem; cursor: pointer;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accordion -->
+            <div class="accordion-wrapper">
+
+                <mat-accordion>
+                    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title style="font-weight: 600; color: var(--text-muted)">
+                                Description
+                            </mat-panel-title>
+                            <mat-panel-description>
+
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <p>{{selectedTask?.description}}</p>
+                    </mat-expansion-panel>
+                    <br>
+                    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title style="font-weight: 600; color: var(--text-muted)">
+                                Task Information
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div>
+                            <pre>
+                             {{selectedTask | json}}
+                              </pre>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <!-- Tabs -->
+            <br>
+            <div class="tabs-wrapper">
+                <!-- Visible Tabs Area -->
+                <div class="tab-list" id="tab-list">
+                    <div class="tab-item" data-id="comments" (click)="setActiveTab('comments')">Comments
+                    </div>
+                    <div class="tab-item" data-id="subtasks" (click)="setActiveTab('subtasks')">Sub tasks</div>
+                    <div class="tab-item" data-id="documents" (click)="setActiveTab('documents')">Documents
+                    </div>
+                    <div class="tab-item" data-id="issues" (click)="setActiveTab('issues')">Issues</div>
+                    <div class="tab-item" data-id="status-timeline" (click)="setActiveTab('status-timeline')">Status
+                        Timeline</div>
+                    <div class="tab-item" data-id="dependency" (click)="setActiveTab('dependency')">Dependency</div>
+                    <div class="tab-item" data-id="activity" (click)="setActiveTab('activity')">Activity Stream
+                    </div>
+
+                </div>
+
+                <!-- "More" Button & Dropdown -->
+                <div class="tab-more" id="tab-more">
+                    <i class="ri-more-fill"></i>
+                    <div class="more-dropdown" id="more-dropdown">
+
+                    </div>
+                </div>
+            </div>
+            <!-- Content Area for Tab Visualization -->
+            <div id="tab-content-display">
+                <ng-container [ngSwitch]="activeProjectTab">
+                    <app-documents *ngSwitchCase="'documents'"></app-documents>
+                    <app-issues *ngSwitchCase="'issues'"></app-issues>
+                    <app-sub-tasklist *ngSwitchCase="'subtasks'"></app-sub-tasklist>
+                    <div *ngSwitchDefault>Select a tab</div>
+                </ng-container>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="overlay"></div>
+
+</div>

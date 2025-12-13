@@ -1,0 +1,251 @@
+<div class="card">
+    <div class="container">
+        <!-- Sidebar -->
+        <aside id="sidebar">
+            <button id="closeBtn" class="close-btn mobile-close">&times;</button>
+            <div class="aside-header">
+
+            </div>
+            <div class="container">
+                <div class="task-tile-group">
+                    <div class="input-container" *ngFor="let t of taskList">
+                        <input [id]="t.id" class="task-button" type="radio" [value]="t.id"
+                            (change)="onTaskSelect($event,t)" name="radio" [checked]="t.id==taskid">
+                        <div class="task-tile">
+                            <label [for]="t.id" class="task-tile-label">{{t.taskcode}}
+                                <span [ngClass]="t.status">
+                                    {{t.status}}</span></label>
+                            <div class="task-description">
+                                <h4 style="color: rgb(58, 51, 51);">{{t.task}}</h4>
+                                <p>{{t.description}} </p>
+                            </div>
+                            <div class="task-footer">
+                                <div>
+
+                                </div>
+                                <div>
+                                    {{t.assigned_to_name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main>
+            <div class="navbar">
+                <label>
+                    <i id="toggleBtn" class="ri-menu-fold-line"></i>
+                </label>
+                <div style="margin-left: 10px;">
+                    <h3>{{selectedTask?.project_title}}</h3>
+                </div>
+            </div>
+            <div class="detail-card">
+                <div class="card-header">
+                    <div class="card-title-row">
+                        <div>
+                            <h2 class="task-title" [contentEditable]="true">{{selectedTask?.task}}</h2>
+                            <div class="task-meta">
+                                <span> {{ 'By '+selectedTask?.assigned_to_name}}</span>
+                                <i class="ri-calendar-line"></i>
+                                <span>{{selectedTask?.project_title}}</span>
+                                <span [ngClass]="selectedTask.status">
+                                    {{selectedTask.status}}</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <i class="ri-more-fill" style="color: #666; font-size: 1.2rem; cursor: pointer;"></i>
+                            <i class="ri-close-line"
+                                style="color: #666; font-size: 1.2rem; cursor: pointer; margin-left: 10px;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <mat-accordion>
+                    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title style="font-weight: 600; color: var(--text-muted)">
+                                Description
+                            </mat-panel-title>
+                            <mat-panel-description>
+
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <p>{{selectedTask?.description}}</p>
+                    </mat-expansion-panel>
+                    <br>
+                    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title style="font-weight: 600; color: var(--text-muted)">
+                                Task Information
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident amet dolore pariatur iste
+                            eius. Incidunt tenetur commodi quaerat. Ratione maxime, fugiat aut perferendis illo tempora
+                            modi
+                            voluptatem minus minima quo ipsam, non repellendus libero voluptatibus, veritatis doloremque
+                            saepe corporis! Maiores, delectus nulla? Illum sed tenetur quisquam. Nulla, iure ullam!
+                            Corporis, consequatur. Iste temporibus impedit veritatis eligendi nihil voluptates optio,
+                            molestias ex porro odit! Doloribus, exercitationem facilis. Sapiente modi praesentium
+                            incidunt
+                            fugiat voluptatem in, commodi eos tempora accusamus quisquam velit error exercitationem.
+                            Sunt
+                            deleniti, beatae voluptatem aut esse exercitationem voluptatum, porro quia iusto quidem
+                            autem!
+                            Consequuntur aspernatur veniam accusantium corrupti voluptates labore quos, ullam aliquid.
+                            Qui
+                            error ipsa sapiente minima assumenda nobis consectetur impedit atque aliquid vero
+                            laudantium,
+                            tenetur sint nisi id quo. Deleniti ut tempora, voluptatum consequatur iure odit! Ipsa
+                            voluptatum
+                            natus rerum assumenda! Est nihil laudantium ex consequatur a iusto quos laboriosam quisquam
+                            ducimus dolorem? Sit perferendis delectus maiores a, atque quo mollitia quae ratione harum
+                            praesentium recusandae! Dolorem explicabo illo alias soluta numquam eveniet consequuntur
+                            officiis, itaque voluptatum quae totam deserunt, vel quaerat, repellendus veniam nam! Eos
+                            maiores adipisci magnam omnis aspernatur architecto iste optio, esse hic dignissimos saepe,
+                            soluta vel dolor sapiente numquam blanditiis quod maxime sit voluptatem voluptatum ratione
+                            ipsum
+                            pariatur! Quibusdam fugiat, officiis aliquid a doloremque rerum optio porro harum laboriosam
+                            ea
+                            mollitia itaque expedita amet provident tempora dolore pariatur unde eius consequatur
+                            consectetur error est sunt. Modi enim rerum maxime, quam molestias similique architecto, quo
+                            sunt harum expedita repellendus consequatur. Pariatur quod placeat omnis culpa quisquam
+                            amet,
+                            quas nemo ut accusamus enim ad quae consectetur animi, suscipit obcaecati doloribus
+                            repudiandae
+                            iste doloremque officia tempore. Harum maiores saepe possimus incidunt ea magnam quidem
+                            quibusdam quasi labore quam soluta architecto distinctio accusamus delectus sequi, inventore
+                            repellat quas optio hic nam quaerat, esse est quos. Eos maxime commodi magni amet
+                            accusantium
+                            est vero deleniti ipsa consequatur ipsam enim totam quae, nulla non quia sed facere tenetur
+                            molestias harum placeat accusamus sint ducimus. Impedit facere officia voluptates
+                            praesentium.
+                            Nobis dicta possimus in molestias blanditiis, deserunt esse eveniet qui ab omnis,
+                            accusantium
+                            maiores eligendi reprehenderit sint maxime accusamus. Corrupti odit dolorum iusto voluptatum
+                            quasi soluta? Sequi suscipit omnis laborum aliquid hic eaque nostrum quibusdam iure fugit
+                            labore
+                            error exercitationem voluptatum ad odit ea consequuntur eum ullam facere, sit nulla veniam
+                            sed
+                            fugiat iusto. Animi iste hic corrupti asperiores temporibus adipisci nihil sequi repellat
+                            aspernatur quo amet magni maiores provident ratione blanditiis voluptate, similique unde
+                            quos?
+                            Commodi, excepturi nesciunt? Iste praesentium explicabo ipsa aliquid quaerat dolorem tempora
+                            ipsam cumque? Consequatur nulla illo vel ipsum recusandae blanditiis iure doloribus beatae,
+                            ab
+                            dolorum in veritatis. Distinctio corporis praesentium natus numquam, dolorum libero. Nihil
+                            reiciendis laborum dolorem animi cumque nesciunt corrupti officiis minima itaque, doloremque
+                            qui
+                            maxime quibusdam harum, architecto numquam natus labore cupiditate autem asperiores,
+                            molestiae
+                            veniam ea assumenda. Suscipit excepturi tenetur eius cupiditate quas, nostrum molestiae,
+                            labore
+                            id possimus facere minus. Itaque nulla laboriosam explicabo earum inventore tempora est,
+                            consectetur eum quo cupiditate quis. Reiciendis praesentium quos quisquam doloribus
+                            dignissimos
+                            ea repellendus, laudantium minus. Dicta nobis facilis recusandae facere assumenda sequi sunt
+                            rerum ducimus. Aliquam commodi saepe, cum temporibus eligendi aperiam sapiente doloribus
+                            dolorem
+                            voluptatem laborum fugit officiis consequuntur inventore est nostrum quod exercitationem
+                            facere,
+                            fugiat perspiciatis. Cumque saepe libero, sint natus asperiores fuga optio quia laborum
+                            corrupti
+                            qui sequi sunt reiciendis quisquam blanditiis magni, dicta laudantium incidunt, eum
+                            eligendi!
+                            Adipisci alias, animi amet maiores perspiciatis rem recusandae? Quia fuga natus doloribus
+                            assumenda ipsum aspernatur repellat, beatae quidem! Corrupti nesciunt sequi blanditiis, vel
+                            ea,
+                            beatae ducimus est consequuntur nisi velit ad sapiente autem veritatis harum id itaque ullam
+                            soluta aperiam nihil necessitatibus. Mollitia, fuga! Maxime ut qui eum repudiandae tenetur
+                            doloribus. Laudantium pariatur ipsum dolor necessitatibus! Vitae illo minima tempore,
+                            consequuntur esse libero fugiat doloremque qui ipsam! Quos quasi quis voluptatem! Dicta eius
+                            facere possimus sunt perspiciatis doloribus a earum, ut vitae enim tempora optio eos
+                            voluptatem
+                            nostrum quaerat sed culpa! Alias ipsa totam, qui quam hic possimus exercitationem quis iure
+                            ut
+                            pariatur magni. Molestias eaque fugiat placeat distinctio illo autem nemo eum nulla
+                            perferendis.
+                            Dolorum corrupti quibusdam molestias sed, nostrum eos sint similique harum aliquam
+                            perferendis
+                            tempore nihil et quos illo, labore modi quam est laudantium? Ex sit nihil natus enim fugit
+                            cum
+                            porro iure perferendis molestiae dicta. Consequatur hic corrupti reprehenderit fuga
+                            consequuntur
+                            error harum distinctio nesciunt, quibusdam eaque architecto ipsum qui doloribus quos velit
+                            laudantium maiores quasi. Neque corporis modi dolore aut maiores, aliquam consectetur
+                            ratione
+                            nostrum qui, libero necessitatibus! Provident laudantium corporis enim nostrum in. Aliquam
+                            possimus dolorem architecto beatae itaque in voluptates. Animi totam ipsum sunt illum at
+                            sequi,
+                            laudantium harum, cumque, quos esse similique corporis ipsam repellat aut. Impedit, atque
+                            eligendi. Optio vitae sint enim, iste voluptate velit neque quibusdam suscipit quos maxime
+                            sit
+                            explicabo tempore libero nobis vel et numquam, repellat totam. Consequatur reprehenderit
+                            minus
+                            cumque deserunt sit voluptas hic ratione explicabo aperiam reiciendis quam ex impedit
+                            assumenda
+                            similique, accusantium numquam neque, minima laudantium ipsa repellat unde! Neque odio
+                            repellat
+                            aperiam excepturi molestiae minima dignissimos culpa dicta distinctio voluptas deleniti
+                            expedita
+                            voluptatem eos iure unde consequuntur temporibus numquam ea officiis porro, accusamus quis
+                            similique. Adipisci, id praesentium. Maxime, placeat voluptas dolorum iste vel iure dolores
+                            nobis sunt et enim incidunt provident vero laboriosam rerum ducimus ex velit illo autem
+                            veniam
+                            ut dolore odio consequuntur, nihil impedit. Provident repellat odit asperiores quam
+                            temporibus
+                            nostrum fugiat, odio doloribus dolores nobis officia modi? Iure nam ab similique fugit iusto
+                            alias dolorum, non vero nihil, quam aut! Perferendis sed molestiae saepe corrupti labore
+                            nisi.
+                            Nihil dignissimos numquam fugit maiores voluptas tempore vel nemo iure harum error dolorum
+                            voluptatem ducimus sit neque eos facilis, maxime doloremque unde? Temporibus aut deserunt,
+                            consequuntur perspiciatis sint similique praesentium. Similique facere consectetur
+                            laudantium
+                            atque nisi ducimus magni laboriosam mollitia saepe et voluptatum sapiente, nobis magnam est
+                            praesentium? Nostrum blanditiis ipsum corrupti? Unde asperiores dolorum incidunt quod
+                            reiciendis, quis assumenda accusantium impedit eos saepe voluptatem iure laborum numquam
+                            beatae
+                            ex. Accusantium ullam officia nesciunt, quos, ut, non voluptatibus reprehenderit fugiat
+                            mollitia
+                            consectetur aliquid incidunt.</p>
+                    </mat-expansion-panel>
+                </mat-accordion>
+                <br>
+                <div class="tabs-wrapper">
+                    <!-- Visible Tabs Area -->
+                    <div class="tab-list" id="tab-list">
+                        <div class="tab-item" data-id="comments" (click)="setActiveTab('Comments')">Comments
+                        </div>
+                        <div class="tab-item" data-id="Subtasks" (click)="setActiveTab('subtasks')">Sub tasks</div>
+                        <div class="tab-item" data-id="documents" (click)="setActiveTab('documents')">Documents
+                        </div>
+                        <div class="tab-item" data-id="issues" (click)="setActiveTab('issues')">Issues</div>
+                        <div class="tab-item" data-id="status-timeline" (click)="setActiveTab('status-timeline')">Status
+                            Timeline</div>
+                        <div class="tab-item" data-id="dependency" (click)="setActiveTab('dependency')">Dependency</div>
+                        <div class="tab-item" data-id="activity" (click)="setActiveTab('activity')">Activity Stream
+                        </div>
+
+                    </div>
+
+                    <!-- "More" Button & Dropdown -->
+                    <div class="tab-more" id="tab-more">
+                        <i class="ri-more-fill"></i>
+                        <div class="more-dropdown" id="more-dropdown">
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Content Area for Tab Visualization -->
+                <div id="tab-content-display"
+                    style="margin-top: 20px; padding: 20px; border: 1px dashed #ccc; background: #fdfdfd; color: #888;">
+                    Active Tab Content: <strong>Loading...</strong>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

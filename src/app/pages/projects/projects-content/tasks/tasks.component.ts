@@ -36,7 +36,7 @@ export class TasksComponent {
     private authService: AuthService,
     private commonService: CommonService,
     private storageService: StorageService,
-
+    private router: Router
   ) {
 
     this.projectid = this.route.snapshot.paramMap.get('id');
@@ -166,11 +166,6 @@ export class TasksComponent {
       }
     });
   }
-
-
-
-
-
   getAllTasks(callback?: Function) {
     this.authService.getAllTasks().subscribe({
       next: (res: any) => {
@@ -196,8 +191,6 @@ export class TasksComponent {
       }
     });
   }
-
-
   loadInitialData() {
     this.getStatusList()
     this.getTasksByProjectIdNdEmployeeId(() => {
@@ -317,7 +310,7 @@ export class TasksComponent {
 
       const item = config[val] || { cls: "status-default", icon: "ri-information-fill" };
 
-      return `<span class="status-pill ${item.cls}">
+      return `<span class="${val}">
                 <i class="${item.icon}"></i> ${val}
               </span>`;
     };
@@ -337,7 +330,9 @@ export class TasksComponent {
                       <span class="text-muted">${row.description || 'No description'}</span>
                   </div>
               </div>
-             
+              <button class="access-btn">
+                  Open <i class="ri-arrow-right-line"></i>
+              </button>
           </div>
       `;
     };
@@ -485,15 +480,15 @@ export class TasksComponent {
         minWidth: 100,
         widthGrow: 2,
         editor: "input",
-        // cellClick: (e: any, cell: any) => {
-        //   // Access Button Logic
-        //   if (e.target.closest('.access-btn')) {
-        //     e.stopPropagation();
-        //     const rowData = cell.getRow().getData();
-        //     localStorage.setItem('projectDetails', JSON.stringify(rowData));
-        //     this.router.navigate(['/main/projects/projects-content']);
-        //   }
-        // }
+        cellClick: (e: any, cell: any) => {
+          // Access Button Logic
+          if (e.target.closest('.access-btn')) {
+            e.stopPropagation();
+            const rowData = cell.getRow().getData();
+            // localStorage.setItem('projectDetails', JSON.stringify(rowData));
+            this.router.navigate([`/main/projects/projects-content/${this.projectid}/${rowData.id}`]);
+          }
+        }
       },
       {
         title: "Owner",
