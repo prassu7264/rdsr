@@ -7,9 +7,10 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { StorageService } from '../core/services/storage.service';
+import { LoaderService } from '../core/services/loader.service';
 
 
 @Injectable()
@@ -17,11 +18,12 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
     private storage: StorageService,
-    private router: Router
+    private router: Router,
+    private loader: LoaderService
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
+    this.loader.show();
     const token = this.storage.getToken();
 
     const authReq = token
@@ -39,6 +41,11 @@ export class AuthInterceptor implements HttpInterceptor {
           this.router.navigate(['/login']);
         }
         return throwError(() => error);
+      }),
+      finalize(() => {
+        setTimeout(() => {
+          this.loader.hide();
+        }, 1000);
       })
     );
   }

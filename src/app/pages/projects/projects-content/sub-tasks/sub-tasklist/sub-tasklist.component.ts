@@ -1,7 +1,10 @@
 import { Component, ElementRef, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
+import { StorageService } from 'src/app/core/services/storage.service';
+import { ToasterService } from 'src/app/core/services/toaster.service';
 import Swal from 'sweetalert2';
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 declare var luxon: any
@@ -12,14 +15,20 @@ declare var luxon: any
 })
 export class SubTasklistComponent implements OnInit {
   isEditMode: any = false;
+  cUsername = this.storageService.getUsername();
+  selectTask: any = {}
   taskid: any = 0;
   statusList: any = [];
   subTaskList: any = [];
   viewOptions: any = {};
   columns: any = [];
   isFilterOpen: any = false;
+  minDate: string = new Date().toISOString().split('T')[0];
   private table: Tabulator | undefined;
-  constructor(private el: ElementRef, private authService: AuthService, private route: ActivatedRoute, private commonService: CommonService) {
+  constructor(private el: ElementRef, private authService: AuthService,
+    private toasterService: ToasterService, private storageService: StorageService,
+    private route: ActivatedRoute, private commonService: CommonService,
+    private fb: FormBuilder) {
     this.taskid = this.route.snapshot.paramMap.get('taskid');
   }
 
@@ -37,10 +46,18 @@ export class SubTasklistComponent implements OnInit {
   }
   toggleSideTab(type?: any) {
     console.log(type);
-
     this.isFilterOpen = !this.isFilterOpen;
     if (type === 'New') {
-      // this.onCancel();
+      this.isEditMode = false;
+      let empid = this.storageService.getEmpId();
+      this.taskForm.reset({
+        id: null,
+        worked_hours: '08:00:00',
+        completion_percentage: 0,
+        taskid: this.taskid,
+        employeeid: empid
+      });
+
     }
   }
   onViewSelected(item: any) {
@@ -57,14 +74,38 @@ export class SubTasklistComponent implements OnInit {
   getSubtasks(callback?: Function) {
     this.authService.getSubtasks(this.taskid).subscribe({
       next: (res: any) => {
-        this.subTaskList = res
+        this.subTaskList = res;
+        this.table?.updateData(res);
         this.viewOptions = this.commonService.getFieldLabels(this.subTaskList);
         if (callback) callback();
       }
     });
   }
 
-
+  createSubtask(payload: any) {
+    this.authService.createSubtask(payload).subscribe({
+      next: (res: any) => {
+        this.toasterService.success(res?.message);
+        // this.loadInitialData(this.taskid);
+        this.getSubtasks()
+        this.toggleSideTab();
+      }, error: (err) => {
+        this.toasterService.error(err?.error?.message)
+      }
+    });
+  }
+  updateSubtask(payload: any) {
+    this.authService.updateSubtask(payload).subscribe({
+      next: (res: any) => {
+        this.toasterService.success(res?.message);
+        // this.loadInitialData(payload.taskid);
+        this.getSubtasks()
+        this.toggleSideTab();
+      }, error: (err) => {
+        this.toasterService.error(err?.error?.message)
+      }
+    });
+  }
   private initTable(viewby: any = "") {
 
     const statusFormatter = function (cell: any) {
@@ -291,9 +332,9 @@ export class SubTasklistComponent implements OnInit {
         cellClick: (e: any, cell: any) => {
           const rowData = cell.getRow().getData();
           if (e.target.classList.contains("edit")) {
-            // this.selectTask = rowData;
-            // this.patchtaskForm(rowData);
-            // this.toggleSideTab();
+            this.selectTask = rowData;
+            this.patchTaskForm(rowData);
+            this.toggleSideTab();
           }
 
           if (e.target.classList.contains("delete")) {
@@ -307,12 +348,13 @@ export class SubTasklistComponent implements OnInit {
               confirmButtonText: "Yes, delete it!"
             }).then((result) => {
               if (result.isConfirmed) {
-                // this.authService.deleteTask(this.cUsername, rowData.id).subscribe({
-                //   next: (res: any) => {
-                //     this.toasterService.success(res?.message)
-                //     this.loadInitialData();
-                //   }
-                // });
+                this.authService.deleteSubtask(this.cUsername, rowData.id).subscribe({
+                  next: (res: any) => {
+                    this.toasterService.success(res?.message)
+                    this.loadInitialData(this.taskid);
+                    // this.getSubtasks()
+                  }
+                });
 
 
               }
@@ -355,16 +397,92 @@ export class SubTasklistComponent implements OnInit {
     );
 
     this.table.on("cellEdited", (cell: any) => {
-      // this.selectTask = cell.getRow().getData();
-      if (cell.getField() === "assigned_to_name") {
-        // this.selectTask.assigned_to = cell.getValue();
-      }
-      // this.updateTask();
-      if (cell.getField() === "project_title" || cell.getField() === "manager_name") {
-        cell.getRow().reformat();
-      }
-
+      this.selectTask = cell.getRow().getData();
+      this.authService.updateSubtask(this.selectTask).subscribe({
+        next: (res: any) => {
+          this.toasterService.success(res?.message);
+          // this.loadInitialData(this.taskid);
+          this.getSubtasks()
+        }, error: (err) => {
+          this.toasterService.error(err?.error?.message)
+        }
+      });
     });
 
   }
+
+  taskForm = this.fb.group({
+    id: [null],
+    task: ['Sub task for task 1', Validators.required],
+    priority: ['High', Validators.required],
+    status: ['In-Progress', Validators.required],
+    start_date: ['2025-12-09', Validators.required],
+    end_date: ['2025-12-10', Validators.required],
+    // estHours: ['16:00', Validators.required],
+    worked_hours: ['08:00:00', Validators.required],
+    completion_percentage: [75], // Optional, handled by slider
+    description: ['sub task for task 1', Validators.required],
+    taskid: [this.taskid, Validators.required],
+    employeeid: ['0', Validators.required]
+  });
+
+
+  // Helper method to check validation status
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.taskForm.get(fieldName);
+    return !!(field && field.invalid && (field.dirty || field.touched));
+  }
+
+  getProgressColor(): string {
+    const completion = this.taskForm.get('completion_percentage')?.value || 0;
+    if (completion < 30) return 'var(--color-low)';
+    if (completion < 70) return 'var(--color-med)';
+    return 'var(--color-high)';
+  }
+
+  setCompletion(val: number) {
+    this.taskForm.patchValue({ completion_percentage: val });
+  }
+
+  saveTask() {
+    if (this.taskForm.invalid) {
+      this.taskForm.markAllAsTouched();
+      return
+    }
+    console.log(this.isEditMode);
+
+    if (!this.isEditMode) {
+      this.taskForm.get('taskid')?.setValue(this.taskid);
+      let empid = this.storageService.getEmpId();
+      this.taskForm.get('employeeid')?.setValue(empid);
+      this.createSubtask(this.taskForm.value)
+    } else {
+      this.selectTask = { ...this.selectTask, ...this.taskForm.value }
+      this.updateSubtask(this.selectTask);
+    }
+  }
+
+  patchTaskForm(data: any): void {
+    if (!this.taskForm) {
+      return;
+    }
+    this.isEditMode = true;
+    this.taskForm.patchValue({
+      id: data.id ?? null,
+      task: data.task,
+      priority: data.priority,
+      status: data.status,
+      start_date: data.start_date,
+      end_date: data.end_date,
+      worked_hours: data.worked_hours,
+      completion_percentage: data.completion_percentage ?? 0,
+      description: data.description,
+      taskid: data.taskid,
+      employeeid: data.employeeid
+    });
+
+
+  }
+
+
 }

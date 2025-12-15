@@ -12,6 +12,7 @@ interface ViewOption {
 export class TableFilterComponent {
   @Input() viewOptions: ViewOption[] = [];
   @Input() btntext: any;
+  @Input() isRightSectionNeeded: any = true
   @Output() selectionChange = new EventEmitter<ViewOption>();
   @Output() createCustom = new EventEmitter<void>();
   @Output() toggleSideTab = new EventEmitter<any>();

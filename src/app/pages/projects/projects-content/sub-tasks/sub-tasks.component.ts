@@ -80,4 +80,8 @@ export class SubTasksComponent {
     const value = (e.target as HTMLElement).innerText.trim();
     console.log(value);
   }
+  goToTasks() {
+    this.router.navigate([`/main/projects/projects-content/${this.projectid}`]);
+    sessionStorage.setItem('activeProjectTab', 'tasks');
+  }
 }

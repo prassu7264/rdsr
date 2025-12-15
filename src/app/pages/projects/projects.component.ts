@@ -104,6 +104,7 @@ export class ProjectsComponent {
   ------------------------------------------------------ */
   private initTable(viewby: any = "") {
 
+
     const myItemFormatter = function (label: any, value: any, item: any, element: any) {
       if (!label) return "";
 
@@ -306,6 +307,7 @@ export class ProjectsComponent {
             const rowData = cell.getRow().getData();
             localStorage.setItem('projectDetails', JSON.stringify(rowData));
             this.router.navigate([`/main/projects/projects-content/${rowData.id}`]);
+            sessionStorage.setItem('activeProjectTab', 'tasks');
           }
         }
       },
@@ -525,7 +527,8 @@ export class ProjectsComponent {
         next: ((res: any) => {
           this.toasterService.success(res?.message);
           this.loadInitialData();
-          this.isEditMode = false
+          this.isEditMode = false;
+          this.toggleSideTab();
         }),
         error: (err: any) => {
           this.toasterService.error(err?.error?.message);
@@ -537,6 +540,7 @@ export class ProjectsComponent {
         next: ((res: any) => {
           this.toasterService.success(res?.message);
           this.loadInitialData();
+          this.toggleSideTab();
         }),
         error: (err: any) => {
           this.toasterService.error(err?.error?.message);

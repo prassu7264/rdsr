@@ -71,7 +71,7 @@ export class TasksComponent {
     this.taskForm = this.fb.group({
       id: [0],
       projectid: [this.projectid, Validators.required],
-      app_type: [null, Validators.required],
+      // app_type: [null, Validators.required],
       version: ['v1.0.0', Validators.required],
       task: ['', Validators.required],
       description: ['', Validators.required],
@@ -221,7 +221,7 @@ export class TasksComponent {
     this.taskForm.patchValue({
       id: data?.id ?? 0,
       projectid: data.projectid ?? null,
-      app_type: data.app_type ?? 1,
+      // app_type: data.app_type ?? 1,
       version: data.version ?? 'V1.0.0',
       task: data.task ?? null,
       description: data.description ?? '',
@@ -487,6 +487,7 @@ export class TasksComponent {
             const rowData = cell.getRow().getData();
             // localStorage.setItem('projectDetails', JSON.stringify(rowData));
             this.router.navigate([`/main/projects/projects-content/${this.projectid}/${rowData.id}`]);
+            sessionStorage.setItem('activeProjectTab', 'subtasks');
           }
         }
       },
@@ -593,6 +594,8 @@ export class TasksComponent {
                   next: (res: any) => {
                     this.toasterService.success(res?.message)
                     this.loadInitialData();
+                  }, error: (err) => {
+                    this.toasterService.error(err?.error?.message)
                   }
                 });
 
@@ -613,7 +616,7 @@ export class TasksComponent {
       movableRows: true,
       pagination: "local",
       paginationSize: 15,
-      // editTriggerEvent: "dblclick",
+      editTriggerEvent: "dblclick",
       paginationSizeSelector: [5, 10, 15, 25, 35, 45, 100],
       columnDefaults: { tooltip: true },
       groupBy: viewby,

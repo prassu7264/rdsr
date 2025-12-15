@@ -11,6 +11,10 @@ body {
     height: 100%;
 }
 
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px !important;
+}
+
 .toast-message {
     font-size: 14px;
 }
@@ -40,6 +44,8 @@ body {
 body.collapsed .sidebar {
     width: var(--sidebar-mini);
 }
+
+
 
 /* --- 1. GRID LAYOUT --- */
 .dashboard-grid {
@@ -105,9 +111,9 @@ body.collapsed .sidebar {
 .filter-drawer {
     position: fixed;
     top: 0;
-    right: -52%;
+    right: -520px;
     /* Start hidden */
-    width: 50%;
+    width: 500px;
     height: 100vh;
     background: var(--surface);
     border-left: 1px solid var(--border);
@@ -206,7 +212,7 @@ body.collapsed .sidebar {
 }
 
 ::-webkit-scrollbar {
-    width: 4px;
+    width: 0px;
     height: 4px;
     background-color: #F5F5F5;
 }

@@ -6,7 +6,7 @@
         <!-- Trigger Button -->
         <button class="view-trigger" [class.active]="isOpen" (click)="toggleDropdown($event)" type="button">
 
-            <span class="trigger-text">{{ selectedItem?.label || 'Select View' }}</span>
+            <span class="trigger-text">{{ selectedItem?.label ||( isRightSectionNeeded ? 'Select View':'Select task') }}</span>
 
             <svg class="trigger-arrow" viewBox="0 0 24 24">
                 <path d="M7 10l5 5 5-5z" fill="currentColor" />
@@ -35,7 +35,7 @@
                         fill="currentColor">
                         <path d="M7 10l5 5 5-5z" />
                     </svg>
-                    Predefined Views
+                    {{isRightSectionNeeded ?'Predefined Views':'Select task'}}
                 </div>
 
                 <!-- Items List -->
@@ -61,14 +61,14 @@
             </div>
 
             <!-- Footer -->
-            <div class="menu-footer" (click)="onCreateCustom()">
+            <div class="menu-footer" (click)="onCreateCustom()" *ngIf="isRightSectionNeeded">
                 <span class="plus-icon">+</span> Create Custom View
             </div>
         </div>
     </div>
 
     <!-- RIGHT SECTION: Filter Icon & Actions -->
-    <div class="right-section">
+    <div class="right-section" *ngIf="isRightSectionNeeded">
 
         <!-- List View Dropdown -->
         <!-- <button class="icon-text-btn">

@@ -32,7 +32,6 @@
     // --tblr-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --tblr-font-size: 13px;
 
-
     /* Chart/Status Colors from Images */
     --c-orange: #FDBA74;
     /* To be Tested */
@@ -47,7 +46,8 @@
     --c-grey: #94A3B8;
     /* In Review */
 
-    --text-secondary: var(--c-grey)
+    --text-secondary: var(--c-grey);
+    --aside-width: 360px;
 }
 
 /* --- Dark Mode --- */
@@ -179,4 +179,132 @@ body.dark-mode.theme-dark-indigo {
     --accent: #5C6BC0;
     --bg-hover: #3B4758;
     --bg-selected: rgba(92, 107, 192, 0.2);
+}
+
+/* Common badge styling */
+.Open,
+.In-Progress,
+.In-Review,
+.To-be-Tested,
+.On-Hold,
+.Delayed,
+.Closed,
+.Cancelled,
+.Active,
+.On-Track,
+.In-Testing,
+.Approved,
+.Planning,
+.Completed,
+.Invoiced {
+    display: inline-block;
+    padding: 3px 0px;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 4px;
+    color: #fff;
+    text-align: center;
+    min-width: 90px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    text-transform: capitalize;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer !important;
+}
+
+.Open {
+    background: #3498db;
+}
+
+/* Blue */
+.In-Progress {
+    background: #5dade2;
+}
+
+/* Light Blue */
+.In-Review {
+    background: #9b59b6;
+}
+
+/* Purple */
+.To-be-Tested {
+    background: #1abc9c;
+}
+
+/* Teal */
+.On-Hold {
+    background: #f39c12;
+}
+
+/* Orange */
+.Delayed {
+    background: #e74c3c;
+}
+
+/* Red */
+.Closed {
+    background: #e74c3c;
+    ;
+}
+
+/* Gray */
+.Cancelled {
+    background: #c0392b;
+}
+
+/* Dark Red */
+.Active {
+    background: #27ae60;
+}
+
+/* Green */
+.On-Track {
+    background: #2ecc71;
+}
+
+/* Light Green */
+.In-Testing {
+    background: #16a085;
+}
+
+/* Dark Teal */
+.Approved {
+    background: #2e7d32;
+}
+
+/* Dark Green */
+.Planning {
+    background: #2980b9;
+}
+
+/* Dark Blue */
+.Completed {
+    background: #1e8449;
+}
+
+/* Completion Green */
+.Invoiced {
+    background: #8e44ad;
+}
+
+/* Dark Purple */
+
+/* Hover effect */
+.Open:hover,
+.In-Progress:hover,
+.In-Review:hover,
+.To-be-Tested:hover,
+.On-Hold:hover,
+.Delayed:hover,
+.Closed:hover,
+.Cancelled:hover,
+.Active:hover,
+.On-Track:hover,
+.In-Testing:hover,
+.Approved:hover,
+.Planning:hover,
+.Completed:hover,
+.Invoiced:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    cursor: default;
 }

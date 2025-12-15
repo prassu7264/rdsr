@@ -14,6 +14,8 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './core/services/auth.guard';
 import { ProjectsContentComponent } from './pages/projects/projects-content/projects-content.component';
+import { SubTasksComponent } from './pages/projects/projects-content/sub-tasks/sub-tasks.component';
+
 
 const routes: Routes = [
   {
@@ -37,6 +39,7 @@ const routes: Routes = [
       { path: 'logs', component: LogsComponent },
       { path: 'settings', component: SettingsComponent },
       { path: 'projects/projects-content/:id', component: ProjectsContentComponent },
+      { path: 'projects/projects-content/:id/:taskid', component: SubTasksComponent },
     ]
   },
   // Wildcard Route

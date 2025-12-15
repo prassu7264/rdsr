@@ -103,4 +103,33 @@ export class AuthService {
   getStatusList() {
     return this.http.get(`${BASE_URL}/common/getstatuslist`);
   }
+
+
+  getSubtasks(taskid: any) {
+    return this.http.get(`${BASE_URL}/subtask/getsubtasks?taskid=${taskid}`);
+  }
+
+  createSubtask(payload: any) {
+    return this.http.post(`${BASE_URL}/subtask/create`, payload);
+  }
+
+  updateSubtask(payload: any) {
+    return this.http.post(`${BASE_URL}/subtask/update`, payload);
+  }
+
+  deleteSubtask(username: string, task_id: number) {
+    return this.http.delete(`${BASE_URL}/subtask/delete?username=${username}&sub_task_id=${task_id}`);
+  }
+  getPhaseByProjectId(project_id: number) {
+    return this.http.get(`${BASE_URL}/phase/getphasebyproject?project_id=${project_id}`);
+  }
+
+  createPhase(payload: any) {
+    return this.http.post(`${BASE_URL}/phase/create`, payload);
+  }
+  updatePhase(payload: any) {
+    return this.http.post(`${BASE_URL}/phase/update`, payload);
+  }
+
+
 }

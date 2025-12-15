@@ -18,7 +18,7 @@
 }
 
 .header-content h1 {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 700;
     margin: 0 0 6px 0;
     color: var(--text-main);
@@ -30,246 +30,281 @@
     font-size: 14px;
 }
 
-.sub-tasklist {
-    background-color: var(--bg-body);
-    color: var(--text-main);
-    min-height: 100vh;
+:host {
+
+    /* Progress Colors */
+    --color-low: #ef4444;
+    --color-med: #f59e0b;
+    --color-high: #10b981;
+}
+
+.form-wrapper {
+    padding: 2rem;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+}
 
-    .form-container {
-        width: 100%;
-        max-width: 650px;
-        /* Narrower for better readability */
-        background: var(--surface);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        border: 1px solid var(--border);
-        padding: 2.5rem;
+.form-container {
+    width: 100%;
+    max-width: 500px;
+}
+
+/* LABELS */
+.label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-label);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.req {
+    color: var(--error-color);
+    margin-left: 2px;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* INPUTS */
+.input-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-input);
+    outline: none;
+    background: var(--bg-input);
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.input-control:focus {
+    border-color: var(--primary);
+}
+
+.input-control.error-border {
+    border-color: var(--error-color);
+    background-color: #fef2f2;
+}
+
+.error-msg {
+    color: var(--error-color);
+    font-size: 0.75rem;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+/* GRID */
+.row {
+    display: flex;
+    gap: 1rem;
+}
+
+.col {
+    flex: 1;
+    min-width: 0;
+}
+
+/* SELECTS */
+.select-wrapper {
+    position: relative;
+}
+
+select.input-control {
+    appearance: none;
+    cursor: pointer;
+}
+
+.chev {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    pointer-events: none;
+}
+
+/* ICONS INSIDE INPUTS */
+.icon-input {
+    position: relative;
+}
+
+.icon-right {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #1f2937;
+    font-size: 1.1rem;
+    pointer-events: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+}
+
+/* === SMART PROGRESS CARD === */
+.progress-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.prog-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #6b7280;
+}
+
+.prog-val {
+    font-size: 1.4rem;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+/* Custom Slider Implementation */
+.custom-slider-wrapper {
+    position: relative;
+    height: 24px;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.track {
+    width: 100%;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    background-color: var(--primary);
+    border-radius: 4px;
+    transition: width 0.1s linear, background-color 0.3s ease;
+}
+
+.overlay-range {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    margin: 0;
+}
+
+/* Presets */
+.presets {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.btn-preset {
+    flex: 1;
+    min-width: 45px;
+    padding: 6px 0;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-preset:hover {
+    border-color: #d1d5db;
+    background: #f3f4f6;
+    color: var(--text-input);
+}
+
+.btn-preset.active {
+    background: var(--primary);
+    color: #fff;
+}
+
+/* TEXTAREA */
+.textarea {
+    min-height: 120px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+/* SUBMIT BUTTON */
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary);
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: opacity 0.2s;
+    font-size: 0.9rem;
+}
+
+.btn-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #9ca3af;
+}
+
+.btn-submit:not(:disabled):hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+    .form-wrapper {
+        padding: 1rem;
     }
 
-    /* --- HEADER --- */
-    .form-header {
-        margin-bottom: 2rem;
-        text-align: left;
-    }
-
-    .form-header h1 {
-        margin: 0;
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--text-main);
-    }
-
-    .form-header p {
-        margin: 8px 0 0;
-        color: var(--text-sub);
-        font-size: 0.9rem;
-    }
-
-    /* --- FORM ELEMENTS --- */
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .label {
-        display: block;
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: var(--text-sub);
-        margin-bottom: 8px;
-        text-transform: uppercase;
-        letter-spacing: 0.03em;
-    }
-
-    .input-control {
-        width: 100%;
-        padding: 12px 16px;
-        font-size: 0.95rem;
-        color: var(--text-main);
-        background-color: #fff;
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        transition: all 0.2s ease;
-        font-family: inherit;
-    }
-
-    .input-control:focus {
-        outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(249, 80, 5, 0.1);
-    }
-
-    .input-control::placeholder {
-        color: #cbd5e1;
-    }
-
-    textarea.input-control {
-        resize: vertical;
-        min-height: 120px;
-        line-height: 1.6;
-    }
-
-    /* Row Layout for side-by-side inputs */
     .row {
-        display: flex;
-        gap: 1.5rem;
+        flex-direction: column;
+        gap: 0;
     }
 
-    .col {
-        flex: 1;
+    .form-group {
+        margin-bottom: 1rem;
     }
 
-    /* --- VISUAL SELECTS (Pills) --- */
-    .select-wrapper {
-        position: relative;
-    }
-
-    .select-wrapper::after {
-        content: '\ea4e';
-        /* Remix Icon Arrow Down */
-        font-family: 'remixicon';
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-sub);
-        pointer-events: none;
-    }
-
-    select.input-control {
-        appearance: none;
-        cursor: pointer;
-    }
-
-    /* --- COMPLETION SECTION --- */
-    .completion-container {
-        background: #f8fafc;
-        padding: 1.25rem;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-    }
-
-    .completion-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .percent-text {
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: var(--primary);
-    }
-
-    /* Custom Range Slider */
-    input[type="range"] {
-        width: 100%;
-        height: 6px;
-        background: #e2e8f0;
-        border-radius: 3px;
-        outline: none;
-        -webkit-appearance: none;
-        cursor: pointer;
-        margin-bottom: 15px;
-    }
-
-    input[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 20px;
-        height: 20px;
-        background: var(--surface);
-        border: 2px solid var(--primary);
-        border-radius: 50%;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: transform 0.1s;
-    }
-
-    input[type="range"]::-webkit-slider-thumb:hover {
-        transform: scale(1.1);
-    }
-
-    /* Quick Select Buttons */
     .presets {
-        display: flex;
-        gap: 8px;
+        gap: 4px;
     }
 
-    .preset-btn {
-        flex: 1;
-        padding: 6px;
-        border: 1px solid var(--border);
-        background: #fff;
-        border-radius: 4px;
-        color: var(--text-sub);
-        font-size: 0.8rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .preset-btn:hover {
-        background: #fff1eb;
-        color: var(--primary);
-        border-color: #fdba74;
-    }
-
-    /* --- ACTIONS --- */
-    .form-actions {
-        margin-top: 2.5rem;
-        display: flex;
-        justify-content: flex-end;
-        gap: 12px;
-        padding-top: 1.5rem;
-        border-top: 1px solid var(--border);
-    }
-
-    .btn {
-        padding: 10px 24px;
-        border-radius: 6px;
-        font-weight: 600;
-        font-size: 0.95rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        border: 1px solid transparent;
-    }
-
-    .btn-cancel {
-        background: transparent;
-        color: var(--text-sub);
-    }
-
-    .btn-cancel:hover {
-        color: var(--text-main);
-        background: #f1f5f9;
-    }
-
-    .btn-save {
-        background: var(--primary);
-        color: white;
-        box-shadow: 0 4px 6px -1px rgba(249, 80, 5, 0.2);
-    }
-
-    .btn-save:hover {
-        background: var(--primary-hover);
-        transform: translateY(-1px);
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-        body {
-            padding: 1rem;
-        }
-
-        .form-container {
-            padding: 1.5rem;
-        }
-
-        .row {
-            flex-direction: column;
-            gap: 0;
-        }
+    .btn-preset {
+        padding: 8px 0;
     }
 }

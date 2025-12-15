@@ -11,8 +11,8 @@ import { TimesheetComponent } from './timesheet/timesheet.component';
 import { DocumentsComponent } from './documents/documents.component';
 import { IssuesComponent } from './issues/issues.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SubtasksComponent } from './subtasks/subtasks.component';
+import {  ReactiveFormsModule } from '@angular/forms';
+
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
 import { SubTasksComponent } from './sub-tasks/sub-tasks.component';
@@ -30,7 +30,6 @@ import { SubTasklistComponent } from './sub-tasks/sub-tasklist/sub-tasklist.comp
     TimesheetComponent,
     DocumentsComponent,
     IssuesComponent,
-    SubtasksComponent,
     SubTasksComponent,
     SubTasklistComponent,
   ],

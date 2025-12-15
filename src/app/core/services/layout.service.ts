@@ -110,127 +110,126 @@ export class LayoutService {
     if (typeof window === 'undefined') return;
 
     // setTimeout(() => {
-      const tabList: any = document.getElementById('tab-list');
-      const moreBtn: any = document.getElementById('tab-more');
-      const dropdown: any = document.getElementById('more-dropdown');
+    const tabList: any = document.getElementById('tab-list');
+    const moreBtn: any = document.getElementById('tab-more');
+    const dropdown: any = document.getElementById('more-dropdown');
 
-      if (!tabList || !moreBtn || !dropdown) return;
+    if (!tabList || !moreBtn || !dropdown) return;
 
-      let allTabs = Array.from(tabList.children);
+    let allTabs = Array.from(tabList.children);
 
-      // ========= Restore State or Set Default =========
-      let savedTabId = sessionStorage.getItem('activeProjectTab');
+    // ========= Restore State or Set Default =========
+    let savedTabId = sessionStorage.getItem('activeProjectTab');
 
-      if (!savedTabId) {
-        savedTabId = "tasks"; // DEFAULT TAB
-        sessionStorage.setItem('activeProjectTab', savedTabId);
-      }
+    if (!savedTabId) {
+      savedTabId = "tasks"; // DEFAULT TAB
+      sessionStorage.setItem('activeProjectTab', savedTabId);
+    }
+
+    allTabs.forEach((t: any) => t.classList.remove('active'));
+    const activeTab: any = allTabs.find(
+      (t: any) => t.getAttribute('data-id') === savedTabId
+    );
+    if (activeTab) activeTab.classList.add('active');
+
+    // ========= Toggle Dropdown =========
+    moreBtn.addEventListener('click', (e: any) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('show');
+    });
+
+    document.addEventListener('click', () => dropdown.classList.remove('show'));
+
+    // ========= Tab Click =========
+    const handleTabClick = (e: any) => {
+      const target =
+        e.target.closest('.tab-item') ||
+        e.target.closest('.dropdown-item');
+
+      if (!target) return;
+
+      const id = target.getAttribute('data-id');
+      sessionStorage.setItem('activeProjectTab', id);
 
       allTabs.forEach((t: any) => t.classList.remove('active'));
-      const activeTab: any = allTabs.find(
-        (t: any) => t.getAttribute('data-id') === savedTabId
+      const selected: any = allTabs.find(
+        (t: any) => t.getAttribute('data-id') === id
       );
-      if (activeTab) activeTab.classList.add('active');
 
-      // ========= Toggle Dropdown =========
-      moreBtn.addEventListener('click', (e: any) => {
-        e.stopPropagation();
-        dropdown.classList.toggle('show');
+      if (selected) selected.classList.add('active');
+
+      checkActiveStateInDropdown();
+    };
+
+    tabList.addEventListener('click', handleTabClick);
+    dropdown.addEventListener('click', handleTabClick);
+
+    // ========= Resize Observer =========
+    const wrapper: any = document.querySelector('.tabs-wrapper');
+    if (!wrapper) return;
+
+    const resizeObserver = new ResizeObserver(() => adjustTabs());
+    resizeObserver.observe(wrapper);
+
+    // ========= Adjust Tabs =========
+    function adjustTabs() {
+      const containerWidth = wrapper.clientWidth;
+
+      const moreBtnWidth = 50;
+
+      dropdown.innerHTML = '';
+
+      allTabs.forEach((tab: any) => {
+        tab.className =
+          'tab-item ' + (tab.classList.contains('active') ? 'active' : '');
+        tabList.appendChild(tab);
       });
 
-      document.addEventListener('click', () => dropdown.classList.remove('show'));
+      moreBtn.classList.remove('visible');
 
-      // ========= Tab Click =========
-      const handleTabClick = (e: any) => {
-        const target =
-          e.target.closest('.tab-item') ||
-          e.target.closest('.dropdown-item');
+      let currentWidth = 0;
+      let overflowing = false;
 
-        if (!target) return;
+      const tabs = Array.from(tabList.children);
 
-        const id = target.getAttribute('data-id');
-        sessionStorage.setItem('activeProjectTab', id);
+      for (let i = 0; i < tabs.length; i++) {
+        const tab: any = tabs[i];
+        const tabWidth = tab.offsetWidth + 20;
 
-        allTabs.forEach((t: any) => t.classList.remove('active'));
-        const selected: any = allTabs.find(
-          (t: any) => t.getAttribute('data-id') === id
-        );
+        const availableWidth = overflowing
+          ? containerWidth - moreBtnWidth
+          : containerWidth;
 
-        if (selected) selected.classList.add('active');
+        if (currentWidth + tabWidth > availableWidth) {
+          overflowing = true;
+          moreBtn.classList.add('visible');
 
-        checkActiveStateInDropdown();
-      };
-
-      tabList.addEventListener('click', handleTabClick);
-      dropdown.addEventListener('click', handleTabClick);
-
-      // ========= Resize Observer =========
-      const wrapper: any = document.querySelector('.tabs-wrapper');
-      if (!wrapper) return;
-
-      const resizeObserver = new ResizeObserver(() => adjustTabs());
-      resizeObserver.observe(wrapper);
-
-      // ========= Adjust Tabs =========
-      function adjustTabs() {
-        const containerWidth = wrapper.clientWidth;
-        console.log(containerWidth);
-        
-        const moreBtnWidth = 50;
-
-        dropdown.innerHTML = '';
-
-        allTabs.forEach((tab: any) => {
           tab.className =
-            'tab-item ' + (tab.classList.contains('active') ? 'active' : '');
-          tabList.appendChild(tab);
-        });
+            'dropdown-item ' +
+            (tab.classList.contains('active') ? 'active' : '');
 
-        moreBtn.classList.remove('visible');
-
-        let currentWidth = 0;
-        let overflowing = false;
-
-        const tabs = Array.from(tabList.children);
-
-        for (let i = 0; i < tabs.length; i++) {
-          const tab: any = tabs[i];
-          const tabWidth = tab.offsetWidth + 20;
-
-          const availableWidth = overflowing
-            ? containerWidth - moreBtnWidth
-            : containerWidth;
-
-          if (currentWidth + tabWidth > availableWidth) {
-            overflowing = true;
-            moreBtn.classList.add('visible');
-
-            tab.className =
-              'dropdown-item ' +
-              (tab.classList.contains('active') ? 'active' : '');
-
-            dropdown.appendChild(tab);
-          } else {
-            currentWidth += tabWidth;
-          }
-        }
-
-        checkActiveStateInDropdown();
-      }
-
-      // ========= Change "More" Button State =========
-      function checkActiveStateInDropdown() {
-        const activeInDropdown = dropdown.querySelector('.active');
-
-        if (activeInDropdown) {
-          moreBtn.classList.add('active-inside');
+          dropdown.appendChild(tab);
         } else {
-          moreBtn.classList.remove('active-inside');
+          currentWidth += tabWidth;
         }
       }
 
-      // ========= Initial Load =========
-      adjustTabs();
+      checkActiveStateInDropdown();
+    }
+
+    // ========= Change "More" Button State =========
+    function checkActiveStateInDropdown() {
+      const activeInDropdown = dropdown.querySelector('.active');
+
+      if (activeInDropdown) {
+        moreBtn.classList.add('active-inside');
+      } else {
+        moreBtn.classList.remove('active-inside');
+      }
+    }
+
+    // ========= Initial Load =========
+    adjustTabs();
     // }, 10);
   }
 
