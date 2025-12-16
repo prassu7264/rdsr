@@ -4,10 +4,9 @@
     <aside id="sidebar">
         <button id="closeBtn" class="close-btn mobile-close">&times;</button>
         <div class="aside-header">
-            <span style="display:flex; align-items:center; gap:8px; font-size:1.1rem;">
-                <i class="ri-list-check" style="color:var(--primary);"></i>
-                Task List
-            </span>
+            <app-table-filter [isRightSectionNeeded]="false" style="margin-bottom: 1em;"
+                (selectionChange)="onPhasesSelect($event)" [triggerTxt]="'Select Phase'" [btntext]=""
+                [viewOptions]="viewOptions"></app-table-filter>
         </div>
 
         <!-- Task Tile Group -->
@@ -62,7 +61,8 @@
                         </div>
                         <div class="card-actions" style="display:flex; gap:10px;">
                             <i class="ri-more-fill" style="color: #666; font-size: 1.2rem; cursor: pointer;"></i>
-                            <i class="ri-close-line" style="color: #666; font-size: 1.2rem; cursor: pointer;" (click)="goToTasks()" ></i>
+                            <i class="ri-close-line" style="color: #666; font-size: 1.2rem; cursor: pointer;"
+                                (click)="goToTasks()"></i>
                         </div>
                     </div>
                 </div>

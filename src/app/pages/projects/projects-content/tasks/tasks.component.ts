@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -17,6 +17,7 @@ declare var luxon: any;
   styleUrls: ['./tasks.component.scss']
 })
 export class TasksComponent {
+  @Input() type: any = 'requirement'
   @ViewChild(TableFilterComponent) viewSelector!: TableFilterComponent;
   isFilterOpen: any;
   isEditMode = false;
@@ -41,12 +42,14 @@ export class TasksComponent {
 
     this.projectid = this.route.snapshot.paramMap.get('id');
     this.empid = this.storageService.getEmpId();
+    this.getPhasesByProjectId({ target: { value: this.projectid } })
 
   }
 
   apppTypeList: any[] = [];
   employeeList: any[] = [];
   projectList: any[] = [];
+  phaseList: any[] = [];
   taskList: any[] = []
   columns: any = [];
 
@@ -72,24 +75,25 @@ export class TasksComponent {
       id: [0],
       projectid: [this.projectid, Validators.required],
       // app_type: [null, Validators.required],
-      version: ['v1.0.0', Validators.required],
+      // version: ['v1.0.0', Validators.required],
       task: ['', Validators.required],
       description: ['', Validators.required],
-      task_type: [null, Validators.required],
+      task_type: [this.type, Validators.required],
       priority: [null, Validators.required],
       assigned_from: [this.storageService.getEmpId(), Validators.required],
       assigned_to: [null, Validators.required],
       start_date: ['', Validators.required],
       end_date: ['', Validators.required],
       status: [null, Validators.required],
-      username: [this.storageService.getUsername()]
+      username: [this.storageService.getUsername()],
+      phaseid: [null]
     });
   }
   get rf() {
     return {
       projectid: this.taskForm.get('projectid'),
-      app_type: this.taskForm.get('app_type'),
-      version: this.taskForm.get('version'),
+      // app_type: this.taskForm.get('app_type'),
+      // version: this.taskForm.get('version'),
       task: this.taskForm.get('task'),
       description: this.taskForm.get('description'),
       task_type: this.taskForm.get('task_type'),
@@ -99,7 +103,8 @@ export class TasksComponent {
       start_date: this.taskForm.get('start_date'),
       end_date: this.taskForm.get('end_date'),
       status: this.taskForm.get('status'),
-      username: this.taskForm.get('username')
+      username: this.taskForm.get('username'),
+      phaseid: this.taskForm.get('phaseid')
     };
   }
 
@@ -141,7 +146,8 @@ export class TasksComponent {
     this.taskForm.reset({
       username: this.storageService.getUsername(),
       projectid: this.projectid,
-      assigned_from: this.storageService.getEmpId()
+      assigned_from: this.storageService.getEmpId(),
+      task_type: this.type,
     });
   }
 
@@ -166,6 +172,15 @@ export class TasksComponent {
       }
     });
   }
+  getPhasesByProjectId(e: any) {
+    console.log(e);
+
+    this.authService.getPhaseByProjectId(e?.target?.value).subscribe({
+      next: (res: any) => {
+        this.phaseList = res
+      }
+    });
+  }
   getAllTasks(callback?: Function) {
     this.authService.getAllTasks().subscribe({
       next: (res: any) => {
@@ -183,7 +198,7 @@ export class TasksComponent {
     });
   }
   getTasksByProjectIdNdEmployeeId(callback?: Function) {
-    this.authService.getTasksByProjectIdNdEmployeeId(this.projectid, this.empid || 0).subscribe({
+    this.authService.getTasksByProjectIdNdEmployeeId(this.projectid, this.empid || 0, 0, this.type).subscribe({
       next: (res: any) => {
         this.taskList = res
         this.viewOptions = this.commonService.getFieldLabels(this.taskList);
@@ -217,12 +232,11 @@ export class TasksComponent {
     if (!data) return;
 
     this.isEditMode = true;
-
     this.taskForm.patchValue({
       id: data?.id ?? 0,
       projectid: data.projectid ?? null,
       // app_type: data.app_type ?? 1,
-      version: data.version ?? 'V1.0.0',
+      // version: data.version ?? 'V1.0.0',
       task: data.task ?? null,
       description: data.description ?? '',
       task_type: data.task_type ?? 'Requirement',
@@ -232,7 +246,8 @@ export class TasksComponent {
       start_date: data.start_date ?? '',
       end_date: data.end_date ?? '',
       status: data.status ?? 'Pending',
-      username: this.storageService.getUsername()
+      username: this.storageService.getUsername(),
+      phaseid: data.phaseid ?? null,
     });
   }
 
@@ -464,7 +479,13 @@ export class TasksComponent {
       `;
     };
     this.columns = [
-
+      {
+        formatter: "rowSelection",
+        titleFormatter: "rowSelection",
+        width: 40,
+        hozAlign: "center",
+        headerSort: false
+      },
       {
         title: "Taskcode",
         field: "taskcode",
@@ -473,7 +494,7 @@ export class TasksComponent {
       },
 
       {
-        title: "Task Name",
+        title: "Task",
         field: "task",
         frozen: true,
         formatter: taskNameFormatter,
@@ -546,6 +567,7 @@ export class TasksComponent {
         formatter: taskProgressFormatter, editorParams: { min: 0, max: 100 }
       },
       { title: "Description", field: "description", editor: "textarea" },
+      { title: "phase_title", field: "phase_title" },
 
       {
         title: "Created Date", field: "created_date", sorter: "datetime"

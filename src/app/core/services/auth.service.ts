@@ -89,8 +89,8 @@ export class AuthService {
   getAllTasks() {
     return this.http.get(`${BASE_URL}/task/all`);
   }
-  getTasksByProjectIdNdEmployeeId(project_id: any, employee_id: any) {
-    return this.http.get(`${BASE_URL}/task/tasklist?project_id=${project_id}&employee_id=${employee_id}`);
+  getTasksByProjectIdNdEmployeeId(project_id: any, employee_id: any, phaseid: any, type: any) {
+    return this.http.get(`${BASE_URL}/task/tasklist?project_id=${project_id}&employee_id=${employee_id}&phase_id=${phaseid}&task_type=${type}`);
   }
   deleteTask(username: string, task_id: number) {
     return this.http.delete(`${BASE_URL}/task/delete?username=${username}&task_id=${task_id}`);

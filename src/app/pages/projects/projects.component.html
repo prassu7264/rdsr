@@ -91,11 +91,11 @@
 
                         <!-- Manager -->
                         <div class="form-group">
-                            <label>Assigned Manager <span class="required">*</span></label>
+                            <label>Project Owner <span class="required">*</span></label>
                             <div class="select-wrapper">
                                 <select formControlName="assigned_manager">
-                                    <option [ngValue]="null" disabled>Select Manager</option>
-                                    <option *ngFor="let m of managerList" [value]="m.id">{{ m.employee_name }}
+                                    <option [ngValue]="null" disabled>Select Owner</option>
+                                    <option *ngFor="let m of employeeList" [value]="m.id">{{ m.employee_name }}
                                     </option>
                                 </select>
                                 <svg class="select-arrow" viewBox="0 0 24 24">

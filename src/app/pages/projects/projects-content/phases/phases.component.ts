@@ -39,6 +39,7 @@ export class PhasesComponent {
 
     this.projectid = this.route.snapshot.paramMap.get('id');
     this.empid = this.storageService.getEmpId();
+   
 
   }
 
@@ -391,7 +392,7 @@ export class PhasesComponent {
       // Container for multiple chips
       const wrapper = document.createElement("div");
       wrapper.className = "chip-container";
-    
+
       const colors = ['bg-blue', 'bg-purple', 'bg-pink', 'bg-indigo', 'bg-teal'];
 
 
@@ -422,7 +423,7 @@ export class PhasesComponent {
       },
 
       {
-        title: "Name",
+        title: "Phase",
         field: "phase_title",
         frozen: true,
         formatter: taskNameFormatter,
@@ -435,7 +436,11 @@ export class PhasesComponent {
             e.stopPropagation();
             const rowData = cell.getRow().getData();
             // localStorage.setItem('projectDetails', JSON.stringify(rowData));
-            this.router.navigate([`/main/projects/projects-content/${this.projectid}/${rowData.id}`]);
+            this.router.navigate(
+              [`/main/projects/projects-content/${this.projectid}/${1}`],
+              { queryParams: { phaseid: rowData.id } }
+            );
+
             sessionStorage.setItem('activeProjectTab', 'subtasks');
           }
         }

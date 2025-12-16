@@ -88,6 +88,12 @@
     margin: 0 4px;
 }
 
+.trigger-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* Trigger (Main Dropdown) */
 .view-trigger {
     display: flex;
@@ -104,6 +110,7 @@
     color: var(--text-main);
     cursor: pointer;
     transition: all 0.2s;
+
 }
 
 .view-trigger:hover,

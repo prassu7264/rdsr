@@ -17,7 +17,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
 import { SubTasksComponent } from './sub-tasks/sub-tasks.component';
 import { SubTasklistComponent } from './sub-tasks/sub-tasklist/sub-tasklist.component';
-
+import {MatSelectModule} from '@angular/material/select';
 @NgModule({
   declarations: [
     ProjectsContentComponent,
@@ -38,7 +38,8 @@ import { SubTasklistComponent } from './sub-tasks/sub-tasklist/sub-tasklist.comp
     SharedModule,
     ReactiveFormsModule,
     MatExpansionModule,
-    MatIconModule
+    MatIconModule,
+    MatSelectModule
   ],
   exports: [ProjectsContentComponent]
 })

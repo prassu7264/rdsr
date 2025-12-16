@@ -529,3 +529,29 @@ input:checked+.slider:before {
     cursor: pointer;
     transition: all 0.2s;
 }
+
+.floating-bar {
+    /* --- TAB CONTAINER --- */
+    .toolbar-wrapper {
+        width: 100%;
+        max-width: 900px; /* Wider for tabs */
+        position: relative;
+        z-index: 100;
+    }
+
+    .toolbar {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-md);
+        border-radius: var(--radius); /* Standard radius for tab bar */
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Align tabs to left */
+        gap: 4px; 
+        transition: all 0.3s ease;
+        height: auto;
+        min-height: 56px;
+    }
+
+}

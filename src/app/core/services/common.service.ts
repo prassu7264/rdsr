@@ -53,7 +53,8 @@ export class CommonService {
 
     return data.map(item => ({
       id: item.id,
-      label: item[keyname]
+      label: item[keyname],
+    
     }));
   }
 

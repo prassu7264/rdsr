@@ -12,6 +12,7 @@ interface ViewOption {
 export class TableFilterComponent {
   @Input() viewOptions: ViewOption[] = [];
   @Input() btntext: any;
+  @Input() triggerTxt: any = "select view"
   @Input() isRightSectionNeeded: any = true
   @Output() selectionChange = new EventEmitter<ViewOption>();
   @Output() createCustom = new EventEmitter<void>();
@@ -20,11 +21,9 @@ export class TableFilterComponent {
   isCollapsed = false;
   isOpen = false;
   searchText = '';
-  selectedItem: ViewOption | null = null;
+  @Input() selectedItem: ViewOption | null = null;
   filteredItems: ViewOption[] = [];
-
   constructor(private elementRef: ElementRef) { }
-
   toggleSection() {
     this.isCollapsed = !this.isCollapsed;
   }

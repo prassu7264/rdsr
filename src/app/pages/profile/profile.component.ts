@@ -266,7 +266,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
         this.getDesignationByDepartment(obj.id);
       }
 
-      this.getUsersAll();
+
     });
 
   }
@@ -330,6 +330,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     this.authService.updateUser(payload).subscribe({
       next: (res: any) => {
         this.toasterService.success(res.message);
+        this.getUsersAll();
       }, error: (err) => {
         this.toasterService.error(err?.error?.message);
       }

@@ -424,7 +424,7 @@
     border-radius: 4px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     padding: 4px 0;
-  
+
 }
 
 
@@ -442,4 +442,8 @@
 .tabulator-menu .tabulator-menu-separator {
     border-bottom: 1px solid #eee;
     margin: 4px 0;
+}
+
+.tabulator-row .tabulator-cell.tabulator-frozen {
+    background-color: var(--primary-bg);
 }

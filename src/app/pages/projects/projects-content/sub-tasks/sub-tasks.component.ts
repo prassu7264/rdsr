@@ -14,6 +14,8 @@ import { SubTasklistComponent } from './sub-tasklist/sub-tasklist.component';
 export class SubTasksComponent {
   @ViewChild(SubTasklistComponent) subTasklist!: SubTasklistComponent;
   projectid: any = 0;
+  phaseid: any = 0;
+  phaseList: any = []
   empid: any = 0;
   taskid: any = 1;
   taskList: any = [];
@@ -52,17 +54,28 @@ export class SubTasksComponent {
   }
   ngOnInit(): void {
     this.getTasksByProjectIdNdEmployeeId();
+
   }
 
   getTasksByProjectIdNdEmployeeId(callback?: Function) {
-    this.authService.getTasksByProjectIdNdEmployeeId(this.projectid, this.empid || 0).subscribe({
+    this.authService.getTasksByProjectIdNdEmployeeId(this.projectid, this.empid || 0, this.phaseid || 0, 'all').subscribe({
       next: (res: any) => {
         this.taskList = res
-        this.viewOptions = this.commonService.getFieldValuesByTasks(this.taskList, 'task');
         this.selectedTask = this.taskList.find((item: any) => item.id == this.taskid);
-        console.log(this.selectedTask);
-
+        if (!this.selectedTask) {
+          this.selectedTask = this.taskList[0]
+        }
+        this.getPhaseList();
         if (callback) callback();
+      }
+    });
+  }
+
+  getPhaseList() {
+    this.authService.getPhaseByProjectId(this.projectid).subscribe({
+      next: (res: any) => {
+        this.phaseList = res;
+        this.viewOptions = this.commonService.getFieldValuesByTasks(this.phaseList, 'phase_title');
       }
     });
   }
@@ -83,5 +96,11 @@ export class SubTasksComponent {
   goToTasks() {
     this.router.navigate([`/main/projects/projects-content/${this.projectid}`]);
     sessionStorage.setItem('activeProjectTab', 'tasks');
+  }
+
+  onPhasesSelect(item: any) {
+    console.log(item);
+    this.phaseid = item?.id
+    this.getTasksByProjectIdNdEmployeeId();
   }
 }

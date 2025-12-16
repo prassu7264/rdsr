@@ -53,7 +53,7 @@ export class ProjectsComponent {
     client: ['', Validators.required],
     ispublic: [false],
     username: this.storageService.getUsername(),
-    employee_list: [[]]
+    employee_list: [[]],
   });
 
   isEditMode = false;
@@ -316,9 +316,9 @@ export class ProjectsComponent {
         field: "assigned_manager",
         formatter: ownerChipFormatter,
         editor: "list",
-        formatterParams: { lookup: this.commonService.formatForTabulatorObj(this.managerList, 'id', 'employee_name') },
+        formatterParams: { lookup: this.commonService.formatForTabulatorObj(this.employeeList, 'id', 'employee_name') },
         editorParams: {
-          values: this.commonService.formatForTabulatorObj(this.managerList, 'id', 'employee_name'),
+          values: this.commonService.formatForTabulatorObj(this.employeeList, 'id', 'employee_name'),
           autocomplete: true,
           clearable: true,
           listOnEmpty: true,
@@ -605,11 +605,7 @@ export class ProjectsComponent {
   }
   updateProject() {
     this.selectedProject.username = this.storageService.getUsername();
-    console.log(this.selectedProject);
-    console.log(this.managerList);
-
-    this.selectedProject.assigned_manager = this.commonService.getObjectByField(this.managerList, 'employee_name', this.selectedProject.manager_name).id;
-
+ 
     this.authService.updateProject(this.selectedProject).subscribe({
       next: ((res: any) => {
         this.toasterService.success(res?.message);

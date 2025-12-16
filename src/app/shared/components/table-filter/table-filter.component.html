@@ -6,7 +6,7 @@
         <!-- Trigger Button -->
         <button class="view-trigger" [class.active]="isOpen" (click)="toggleDropdown($event)" type="button">
 
-            <span class="trigger-text">{{ selectedItem?.label ||( isRightSectionNeeded ? 'Select View':'Select task') }}</span>
+            <span class="trigger-text">{{ selectedItem?.label || triggerTxt }}</span>
 
             <svg class="trigger-arrow" viewBox="0 0 24 24">
                 <path d="M7 10l5 5 5-5z" fill="currentColor" />
@@ -35,7 +35,7 @@
                         fill="currentColor">
                         <path d="M7 10l5 5 5-5z" />
                     </svg>
-                    {{isRightSectionNeeded ?'Predefined Views':'Select task'}}
+                    {{isRightSectionNeeded ?'Predefined Views': triggerTxt}}
                 </div>
 
                 <!-- Items List -->

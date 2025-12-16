@@ -1,5 +1,5 @@
 <div style="margin-bottom: 15px; font-size: 15px;">
-    <app-table-filter style="margin-bottom: 1em;" (toggleSideTab)="toggleSideTab($event)" [btntext]="'task'"
+    <app-table-filter style="margin-bottom: 1em;" (toggleSideTab)="toggleSideTab($event)" [btntext]=""
         (selectionChange)="onViewSelected($event)" [viewOptions]="viewOptions"></app-table-filter>
     <div class="theme-grid" style="padding-top: 1em;">
         <div class="tabulator-table-task"></div>
@@ -42,8 +42,8 @@
                             <div style="position: relative;">
                                 <label>Project Title <span class="required">*</span></label>
                                 <div class="select-wrapper">
-                                    <select formControlName="projectid">
-                                        <option [ngValue]="null" disabled>Select Manager</option>
+                                    <select formControlName="projectid" (change)="getPhasesByProjectId($event)">
+                                        <option [ngValue]="null" disabled>Select Project</option>
                                         <option *ngFor="let m of projectList" [value]="m.id">{{ m.project_title }}
                                         </option>
                                     </select>
@@ -54,6 +54,21 @@
                                 <div class="error-msg"
                                     *ngIf="rf.projectid?.invalid && (rf.projectid?.dirty || rf.projectid?.touched)">
                                     Project Title is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div style="position: relative;">
+                                <label>Phase </label>
+                                <div class="select-wrapper">
+                                    <select formControlName="phaseid">
+                                        <option [ngValue]="null" disabled>Select Phase</option>
+                                        <option *ngFor="let m of phaseList" [value]="m.id">{{ m.phase_title }}
+                                        </option>
+                                    </select>
+                                    <svg class="select-arrow" viewBox="0 0 24 24">
+                                        <path d="M7 10l5 5 5-5z" fill="currentColor" />
+                                    </svg>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +93,7 @@
                                 </div>
                             </div>
                         </div> -->
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <div style="position: relative;">
                                 <label>Task Type <span class="required">*</span></label>
                                 <div class="select-wrapper">
@@ -99,7 +114,7 @@
                                     Task type is required.
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group full-width-desktop">
                             <div style="position: relative;">
                                 <label>Task <span class="required">*</span></label>
@@ -194,7 +209,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <div style="position: relative;">
                                 <label>Release Version <span class="required">*</span></label>
                                 <input type="text" formControlName="version" placeholder="e.g. v1.0.0">
@@ -203,7 +218,7 @@
                                     Version is required.
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </section>
                 <hr class="divider">
