@@ -11,13 +11,13 @@ import { TimesheetComponent } from './timesheet/timesheet.component';
 import { DocumentsComponent } from './documents/documents.component';
 import { IssuesComponent } from './issues/issues.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import {  ReactiveFormsModule } from '@angular/forms';
-
+import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
 import { SubTasksComponent } from './sub-tasks/sub-tasks.component';
 import { SubTasklistComponent } from './sub-tasks/sub-tasklist/sub-tasklist.component';
 import {MatSelectModule} from '@angular/material/select';
+import {MatMenuModule} from '@angular/material/menu';
 @NgModule({
   declarations: [
     ProjectsContentComponent,
@@ -36,10 +36,12 @@ import {MatSelectModule} from '@angular/material/select';
   imports: [
     CommonModule,
     SharedModule,
+    FormsModule,
     ReactiveFormsModule,
     MatExpansionModule,
     MatIconModule,
-    MatSelectModule
+    MatSelectModule,
+    MatMenuModule
   ],
   exports: [ProjectsContentComponent]
 })

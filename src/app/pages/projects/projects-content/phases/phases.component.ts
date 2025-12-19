@@ -151,7 +151,7 @@ export class PhasesComponent {
   }
 
   getProjects(callback?: Function) {
-    this.authService.getAllProjects().subscribe({
+    this.authService.getAllProjectsByEmployeeId(this.empid).subscribe({
       next: (res: any) => {
         this.projectList = res
         // this.viewOptions = this.commonService.getFieldLabels(this.projectList);
@@ -560,7 +560,7 @@ export class PhasesComponent {
               <div class="flex-row">
                   <i class="ri-stack-line" style="color: var(--primary); font-size: 16px;"></i>
                   <span class="text-main text-bold">${value || 'Unassigned'}</span>
-                  <span class="text-muted" style="font-weight: 400;">(${count} projects)</span>
+                  <span class="text-muted" style="font-weight: 400;">(${count} Phases)</span>
               </div>
           `;
       },

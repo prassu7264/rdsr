@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -17,8 +17,10 @@ declare var luxon: any;
   styleUrls: ['./tasks.component.scss']
 })
 export class TasksComponent {
-  @Input() type: any = 'requirement'
+  @Input() type: any = 'requirement';
+  selectedCount: any = 0;
   @ViewChild(TableFilterComponent) viewSelector!: TableFilterComponent;
+  @ViewChild('tableEl', { static: false }) tableEl!: ElementRef;
   isFilterOpen: any;
   isEditMode = false;
   viewOptions: any = {};
@@ -164,7 +166,7 @@ export class TasksComponent {
   }
 
   getProjects(callback?: Function) {
-    this.authService.getAllProjects().subscribe({
+    this.authService.getAllProjectsByEmployeeId(this.empid).subscribe({
       next: (res: any) => {
         this.projectList = res
         // this.viewOptions = this.commonService.getFieldLabels(this.projectList);
@@ -213,7 +215,8 @@ export class TasksComponent {
     });
   }
   onViewSelected(item: any) {
-    this.initTable(item.id)
+    this.initTable(item.id);
+    this.clearSelection();
   }
   updateTask() {
     this.selectTask.username = this.storageService.getUsername();
@@ -508,7 +511,7 @@ export class TasksComponent {
             const rowData = cell.getRow().getData();
             // localStorage.setItem('projectDetails', JSON.stringify(rowData));
             this.router.navigate([`/main/projects/projects-content/${this.projectid}/${rowData.id}`]);
-            sessionStorage.setItem('activeProjectTab', 'subtasks');
+            sessionStorage.setItem('activeProjectTab', 'tasks');
           }
         }
       },
@@ -645,12 +648,52 @@ export class TasksComponent {
       resizableColumnFit: true,
       layout: "fitDataStretch",
       groupStartOpen: true,
+      // groupHeader: (value: any, count: any, data: any, group: any) => {
+      //   // Create wrapper div
+      //   const div = document.createElement('div');
+      //   div.classList.add('flex-row', 'pcab-group-header');
+      //   div.style.alignItems = 'center';
+      //   div.style.gap = '8px';
+
+      //   // Create checkbox
+      //   const checkbox = document.createElement('input');
+      //   checkbox.type = 'checkbox';
+      //   checkbox.classList.add('group-select');
+      //   checkbox.addEventListener('click', (event) => {
+      //     event.stopPropagation(); // prevent group toggle collapse
+      //     this.toggleGroupSelection(value, checkbox.checked);
+      //   });
+      //   div.appendChild(checkbox);
+
+      //   // Create icon
+      //   const icon = document.createElement('i');
+      //   icon.classList.add('ri-stack-line');
+      //   icon.style.color = 'var(--primary)';
+      //   icon.style.fontSize = '16px';
+      //   div.appendChild(icon);
+
+      //   // Create group name span
+      //   const nameSpan = document.createElement('span');
+      //   nameSpan.classList.add('text-main', 'text-bold');
+      //   nameSpan.textContent = value || 'Unassigned';
+      //   div.appendChild(nameSpan);
+
+      //   // Create count span
+      //   const countSpan = document.createElement('span');
+      //   countSpan.classList.add('text-muted');
+      //   countSpan.style.fontWeight = '400';
+      //   countSpan.textContent = `(${count} selected)`;
+      //   div.appendChild(countSpan);
+
+      //   return div;
+      // },
+
       groupHeader: function (value: any, count: any, data: any, group: any) {
         return `
               <div class="flex-row">
                   <i class="ri-stack-line" style="color: var(--primary); font-size: 16px;"></i>
                   <span class="text-main text-bold">${value || 'Unassigned'}</span>
-                  <span class="text-muted" style="font-weight: 400;">(${count} projects)</span>
+                  <span class="text-muted" style="font-weight: 400;">(${count} Tasks)</span>
               </div>
           `;
       },
@@ -673,7 +716,74 @@ export class TasksComponent {
 
     });
 
+    this.table.on('rowSelectionChanged', (_, rows) => {
+      this.selectedCount = rows.length;
+
+    });
+
+  }
+  clearSelection(): void {
+    if (!this.table) return;
+    this.table.deselectRow();
+    this.selectedCount = 0
+  }
+  deleteSelected(): void {
+    if (!this.table) return;
+    const rows = this.table.getSelectedRows();
+    if (!rows.length) return;
+
+    const confirmed = window.confirm(`Delete ${rows.length} item(s)?`);
+    if (!confirmed) return;
+    rows.forEach(row => row.delete());
   }
 
 
+  ngOnDestroy(): void {
+    this.table?.destroy();
+  }
+  openMenu: 'move' | 'assign' | 'status' | null = null;
+  moveTarget: string | null = null;
+  toggle(menu: 'move' | 'assign' | 'status', e: Event): void {
+    e.stopPropagation();
+    this.openMenu = this.openMenu === menu ? null : menu;
+  }
+
+  closeAll(): void {
+    this.openMenu = null;
+  }
+  moveSelected(): void {
+    if (!this.moveTarget) return;
+    if (!this.table) return;
+    if (this.table?.getSelectedData()?.length > 0) {
+      const selectedRows: any = this.table.getSelectedData();
+      const Ids = selectedRows.map((e: { id: any; }) => e.id);
+      this.authService.swapTask(this.moveTarget, Ids, this.storageService.getUsername()).subscribe({
+        next: (res: any) => {
+          this.toasterService.success(res?.message);
+          this.clearSelection();
+          this.loadInitialData();
+        }
+      });
+
+    } else {
+      console.log('No rows selected');
+    }
+
+    this.closeAll();
+  }
+  toggleGroupSelection(groupName: string, checked: boolean) {
+    if (!this.table) return;
+    const group = this.table.getGroups().find(g => g.getKey() === groupName);
+    if (!group) return;
+
+    group.getRows().forEach(row => {
+
+      checked ? row.select() : row.deselect();
+    });
+  }
+
+  @HostListener('document:click')
+  onOutsideClick(): void {
+    this.closeAll();
+  }
 }

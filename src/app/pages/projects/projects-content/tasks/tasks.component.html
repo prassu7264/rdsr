@@ -2,9 +2,91 @@
     <app-table-filter style="margin-bottom: 1em;" (toggleSideTab)="toggleSideTab($event)" [btntext]=""
         (selectionChange)="onViewSelected($event)" [viewOptions]="viewOptions"></app-table-filter>
     <div class="theme-grid" style="padding-top: 1em;">
-        <div class="tabulator-table-task"></div>
+
+        <!-- <div class="table-wrapper"> -->
+        <div class="pcab-wrapper">
+
+            <!-- ACTION BAR -->
+            <div id="pcab-action-bar" [class.pcab-bar-visible]="selectedCount > 0"
+                [class.pcab-bar-hidden]="selectedCount === 0">
+
+                <!-- LEFT GROUP -->
+                <div class="pcab-group">
+                    <button class="pcab-btn-close" (click)="clearSelection()">✕</button>
+                    <span id="pcab-selected-count">{{ selectedCount }} Selected</span>
+                </div>
+
+                <!-- RIGHT GROUP -->
+                <div class="pcab-group">
+
+                    <!-- MOVE DROPDOWN -->
+                    <div class="pcab-dropdown" [class.pcab-dropdown-open]="openMenu === 'move'">
+                        <button class="pcab-btn-action" (click)="toggle('move', $event)">Move</button>
+                        <div class="pcab-dropdown-panel" (click)="$event.stopPropagation()">
+                            <label>
+                                Move to
+                                <select [(ngModel)]="moveTarget">
+                                    <option value="null" disabled>Select Phase</option>
+                                    <option *ngFor="let p of phaseList" [value]="p.id">
+                                        {{ p.phase_title}}
+                                    </option>
+                                </select>
+                            </label>
+                            <div class="pcab-dropdown-actions">
+                                <button class="pcab-btn-action" (click)="moveSelected()">Move</button>
+                                <button class="pcab-btn-action" (click)="closeAll()">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ASSIGN DROPDOWN -->
+                    <!-- <div class="pcab-dropdown" [class.pcab-dropdown-open]="openMenu === 'assign'">
+                        <button class="pcab-btn-action" (click)="toggle('assign', $event)">Assign</button>
+                        <div class="pcab-dropdown-panel" (click)="$event.stopPropagation()">
+                            <label>
+                                Assign to
+                                <select [(ngModel)]="assignee">
+                                    <option value="" disabled>Select user</option>
+                                    <option *ngFor="let u of users" [value]="u.id">{{ u.name }}</option>
+                                </select>
+                            </label>
+                            <div class="pcab-dropdown-actions">
+                                <button class="pcab-btn-action" (click)="assignSelected()">Assign</button>
+                                <button class="pcab-btn-action" (click)="closeAll()">Cancel</button>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <!-- STATUS DROPDOWN -->
+                    <!-- <div class="pcab-dropdown" [class.pcab-dropdown-open]="openMenu === 'status'">
+                        <button class="pcab-btn-action" (click)="toggle('status', $event)">Status</button>
+                        <div class="pcab-dropdown-panel" (click)="$event.stopPropagation()">
+                            <label>
+                                Status
+                                <select [(ngModel)]="status">
+                                    <option value="Open">Open</option>
+                                    <option value="In-Progress">In-Progress</option>
+                                    <option value="Closed">Closed</option>
+                                </select>
+                            </label>
+                            <div class="pcab-dropdown-actions">
+                                <button class="pcab-btn-action" (click)="updateStatus()">Update</button>
+                                <button class="pcab-btn-action" (click)="closeAll()">Cancel</button>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <!-- DELETE BUTTON -->
+                    <button class="pcab-btn-action pcab-btn-danger" (click)="deleteSelected()">Delete</button>
+
+                </div>
+            </div>
+            <!-- Tabulator -->
+            <div #tableEl class="tabulator-table-task"></div>
+        </div>
     </div>
 </div>
+<!-- </div> -->
 
 <div class="filter-backdrop" *ngIf="isFilterOpen" (click)="toggleSideTab()"></div>
 

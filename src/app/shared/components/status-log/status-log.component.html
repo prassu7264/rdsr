@@ -1,0 +1,139 @@
+<div class="widget-card">
+
+    <!-- ================= HEADER ================= -->
+    <div class="header-section">
+        <h2 class="header-title">Updates</h2>
+        <span class="header-stats">{{ totalTime }} Total</span>
+    </div>
+
+    <!-- ================= COMPOSER ================= -->
+    <form class="composer-area" [formGroup]="taskForm">
+        <div class="form-row">
+            <input type="date" class="input-control input-time" formControlName="date" [value]="date">
+        </div>
+        <div class="form-row">
+            <select class="input-control input-select" formControlName="subtaskid" readonly>
+                <option value="" disabled>Select Task</option>
+                <option *ngFor="let p of projects" [value]="p.id">
+                    {{ p.task }}
+                </option>
+            </select>
+
+            <input type="time" class="input-control input-time" step="1" formControlName="worked_hours">
+        </div>
+
+        <textarea class="textarea-control" placeholder="Update details..." formControlName="comments">
+      </textarea>
+
+        <!-- ================= PROGRESS ================= -->
+        <div class="toolbar-actions">
+
+            <div class="status-picker">
+                <div class="form-group" style="width:100%">
+                    <label style="margin: 0;font-size: 14px;font-weight: 700;color: var(--primary);">PROGRESS</label>
+
+                    <div class="progress-card">
+
+                        <div class="progress-header">
+                            <span class="prog-title">Completed</span>
+                            <span class="prog-val" [style.color]="getProgressColor()">
+                                {{ taskForm.get('completion_percentage')?.value }}%
+                            </span>
+                        </div>
+
+                        <div class="custom-slider-wrapper">
+                            <div class="track">
+                                <div class="fill" [style.width.%]="taskForm.get('completion_percentage')?.value"
+                                    [style.backgroundColor]="getProgressColor()">
+                                </div>
+                            </div>
+
+                            <input type="range" min="0" max="100" class="overlay-range"
+                                formControlName="completion_percentage">
+                        </div>
+
+                        <div class="presets">
+                            <button type="button" class="btn-preset"
+                                [class.active]="taskForm.get('completion_percentage')?.value === 0"
+                                (click)="setCompletion(0)">0%</button>
+
+                            <button type="button" class="btn-preset"
+                                [class.active]="taskForm.get('completion_percentage')?.value === 25"
+                                (click)="setCompletion(25)">25%</button>
+
+                            <button type="button" class="btn-preset"
+                                [class.active]="taskForm.get('completion_percentage')?.value === 50"
+                                (click)="setCompletion(50)">50%</button>
+
+                            <button type="button" class="btn-preset"
+                                [class.active]="taskForm.get('completion_percentage')?.value === 75"
+                                (click)="setCompletion(75)">75%</button>
+
+                            <button type="button" class="btn-preset"
+                                [class.active]="taskForm.get('completion_percentage')?.value === 100"
+                                (click)="setCompletion(100)">100%</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div style="display:flex; justify-content:end;">
+                <button type="button" class="btn-primary" [disabled]="taskForm.invalid" (click)="submit()">
+                    {{ editId ? 'Update' : 'Add' }}
+                </button>
+            </div>
+
+        </div>
+    </form>
+
+    <!-- ================= FILTERS ================= -->
+    <div class="nav-filters">
+        <span class="nav-item" [class.is-active]="currFilter === 'all'" (click)="currFilter='all'">
+            All
+        </span>
+
+        <span class="nav-item" [class.is-active]="currFilter === 'green'" (click)="currFilter='green'">
+            Done
+        </span>
+
+        <span class="nav-item" [class.is-active]="currFilter === 'amber'" (click)="currFilter='amber'">
+            Pending
+        </span>
+
+        <span class="nav-item" [class.is-active]="currFilter === 'red'" (click)="currFilter='red'">
+            On Track
+        </span>
+    </div>
+
+    <!-- ================= FEED ================= -->
+    <div class="feed-container">
+        <div *ngFor="let item of filteredData"
+            class="feed-item status-indicator-{{getStatus(item.completion_percentage)}}">
+            <div class="item-header">
+                <span class="item-title">{{ item.task }}</span>
+
+                <div class="item-meta">
+                    <span class="badge-duration">{{ item.worked_hours }}</span>
+                    <span>•</span>
+                    <span>{{ item.date | date:'MMM d' }}</span>
+
+                    <div class="item-actions">
+                        <button class="btn-icon-action" (click)="edit(item)">✎</button>
+                        <button class="btn-icon-action is-delete" (click)="delete(item.id)">✕</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-content">
+                {{ item.comments }}
+            </div>
+        </div>
+
+        <div *ngIf="filteredData.length === 0" class="empty">
+            No entries.
+        </div>
+
+    </div>
+
+</div>

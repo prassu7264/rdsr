@@ -8,10 +8,8 @@
                 (selectionChange)="onPhasesSelect($event)" [triggerTxt]="'Select Phase'" [btntext]=""
                 [viewOptions]="viewOptions"></app-table-filter>
         </div>
-
         <!-- Task Tile Group -->
         <div class="task-tile-group">
-
             <!-- Item 1 -->
             <div class="input-container" *ngFor="let t of taskList">
                 <!-- Absolute Positioned Button (Overlay) -->
@@ -105,7 +103,7 @@
                 <div class="tab-list" id="tab-list">
                     <div class="tab-item" data-id="comments" (click)="setActiveTab('comments')">Comments
                     </div>
-                    <div class="tab-item" data-id="subtasks" (click)="setActiveTab('subtasks')">Sub tasks</div>
+                    <div class="tab-item" data-id="tasks" (click)="setActiveTab('tasks')">Sub tasks</div>
                     <div class="tab-item" data-id="documents" (click)="setActiveTab('documents')">Documents
                     </div>
                     <div class="tab-item" data-id="issues" (click)="setActiveTab('issues')">Issues</div>
@@ -129,9 +127,9 @@
             <div id="tab-content-display">
                 <ng-container [ngSwitch]="activeProjectTab">
                     <app-documents *ngSwitchCase="'documents'"></app-documents>
-                    <app-issues *ngSwitchCase="'issues'"></app-issues>
-                    <app-sub-tasklist *ngSwitchCase="'subtasks'"></app-sub-tasklist>
-                    <div *ngSwitchDefault>Select a tab</div>
+                    <!-- <app-issues *ngSwitchCase="'issues'"></app-issues> -->
+                    <app-sub-tasklist *ngSwitchCase="'tasks'"></app-sub-tasklist>
+                    <div *ngSwitchDefault style="font-size: medium;">Select a tab</div>
                 </ng-container>
             </div>
 

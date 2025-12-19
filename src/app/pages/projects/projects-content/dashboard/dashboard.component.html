@@ -1,13 +1,170 @@
-<div class="dashboard-grid">
-    <div class="card">
-        <div class="card-header">
-            <div class="card-title">
-                <i class="ri-calendar-event-fill"></i> Weekly Digest
-                <span style="font-weight: 400; color: var(--text-muted); margin-left: 8px;">Week 5</span>
+<div class="dsb-main-container">
+
+    <div class="dsb-page-header">
+        <h1 class="dsb-page-title">My Workspace</h1>
+        <div class="dsb-page-breadcrumbs">Overview / Today</div>
+    </div>
+
+    <!-- Categorized Stats -->
+    <div class="dsb-stats-grid">
+
+        <!-- Tasks Group -->
+        <div class="dsb-group-card group-blue">
+            <div class="dsb-group-header">
+                <i class="ri-stack-line"></i> Tasks
+            </div>
+            <div class="dsb-group-body">
+                <div class="dsb-stat-item">
+                    <span class="dsb-stat-val">0</span>
+                    <span class="dsb-stat-label">Open</span>
+                </div>
+                <div class="dsb-stat-divider"></div>
+                <div class="dsb-stat-item">
+                    <span class="dsb-stat-val" style="opacity: 0.5;">0</span>
+                    <span class="dsb-stat-label">Closed</span>
+                </div>
             </div>
         </div>
-        <div class="chart-container">
-            <canvas id="weeklyDigestChart"></canvas>
+
+        <!-- Issues Group -->
+        <div class="dsb-group-card group-red">
+            <div class="dsb-group-header">
+                <i class="ri-error-warning-line"></i> Issues
+            </div>
+            <div class="dsb-group-body">
+                <div class="dsb-stat-item">
+                    <span class="dsb-stat-val">0</span>
+                    <span class="dsb-stat-label">Open</span>
+                </div>
+                <div class="dsb-stat-divider"></div>
+                <div class="dsb-stat-item">
+                    <span class="dsb-stat-val" style="opacity: 0.5;">0</span>
+                    <span class="dsb-stat-label">Closed</span>
+                </div>
+            </div>
         </div>
+
+        <!-- Phases Group -->
+        <div class="dsb-group-card group-teal">
+            <div class="dsb-group-header">
+                <i class="ri-flag-line"></i> Phases
+            </div>
+            <div class="dsb-group-body">
+                <div class="dsb-stat-item">
+                    <span class="dsb-stat-val">0</span>
+                    <span class="dsb-stat-label">Open</span>
+                </div>
+                <div class="dsb-stat-divider"></div>
+                <div class="dsb-stat-item">
+                    <span class="dsb-stat-val" style="opacity: 0.5;">0</span>
+                    <span class="dsb-stat-label">Closed</span>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <div class="dsb-section-title">Attention Needed</div>
+
+    <div class="dsb-tables-grid">
+
+        <!-- Overdue -->
+        <div class="dsb-table-card">
+            <div class="dsb-table-header-bar">
+                <span class="dsb-table-badge badge-urgent">Overdue Items</span>
+                <div class="dsb-table-actions"><i class="ri-more-fill"></i></div>
+            </div>
+            <div class="dsb-table-content">
+                <table class="dsb-table">
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <div class="dsb-empty-state">
+                                    <i class="ri-thumb-up-line dsb-empty-icon"></i>
+                                    <div class="dsb-empty-text">All caught up</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Due Today -->
+        <div class="dsb-table-card">
+            <div class="dsb-table-header-bar">
+                <span class="dsb-table-badge">Due Today</span>
+                <div class="dsb-table-actions"><i class="ri-more-fill"></i></div>
+            </div>
+            <div class="dsb-table-content">
+                <table class="dsb-table">
+
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <div class="dsb-empty-state">
+                                    <i class="ri-calendar-check-line dsb-empty-icon"></i>
+                                    <div class="dsb-empty-text">Nothing due today</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="dsb-section-title" style="border-color: var(--text-muted);">Backlog</div>
+
+    <div class="dsb-tables-grid">
+
+        <!-- My Tasks -->
+        <div class="dsb-table-card">
+            <div class="dsb-table-header-bar">
+                <span class="dsb-table-badge badge-blue">My Tasks</span>
+                <div class="dsb-table-actions"><i class="ri-more-fill"></i></div>
+            </div>
+            <div class="dsb-table-content">
+                <table class="dsb-table">
+
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <div class="dsb-empty-state">
+                                    <i class="ri-inbox-line dsb-empty-icon"></i>
+                                    <div class="dsb-empty-text">No active tasks</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- My Issues -->
+        <div class="dsb-table-card">
+            <div class="dsb-table-header-bar">
+                <span class="dsb-table-badge badge-blue">My Issues</span>
+                <div class="dsb-table-actions"><i class="ri-more-fill"></i></div>
+            </div>
+            <div class="dsb-table-content">
+                <table class="dsb-table">
+
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <div class="dsb-empty-state">
+                                    <i class="ri-bug-line dsb-empty-icon"></i>
+                                    <div class="dsb-empty-text">No issues reported</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
 </div>

@@ -51,7 +51,6 @@ import { SharedModule } from './shared/shared.module';
     LoginComponent,
     ViewSelectorComponent,
     UserFormComponent,
-
   ],
   imports: [
     BrowserAnimationsModule,
@@ -65,7 +64,6 @@ import { SharedModule } from './shared/shared.module';
     MatButtonModule,
     SharedModule,
     ProjectsContentModule,
-    
     ToastrModule.forRoot({
       positionClass: 'toast-top-right',
       preventDuplicates: true,

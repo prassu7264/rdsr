@@ -6,112 +6,114 @@
     </div>
 </div>
 
-<div class="filter-backdrop" *ngIf="isFilterOpen" (click)="toggleSideTab()"></div>
+<div class="filter-backdrop" *ngIf="isFilterOpen" (click)="toggleSideTab();drawerType = 'filter'; "></div>
 
 <div class="filter-drawer" [class.open]="isFilterOpen">
+    <ng-container *ngIf="drawerType === 'filter'">
+        <div class="drawer-header">
+            <div class="header-content">
+                <h1>{{ isEditMode ? 'Update Task' : 'Create New Task' }}</h1>
+                <p>
+                    {{ isEditMode
+                    ? 'Modify task details, assignments, and deadlines'
+                    : 'Define the task scope, timeline, and assign team members' }}
+                </p>
+            </div>
 
-    <div class="drawer-header">
-        <div class="header-content">
-            <h1>{{ isEditMode ? 'Update Task' : 'Create New Task' }}</h1>
-            <p>
-                {{ isEditMode
-                ? 'Modify task details, assignments, and deadlines'
-                : 'Define the task scope, timeline, and assign team members' }}
-            </p>
+            <button class="icon-btn close-btn" (click)="toggleSideTab('filter')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
         </div>
+        <div class="drawer-content">
+            <!-- Main Scrollable Content -->
+            <div class="page-container sub-tasklist">
+                <div class="form-wrapper">
+                    <div class="form-container">
 
-        <button class="icon-btn close-btn" (click)="toggleSideTab()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-        </button>
-    </div>
-    <div class="drawer-content">
-        <!-- Main Scrollable Content -->
-        <div class="page-container sub-tasklist">
-            <div class="form-wrapper">
-                <div class="form-container">
+                        <form [formGroup]="taskForm">
 
-                    <form [formGroup]="taskForm">
-
-                        <!-- TASK NAME (Required) -->
-                        <div class="form-group">
-                            <label class="label">TASK NAME <span class="req">*</span></label>
-                            <input type="text" class="input-control" [class.error-border]="isFieldInvalid('task')"
-                                formControlName="task" placeholder="Enter task name">
-                            <div *ngIf="isFieldInvalid('task')" class="error-msg">
-                                Task name is required.
-                            </div>
-                        </div>
-
-                        <!-- PRIORITY & STATUS -->
-                        <div class="row">
-                            <div class="col form-group">
-                                <label class="label">PRIORITY <span class="req">*</span></label>
-                                <div class="select-wrapper">
-                                    <select class="input-control" [class.error-border]="isFieldInvalid('priority')"
-                                        formControlName="priority">
-
-                                        <option value="High">High</option>
-                                        <option value="Medium">Medium</option>
-                                        <option value="Low">Low</option>
-                                    </select>
-                                    <i class="ri-arrow-down-s-line chev"></i>
-                                </div>
-                                <div *ngIf="isFieldInvalid('priority')" class="error-msg">
-                                    Priority is required.
+                            <!-- TASK NAME (Required) -->
+                            <div class="form-group">
+                                <label class="label">TASK NAME <span class="req">*</span></label>
+                                <input type="text" class="input-control" [class.error-border]="isFieldInvalid('task')"
+                                    formControlName="task" placeholder="Enter task name">
+                                <div *ngIf="isFieldInvalid('task')" class="error-msg">
+                                    Task name is required.
                                 </div>
                             </div>
 
-                            <div class="col form-group">
-                                <label class="label">STATUS <span class="req">*</span></label>
-                                <div class="select-wrapper">
-                                    <select class="input-control" [class.error-border]="isFieldInvalid('status')"
-                                        formControlName="status">
-                                        <option *ngFor="let status of statusList" [value]="status">{{status}}</option>
+                            <!-- PRIORITY & STATUS -->
+                            <div class="row">
+                                <div class="col form-group">
+                                    <label class="label">PRIORITY <span class="req">*</span></label>
+                                    <div class="select-wrapper">
+                                        <select class="input-control" [class.error-border]="isFieldInvalid('priority')"
+                                            formControlName="priority">
 
-                                    </select>
-                                    <i class="ri-arrow-down-s-line chev"></i>
+                                            <option value="High">High</option>
+                                            <option value="Medium">Medium</option>
+                                            <option value="Low">Low</option>
+                                        </select>
+                                        <i class="ri-arrow-down-s-line chev"></i>
+                                    </div>
+                                    <div *ngIf="isFieldInvalid('priority')" class="error-msg">
+                                        Priority is required.
+                                    </div>
                                 </div>
-                                <div *ngIf="isFieldInvalid('status')" class="error-msg">
-                                    Status is required.
+
+                                <div class="col form-group">
+                                    <label class="label">STATUS <span class="req">*</span></label>
+                                    <div class="select-wrapper">
+                                        <select class="input-control" [class.error-border]="isFieldInvalid('status')"
+                                            formControlName="status">
+                                            <option *ngFor="let status of statusList" [value]="status">{{status}}
+                                            </option>
+
+                                        </select>
+                                        <i class="ri-arrow-down-s-line chev"></i>
+                                    </div>
+                                    <div *ngIf="isFieldInvalid('status')" class="error-msg">
+                                        Status is required.
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- DATES (Required) -->
-                        <div class="row">
-                            <div class="col form-group">
-                                <label class="label">START DATE <span class="req">*</span></label>
-                                <div class="icon-input">
-                                    <input type="date" class="input-control"
-                                        [class.error-border]="isFieldInvalid('start_date')"
-                                        formControlName="start_date">
-                                    <i class="ri-calendar-line icon-right"></i>
+                            <!-- DATES (Required) -->
+                            <div class="row">
+                                <div class="col form-group">
+                                    <label class="label">START DATE <span class="req">*</span></label>
+                                    <div class="icon-input">
+                                        <input type="date" class="input-control"
+                                            [class.error-border]="isFieldInvalid('start_date')"
+                                            formControlName="start_date">
+                                        <i class="ri-calendar-line icon-right"></i>
+                                    </div>
+                                    <div *ngIf="isFieldInvalid('start_date')" class="error-msg">
+                                        Start date is required.
+                                    </div>
                                 </div>
-                                <div *ngIf="isFieldInvalid('start_date')" class="error-msg">
-                                    Start date is required.
+
+                                <div class="col form-group">
+                                    <label class="label">END DATE <span class="req">*</span></label>
+                                    <div class="icon-input">
+                                        <input type="date" class="input-control"
+                                            [min]="taskForm.get('start_date')?.value || minDate"
+                                            [class.error-border]="isFieldInvalid('end_date')"
+                                            formControlName="end_date">
+                                        <i class="ri-calendar-line icon-right"></i>
+                                    </div>
+                                    <div *ngIf="isFieldInvalid('end_date')" class="error-msg">
+                                        End date is required.
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="col form-group">
-                                <label class="label">END DATE <span class="req">*</span></label>
-                                <div class="icon-input">
-                                    <input type="date" class="input-control"
-                                        [min]="taskForm.get('start_date')?.value || minDate"
-                                        [class.error-border]="isFieldInvalid('end_date')" formControlName="end_date">
-                                    <i class="ri-calendar-line icon-right"></i>
-                                </div>
-                                <div *ngIf="isFieldInvalid('end_date')" class="error-msg">
-                                    End date is required.
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- HOURS -->
-                        <div class="row">
-                            <!-- <div class="col form-group">
+                            <!-- HOURS -->
+                            <div class="row">
+                                <!-- <div class="col form-group">
                         <label class="label">EST. HOURS <span class="req">*</span></label>
                         <div class="icon-input">
                           <input type="time" 
@@ -125,82 +127,104 @@
                         </div>
                       </div> -->
 
-                            <div class="col form-group">
-                                <label class="label">WORKED HOURS <span class="req">*</span></label>
-                                <div class="icon-input">
-                                    <input type="time" step="1" class="input-control"
-                                        [class.error-border]="isFieldInvalid('worked_hours')"
-                                        formControlName="worked_hours">
-                                    <i class="ri-time-line icon-right"></i>
-                                </div>
-                                <div *ngIf="isFieldInvalid('worked_hours')" class="error-msg">
-                                    Worked hours required.
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- PROGRESS SECTION -->
-                        <div class="form-group" *ngIf="isEditMode">
-                            <label class="label">PROGRESS</label>
-                            <div class="progress-card">
-                                <div class="progress-header">
-                                    <span class="prog-title">Completed</span>
-                                    <span class="prog-val" [style.color]="getProgressColor()">{{
-                                        taskForm.get('completion_percentage')?.value }}%</span>
-                                </div>
-
-                                <div class="custom-slider-wrapper">
-                                    <div class="track">
-                                        <!-- Dynamic Fill with Color -->
-                                        <div class="fill" [style.width.%]="taskForm.get('completion_percentage')?.value"
-                                            [style.background-color]="getProgressColor()">
-                                        </div>
+                                <div class="col form-group">
+                                    <label class="label">WORKED HOURS <span class="req">*</span></label>
+                                    <div class="icon-input">
+                                        <input type="time" step="1" class="input-control"
+                                            [class.error-border]="isFieldInvalid('worked_hours')"
+                                            formControlName="worked_hours">
+                                        <i class="ri-time-line icon-right"></i>
                                     </div>
-                                    <!-- Reactive Slider -->
-                                    <input type="range" min="0" max="100" class="overlay-range"
-                                        formControlName="completion_percentage">
-                                </div>
-
-                                <div class="presets">
-                                    <button type="button" class="btn-preset"
-                                        [class.active]="taskForm.get('completion_percentage')?.value === 0"
-                                        (click)="setCompletion(0)">0%</button>
-                                    <button type="button" class="btn-preset"
-                                        [class.active]="taskForm.get('completion_percentage')?.value === 25"
-                                        (click)="setCompletion(25)">25%</button>
-                                    <button type="button" class="btn-preset"
-                                        [class.active]="taskForm.get('completion_percentage')?.value === 50"
-                                        (click)="setCompletion(50)">50%</button>
-                                    <button type="button" class="btn-preset"
-                                        [class.active]="taskForm.get('completion_percentage')?.value === 75"
-                                        (click)="setCompletion(75)">75%</button>
-                                    <button type="button" class="btn-preset"
-                                        [class.active]="taskForm.get('completion_percentage')?.value === 100"
-                                        (click)="setCompletion(100)">100%</button>
+                                    <div *ngIf="isFieldInvalid('worked_hours')" class="error-msg">
+                                        Worked hours required.
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- DESCRIPTION (Required) -->
-                        <div class="form-group">
-                            <label class="label">DESCRIPTION <span class="req">*</span></label>
-                            <textarea class="input-control textarea"
-                                [class.error-border]="isFieldInvalid('description')" formControlName="description"
-                                placeholder="Add detailed notes..."></textarea>
-                            <div *ngIf="isFieldInvalid('description')" class="error-msg">
-                                Description is required.
+                            <!-- PROGRESS SECTION -->
+                            <div class="form-group" *ngIf="isEditMode">
+                                <label class="label">PROGRESS</label>
+                                <div class="progress-card">
+                                    <div class="progress-header">
+                                        <span class="prog-title">Completed</span>
+                                        <span class="prog-val" [style.color]="getProgressColor()">{{
+                                            taskForm.get('completion_percentage')?.value }}%</span>
+                                    </div>
+
+                                    <div class="custom-slider-wrapper">
+                                        <div class="track">
+                                            <!-- Dynamic Fill with Color -->
+                                            <div class="fill"
+                                                [style.width.%]="taskForm.get('completion_percentage')?.value"
+                                                [style.background-color]="getProgressColor()">
+                                            </div>
+                                        </div>
+                                        <!-- Reactive Slider -->
+                                        <input type="range" min="0" max="100" class="overlay-range"
+                                            formControlName="completion_percentage">
+                                    </div>
+
+                                    <div class="presets">
+                                        <button type="button" class="btn-preset"
+                                            [class.active]="taskForm.get('completion_percentage')?.value === 0"
+                                            (click)="setCompletion(0)">0%</button>
+                                        <button type="button" class="btn-preset"
+                                            [class.active]="taskForm.get('completion_percentage')?.value === 25"
+                                            (click)="setCompletion(25)">25%</button>
+                                        <button type="button" class="btn-preset"
+                                            [class.active]="taskForm.get('completion_percentage')?.value === 50"
+                                            (click)="setCompletion(50)">50%</button>
+                                        <button type="button" class="btn-preset"
+                                            [class.active]="taskForm.get('completion_percentage')?.value === 75"
+                                            (click)="setCompletion(75)">75%</button>
+                                        <button type="button" class="btn-preset"
+                                            [class.active]="taskForm.get('completion_percentage')?.value === 100"
+                                            (click)="setCompletion(100)">100%</button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- SUBMIT BUTTON -->
-                        <div class="form-group" style="margin-top: 2rem;">
-                            <button class="btn-submit" (click)="saveTask()" [disabled]="taskForm.invalid">
-                                SAVE TASK
-                            </button>
-                        </div>
+                            <!-- DESCRIPTION (Required) -->
+                            <div class="form-group">
+                                <label class="label">DESCRIPTION <span class="req">*</span></label>
+                                <textarea class="input-control textarea"
+                                    [class.error-border]="isFieldInvalid('description')" formControlName="description"
+                                    placeholder="Add detailed notes..."></textarea>
+                                <div *ngIf="isFieldInvalid('description')" class="error-msg">
+                                    Description is required.
+                                </div>
+                            </div>
 
-                    </form>
+                            <!-- SUBMIT BUTTON -->
+                            <div class="form-group" style="margin-top: 2rem;">
+                                <button class="btn-submit" (click)="saveTask()" [disabled]="taskForm.invalid">
+                                    SAVE TASK
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </ng-container>
+    <ng-container *ngIf="drawerType === 'dsr'">
+        <div class="drawer-header">
+            <div class="header-content">
+                <h1>Update Task</h1>
+                <p>
+                    Modify task details, assignments, and deadlines
+                </p>
+            </div>
+            <button class="icon-btn close-btn" (click)="closeDrawer()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="drawer-content" style="padding: 2px;">
+            <app-status-log [selectedTask]="selectTask" [projects]="subTaskList"></app-status-log>
+        </div>
+    </ng-container>
+</div>

@@ -1,0 +1,384 @@
+<main class="dsb-container" *ngIf="!isAdmin">
+    <div class="dsb-page-header">
+        <h1 class="dsb-page-title">Executive Overview</h1>
+        <div class="dsb-date-badge">Today, Oct 24</div>
+    </div>
+
+    <!-- Classic Stats Grid -->
+    <div class="dsb-stats-grid">
+        <!-- 1. Open Tasks -->
+        <div class="dsb-stat-card">
+            <div class="dsb-stat-icon-box icon-blue">
+                <i class="ri-stack-line"></i>
+            </div>
+            <div class="dsb-stat-info">
+                <div class="dsb-stat-label">Open Tasks</div>
+                <div class="dsb-stat-value">0</div>
+            </div>
+        </div>
+        <!-- 2. Closed Tasks -->
+        <div class="dsb-stat-card">
+            <div class="dsb-stat-icon-box icon-grey">
+                <i class="ri-checkbox-circle-line"></i>
+            </div>
+            <div class="dsb-stat-info">
+                <div class="dsb-stat-label">Closed Tasks</div>
+                <div class="dsb-stat-value">0</div>
+            </div>
+        </div>
+        <!-- 3. Open Issues -->
+        <div class="dsb-stat-card">
+            <div class="dsb-stat-icon-box icon-red">
+                <i class="ri-error-warning-line"></i>
+            </div>
+            <div class="dsb-stat-info">
+                <div class="dsb-stat-label">Open Issues</div>
+                <div class="dsb-stat-value">0</div>
+            </div>
+        </div>
+        <!-- 4. Closed Issues -->
+        <div class="dsb-stat-card">
+            <div class="dsb-stat-icon-box icon-grey">
+                <i class="ri-shield-check-line"></i>
+            </div>
+            <div class="dsb-stat-info">
+                <div class="dsb-stat-label">Closed Issues</div>
+                <div class="dsb-stat-value">0</div>
+            </div>
+        </div>
+        <!-- 5. Open Phases -->
+        <div class="dsb-stat-card">
+            <div class="dsb-stat-icon-box icon-teal">
+                <i class="ri-flag-line"></i>
+            </div>
+            <div class="dsb-stat-info">
+                <div class="dsb-stat-label">Open Phases</div>
+                <div class="dsb-stat-value">0</div>
+            </div>
+        </div>
+        <!-- 6. Closed Phases -->
+        <div class="dsb-stat-card">
+            <div class="dsb-stat-icon-box icon-grey">
+                <i class="ri-time-line"></i>
+            </div>
+            <div class="dsb-stat-info">
+                <div class="dsb-stat-label">Closed Phases</div>
+                <div class="dsb-stat-value">0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attention Section -->
+    <div class="dsb-section-divider">
+        <span class="dsb-section-title" style="color: var(--c-red);">
+            <i class="ri-alarm-warning-line"></i> Attention Needed
+        </span>
+        <div class="dsb-section-line"></div>
+    </div>
+
+    <div class="dsb-tables-grid">
+        <!-- Overdue -->
+        <div class="dsb-table-card">
+            <div class="dsb-table-header">
+                <div class="dsb-table-title">
+                    <span class="accent-bar bg-red"></span> Overdue Items
+                </div>
+                <button class="dsb-icon-btn"><i class="ri-more-fill"></i></button>
+            </div>
+            <div class="dsb-table-content">
+                <table class="dsb-table">
+
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <div class="dsb-empty">
+                                    <i class="ri-thumb-up-line"></i>
+                                    <span>All caught up!</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Due Today -->
+        <div class="dsb-table-card">
+            <div class="dsb-table-header">
+                <div class="dsb-table-title">
+                    <span class="accent-bar bg-grey"></span> Due Today
+                </div>
+                <button class="dsb-icon-btn"><i class="ri-more-fill"></i></button>
+            </div>
+            <div class="dsb-table-content">
+                <table class="dsb-table">
+
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <div class="dsb-empty">
+                                    <i class="ri-calendar-check-line"></i>
+                                    <span>Nothing due today</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Workload Section -->
+    <div class="dsb-section-divider">
+        <span class="dsb-section-title" style="color: var(--primary);">
+            <i class="ri-briefcase-line"></i> Workload
+        </span>
+        <div class="dsb-section-line"></div>
+    </div>
+
+    <div class="dsb-tables-grid">
+        <!-- My Tasks -->
+        <div class="dsb-table-card">
+            <div class="dsb-table-header">
+                <div class="dsb-table-title">
+                    <span class="accent-bar bg-blue"></span> My Tasks
+                </div>
+                <button class="dsb-icon-btn"><i class="ri-more-fill"></i></button>
+            </div>
+            <div class="dsb-table-content">
+                <table class="dsb-table">
+
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <div class="dsb-empty">
+                                    <i class="ri-inbox-line"></i>
+                                    <span>No active tasks</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- My Issues -->
+        <div class="dsb-table-card">
+            <div class="dsb-table-header">
+                <div class="dsb-table-title">
+                    <span class="accent-bar bg-blue"></span> My Issues
+                </div>
+                <button class="dsb-icon-btn"><i class="ri-more-fill"></i></button>
+            </div>
+            <div class="dsb-table-content">
+                <table class="dsb-table">
+
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <div class="dsb-empty">
+                                    <i class="ri-bug-line"></i>
+                                    <span>No issues reported</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<main class="dsb-container" *ngIf="!isAdmin">
+
+    <div class="dsb-page-header">
+        <h1 class="dsb-page-title">Executive Overview</h1>
+        <div class="dsb-date-badge">Today, Oct 24</div>
+    </div>
+    <!-- Classic Stats Grid -->
+    <div class="dsb-stats-grid">
+        <!-- 1. Open Tasks -->
+        <div class="dsb-stat-card">
+            <div class="dsb-stat-icon-box icon-blue">
+                <i class="ri-folder-open-line"></i>
+            </div>
+            <div class="dsb-stat-info">
+                <div class="dsb-stat-label">Active Projects</div>
+                <div class="dsb-stat-value">0</div>
+            </div>
+        </div>
+        <!-- 2. Closed Tasks -->
+        <div class="dsb-stat-card">
+            <div class="dsb-stat-icon-box  icon-teal">
+                <i class="ri-check-double-line"></i>
+            </div>
+            <div class="dsb-stat-info">
+                <div class="dsb-stat-label">Completed</div>
+                <div class="dsb-stat-value">0</div>
+            </div>
+        </div>
+        <!-- 3. Open Issues -->
+        <div class="dsb-stat-card">
+            <div class="dsb-stat-icon-box icon-orange">
+                <i class="ri-shield-check-line"></i>
+            </div>
+            <div class="dsb-stat-info">
+                <div class="dsb-stat-label">Open Tasks</div>
+                <div class="dsb-stat-value">0</div>
+            </div>
+        </div>
+        <!-- 4. Closed Issues -->
+        <div class="dsb-stat-card">
+
+            <div class="dsb-stat-icon-box icon-red">
+                <i class="ri-error-warning-line"></i>
+            </div>
+            <div class="dsb-stat-info">
+                <div class="dsb-stat-label">Open Issues</div>
+                <div class="dsb-stat-value">0</div>
+            </div>
+        </div>
+        <!-- 5. Open Phases -->
+        <div class="dsb-stat-card">
+            <div class="dsb-stat-icon-box icon-teal">
+                <i class="ri-shield-user-line"></i>
+            </div>
+            <div class="dsb-stat-info">
+                <div class="dsb-stat-label">Active Employees</div>
+                <div class="dsb-stat-value">0</div>
+            </div>
+        </div>
+        <!-- 6. Closed Phases -->
+        <div class="dsb-stat-card">
+            <div class="dsb-stat-icon-box icon-red">
+                <i class="ri-time-line"></i>
+            </div>
+            <div class="dsb-stat-info">
+                <div class="dsb-stat-label">Delayed</div>
+                <div class="dsb-stat-value">0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attention Section -->
+    <div class="dsb-section-divider">
+        <span class="dsb-section-title" style="color: var(--c-red);">
+            <i class="ri-alarm-warning-line"></i> Attention Needed
+        </span>
+        <div class="dsb-section-line"></div>
+    </div>
+
+    <div class="dsb-tables-grid">
+        <!-- Overdue -->
+        <div class="dsb-table-card">
+            <div class="dsb-table-header">
+                <div class="dsb-table-title">
+                    <span class="accent-bar bg-red"></span> Overdue Items
+                </div>
+                <button class="dsb-icon-btn"><i class="ri-more-fill"></i></button>
+            </div>
+            <div class="dsb-table-content">
+                <table class="dsb-table">
+
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <div class="dsb-empty">
+                                    <i class="ri-thumb-up-line"></i>
+                                    <span>All caught up!</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Due Today -->
+        <div class="dsb-table-card">
+            <div class="dsb-table-header">
+                <div class="dsb-table-title">
+                    <span class="accent-bar bg-grey"></span> Due Today
+                </div>
+                <button class="dsb-icon-btn"><i class="ri-more-fill"></i></button>
+            </div>
+            <div class="dsb-table-content">
+                <table class="dsb-table">
+
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <div class="dsb-empty">
+                                    <i class="ri-calendar-check-line"></i>
+                                    <span>Nothing due today</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Workload Section -->
+    <div class="dsb-section-divider">
+        <span class="dsb-section-title" style="color: var(--primary);">
+            <i class="ri-briefcase-line"></i> Workload
+        </span>
+        <div class="dsb-section-line"></div>
+    </div>
+
+    <div class="dsb-tables-grid">
+        <!-- My Tasks -->
+        <div class="dsb-table-card">
+            <div class="dsb-table-header">
+                <div class="dsb-table-title">
+                    <span class="accent-bar bg-blue"></span> My Tasks
+                </div>
+                <button class="dsb-icon-btn"><i class="ri-more-fill"></i></button>
+            </div>
+            <div class="dsb-table-content">
+                <table class="dsb-table">
+
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <div class="dsb-empty">
+                                    <i class="ri-inbox-line"></i>
+                                    <span>No active tasks</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- My Issues -->
+        <div class="dsb-table-card">
+            <div class="dsb-table-header">
+                <div class="dsb-table-title">
+                    <span class="accent-bar bg-blue"></span> My Issues
+                </div>
+                <button class="dsb-icon-btn"><i class="ri-more-fill"></i></button>
+            </div>
+            <div class="dsb-table-content">
+                <table class="dsb-table">
+
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <div class="dsb-empty">
+                                    <i class="ri-bug-line"></i>
+                                    <span>No issues reported</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</main>

@@ -238,7 +238,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
       movableRows: true,
       pagination: "local",
       paginationSize: 15,
-      // editTriggerEvent: "dblclick",
+      editTriggerEvent: "dblclick",
       paginationSizeSelector: [5, 10, 15, 25, 35, 45, 100],
       columnDefaults: { tooltip: true },
       groupBy: viewby,
@@ -248,7 +248,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
               <div class="flex-row">
                   <i class="ri-stack-line" style="color: var(--primary); font-size: 16px;"></i>
                   <span class="text-main text-bold">${value || 'Unassigned'}</span>
-                  <span class="text-muted" style="font-weight: 400;">(${count} projects)</span>
+                  <span class="text-muted" style="font-weight: 400;">(${count} Users)</span>
               </div>
           `;
       },

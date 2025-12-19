@@ -23,6 +23,7 @@ export class SubTasklistComponent implements OnInit {
   viewOptions: any = {};
   columns: any = [];
   isFilterOpen: any = false;
+  drawerType: 'filter' | 'dsr' | null = 'filter';
   minDate: string = new Date().toISOString().split('T')[0];
   private table: Tabulator | undefined;
   constructor(private el: ElementRef, private authService: AuthService,
@@ -37,12 +38,17 @@ export class SubTasklistComponent implements OnInit {
     console.log(this.taskid);
     this.loadInitialData(this.taskid);
   }
+
   loadInitialData(taskid?: any) {
     this.taskid = taskid
     this.getStatusList();
     this.getSubtasks(() => {
       this.initTable();
     });
+  }
+  closeDrawer() {
+    this.drawerType = 'filter';
+    this.toggleSideTab()
   }
   toggleSideTab(type?: any) {
     console.log(type);
@@ -57,7 +63,6 @@ export class SubTasklistComponent implements OnInit {
         taskid: this.taskid,
         employeeid: empid
       });
-
     }
   }
   onViewSelected(item: any) {
@@ -75,7 +80,7 @@ export class SubTasklistComponent implements OnInit {
     this.authService.getSubtasks(this.taskid).subscribe({
       next: (res: any) => {
         this.subTaskList = res;
-        this.table?.updateData(res);
+        this.table?.replaceData(res);
         this.viewOptions = this.commonService.getFieldLabels(this.subTaskList);
         if (callback) callback();
       }
@@ -127,7 +132,31 @@ export class SubTasklistComponent implements OnInit {
                 <i class="${item.icon}"></i> ${val}
               </span>`;
     };
+    const taskProgressFormatter = (cell: any) => {
+      const row = cell.getData();
+      const done = row.tasks_done || 0;
+      const pending = row.tasks_pending || 0;
+      const total = done + pending;
 
+      // Calculate percentage
+      // const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+
+      const pct = row.completion_percentage || 0
+      // <span class="task-count">${done}</span>
+      // <span class="task-count right">${pending}</span>
+
+      // Render: [Done] [Bar with Text Inside] [Pending]
+      return `
+          <div class="task-progress-container">
+            
+              <div class="task-bar-track">
+                  <div class="task-bar-fill" style="width: ${pct}%"></div>
+                  <span class="task-bar-text">${pct} %</span>
+              </div>
+             
+          </div>
+      `;
+    };
 
     const taskNameFormatter = function (cell: any) {
       const row = cell.getData();
@@ -308,6 +337,10 @@ export class SubTasklistComponent implements OnInit {
         field: "worked_hours",
         formatter: officeHoursDaysFormatter
       },
+      {
+        title: "Completion", field: "tasks_done", width: 180, headerSort: false,
+        formatter: taskProgressFormatter, editorParams: { min: 0, max: 100 }
+      },
       { title: "Description", field: "description", editor: "textarea" },
       {
         title: "Actions",
@@ -317,26 +350,33 @@ export class SubTasklistComponent implements OnInit {
         hozAlign: "center",
         formatter: () => {
           return `
-            <button 
+            <button  class="edit"
               style="border:none;background:transparent;cursor:pointer;padding:4px;">
-              <i class="ri-edit-2-line edit" style="font-size:18px;color:#1976d2;"></i>
+              <i class="ri-edit-2-line edit" style="font-size:18px;color:var(--c-blue);"></i>
             </button>
-        
-            <button 
+             <button class="dsr"
+              style="border:none;background:transparent;cursor:pointer;padding:4px; ">
+              <i class="ri-question-answer-line dsr" style="font-size:18px;color:var(--warning);"></i>
+            </button>
+     
+            <button class="delete"
               style="border:none;background:transparent;cursor:pointer;padding:4px;">
-              <i class="ri-delete-bin-6-line delete" style="font-size:18px;color:#d32f2f;"></i>
+              <i class="ri-delete-bin-6-line delete" style="font-size:18px;color:var(--danger);"></i>
             </button>
           `;
         }
         ,
         cellClick: (e: any, cell: any) => {
           const rowData = cell.getRow().getData();
+          this.selectTask = rowData;
           if (e.target.classList.contains("edit")) {
-            this.selectTask = rowData;
             this.patchTaskForm(rowData);
             this.toggleSideTab();
           }
-
+          if (e.target.classList.contains("dsr")) {
+            this.drawerType = 'dsr';
+            this.toggleSideTab();
+          }
           if (e.target.classList.contains("delete")) {
             Swal.fire({
               title: "Are you sure?",
@@ -373,19 +413,18 @@ export class SubTasklistComponent implements OnInit {
       movableRows: true,
       pagination: "local",
       paginationSize: 15,
-      // editTriggerEvent: "dblclick",
+      editTriggerEvent: "dblclick",
       paginationSizeSelector: [5, 10, 15, 25, 35, 45, 100],
       columnDefaults: { tooltip: true },
       groupBy: viewby,
       resizableColumnFit: true,
-      layout: "fitDataStretch",
       groupStartOpen: true,
       groupHeader: function (value: any, count: any, data: any, group: any) {
         return `
               <div class="flex-row">
                   <i class="ri-stack-line" style="color: var(--primary); font-size: 16px;"></i>
                   <span class="text-main text-bold">${value || 'Unassigned'}</span>
-                  <span class="text-muted" style="font-weight: 400;">(${count} projects)</span>
+                  <span class="text-muted" style="font-weight: 400;">(${count} sub-tasks)</span>
               </div>
           `;
       },
@@ -483,6 +522,7 @@ export class SubTasklistComponent implements OnInit {
 
 
   }
+
 
 
 }

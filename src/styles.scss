@@ -26,9 +26,19 @@ option {
     padding: 10px;
 }
 
-body {
-    font-family: 'Inter', sans-serif;
+@font-face {
+    font-family: 'YoungSerif';
+    src: url('/assets/fonts/OpenSans-Regular.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+    /* Optional: improves rendering performance */
+}
 
+
+body {
+    // font-family: 'Inter', sans-serif ;
+    font-family: "Signika", sans-serif;
     // font-family: "Outfit", sans-serif;
     font-optical-sizing: auto;
     font-weight: 500;

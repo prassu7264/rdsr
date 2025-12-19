@@ -48,7 +48,12 @@ export class AuthService {
   getUsersAll() {
     return this.http.get(`${BASE_URL}/user/all`);
   }
-
+  getprojectmembersById(project_id: any) {
+    return this.http.get(`${BASE_URL}/user/getprojectmembers?project_id=${project_id}`);
+  }
+  getEmployeelistByProjectId(project_id: any) {
+    return this.http.get(`${BASE_URL}/user/getemployeelistbyproject?project_id=${project_id}`);
+  }
   updateUser(payload: any) {
     return this.http.post(`${BASE_URL}/user/update`, payload);
   }
@@ -64,8 +69,8 @@ export class AuthService {
     return this.http.get(`${BASE_URL}/user/getemployeelist`);
   }
 
-  getAllProjects() {
-    return this.http.get(`${BASE_URL}/project/all`);
+  getAllProjectsByEmployeeId(employee_id: any) {
+    return this.http.get(`${BASE_URL}/project/all?employee_id=${employee_id}`);
   }
 
   createProject(payload: any) {
@@ -99,6 +104,9 @@ export class AuthService {
   updateTask(payload: any) {
     return this.http.post(`${BASE_URL}/task/update`, payload);
   }
+  swapTask(phase_id: any, task_list: any, username: any) {
+    return this.http.get(`${BASE_URL}/task/swaptask?phase_id=${phase_id}&task_list=${task_list}&username=${username}`);
+  }
 
   getStatusList() {
     return this.http.get(`${BASE_URL}/common/getstatuslist`);
@@ -119,6 +127,16 @@ export class AuthService {
 
   deleteSubtask(username: string, task_id: number) {
     return this.http.delete(`${BASE_URL}/subtask/delete?username=${username}&sub_task_id=${task_id}`);
+  }
+
+  createDailyStatus(payload: any) {
+    return this.http.post(`${BASE_URL}/subtask/createdailystatus`, payload);
+  }
+  getDsrDetailsBySubtaskId(subtaskid: any) {
+    return this.http.get(`${BASE_URL}/subtask/getdsrdetails?sub_task_id=${subtaskid}`);
+  }
+  deleteDsr(username: string, dsr_id: number) {
+    return this.http.delete(`${BASE_URL}/subtask/deletedsr?username=${username}&dsr_id=${dsr_id}`);
   }
   getPhaseByProjectId(project_id: number) {
     return this.http.get(`${BASE_URL}/phase/getphasebyproject?project_id=${project_id}`);

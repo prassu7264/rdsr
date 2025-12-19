@@ -18,7 +18,7 @@ export class ProjectsComponent {
   @ViewChild(TableFilterComponent) viewSelector!: TableFilterComponent;
   isFilterOpen = false;
   viewOptions: any = {};
-
+  empid: any = 0
   selectedProject: any;
   toggleSideTab(type?: any) {
     this.isFilterOpen = !this.isFilterOpen;
@@ -34,7 +34,9 @@ export class ProjectsComponent {
     private authService: AuthService,
     private commonService: CommonService,
     private storageService: StorageService
-  ) { }
+  ) {
+    this.empid = this.storageService.getEmpId();
+  }
 
   managerList: any[] = [];
   employeeList: any[] = [];
@@ -164,7 +166,7 @@ export class ProjectsComponent {
     const statusFormatter = function (cell: any) {
       const val = cell.getValue();
       if (val === true) {
-        return `<span class="status-pill status-closed"><i class="ri-checkbox-circle-fill"></i> Active</span>`;
+        return `<span class="status-pill status-closed"><i class="ri-checkbox-circle-fill"></i> Open</span>`;
       }
       return `<span class="status-pill status-cancelled"><i class="ri-close-circle-fill"></i> Closed</span>`;
     };
@@ -264,12 +266,11 @@ export class ProjectsComponent {
 
     const taskProgressFormatter = (cell: any) => {
       const row = cell.getData();
-      const done = row.tasks_done || 0;
-      const pending = row.tasks_pending || 0;
+      const done = Number(row.tasks_done ?? 0);
+      const pending = Number(row.tasks_pending ?? 0);
       const total = done + pending;
 
-      // Calculate percentage
-      const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+      const pct = total === 0 ? 0 : Math.round((done / total) * 1000) / 10;
 
       // Render: [Done] [Bar with Text Inside] [Pending]
       return `
@@ -353,20 +354,20 @@ export class ProjectsComponent {
       },
       {
         title: "Status",
-        field: "isactive",
+        field: "isclose",
         formatter: statusFormatter,
         hozAlign: "center",
         editor: "list",
         editorParams: {
           values: [
-            { label: "Active", value: true },
+            { label: "Open", value: true },
             { label: "Closed", value: false }
           ]
         }
       },
       {
         title: "Tasks", field: "tasks_done", width: 180, headerSort: false,
-        formatter: taskProgressFormatter, editor: "number", editorParams: { min: 0, max: 100 }
+        formatter: taskProgressFormatter,
       },
       { title: "Description", field: "description", editor: "textarea" },
 
@@ -419,7 +420,7 @@ export class ProjectsComponent {
       movableRows: true,
       pagination: "local",
       paginationSize: 15,
-      // editTriggerEvent: "dblclick",
+      editTriggerEvent: "dblclick",
       paginationSizeSelector: [5, 10, 15, 25, 35, 45, 100],
       columnDefaults: { tooltip: true },
       groupBy: viewby,
@@ -476,7 +477,7 @@ export class ProjectsComponent {
   get filteredEmployees() {
     if (!this.teamSearch) return this.employeeList;
     const term = this.teamSearch.toLowerCase();
-    return this.employeeList.filter(e => e.employee_name.toLowerCase().includes(term) || e.role.toLowerCase().includes(term));
+    return this.employeeList.filter(e => e?.employee_name?.toLowerCase()?.includes(term));
   }
 
   get selectedEmployeeIds(): number[] {
@@ -526,7 +527,8 @@ export class ProjectsComponent {
       this.authService.updateProject(this.selectedProject).subscribe({
         next: ((res: any) => {
           this.toasterService.success(res?.message);
-          this.loadInitialData();
+          // this.loadInitialData();
+          this.getProjects()
           this.isEditMode = false;
           this.toggleSideTab();
         }),
@@ -539,7 +541,8 @@ export class ProjectsComponent {
       this.authService.createProject(this.projectForm.value).subscribe({
         next: ((res: any) => {
           this.toasterService.success(res?.message);
-          this.loadInitialData();
+          // this.loadInitialData();
+          this.getProjects();
           this.toggleSideTab();
         }),
         error: (err: any) => {
@@ -576,20 +579,21 @@ export class ProjectsComponent {
   }
 
   getProjects(callback?: Function) {
-    this.authService.getAllProjects().subscribe({
+    this.authService.getAllProjectsByEmployeeId(this.empid).subscribe({
       next: (res: any) => {
         this.projectList = res
-        this.projectList = this.projectList.map(item => {
-          const tasks_pending = Math.floor(Math.random() * 20) + 1;
-          const tasks_done = Math.floor(Math.random() * (tasks_pending + 1));
+        // this.projectList = this.projectList.map(item => {
+        //   const tasks_pending = Math.floor(Math.random() * 20) + 1;
+        //   const tasks_done = Math.floor(Math.random() * (tasks_pending + 1));
 
-          return {
-            ...item,
-            tasks_done: tasks_done,
-            tasks_pending: tasks_pending
-          };
-        });
+        //   return {
+        //     ...item,
+        //     tasks_done: tasks_done,
+        //     tasks_pending: tasks_pending
+        //   };
+        // });
         this.viewOptions = this.commonService.getFieldLabels(this.projectList);
+        this.table?.replaceData(this.projectList)
         if (callback) callback();
       }
     });
@@ -605,11 +609,12 @@ export class ProjectsComponent {
   }
   updateProject() {
     this.selectedProject.username = this.storageService.getUsername();
- 
+
     this.authService.updateProject(this.selectedProject).subscribe({
       next: ((res: any) => {
         this.toasterService.success(res?.message);
-        this.loadInitialData();
+        // this.loadInitialData();
+        this.getProjects();
         this.isEditMode = false
       }),
       error: (err: any) => {

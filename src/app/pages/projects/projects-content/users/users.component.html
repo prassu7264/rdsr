@@ -1,1 +1,139 @@
-<p>users works!</p>
+<div class="card">
+    <h2 style="margin-bottom: 15px;">Users</h2>
+    <app-table-filter (toggleSideTab)="toggleSideTab($event)" [btntext]="'Employee'"
+        (selectionChange)="onViewSelected($event)" [viewOptions]="viewOptions"></app-table-filter>
+    <div
+        style="margin-bottom: 15px; margin-top: 10px; font-size: 15px; border-top: 1px solid var(--border); padding-top: 10px;">
+        <div class="theme-grid">
+            <div class="tabulator-table"></div>
+        </div>
+    </div>
+</div>
+<!-- Filter Side Drawer & Backdrop -->
+<div class="filter-backdrop" *ngIf="isFilterOpen" (click)="toggleSideTab()"></div>
+
+<div class="filter-drawer" [class.open]="isFilterOpen">
+    <div class="drawer-header">
+        <div class="header-content">
+            <h1> Resource Assignment </h1>
+        </div>
+        <button class="icon-btn close-btn" (click)="toggleSideTab()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+
+    <div class="drawer-content">
+        <!-- Main Scrollable Content -->
+        <div class="page-container">
+
+            <form [formGroup]="projectForm" class="main-form">
+
+                <!-- SECTION 2: Assignments -->
+                <section class="form-section">
+                    <h2 class="section-title">Resource Assignment</h2>
+                    <div class="fields-grid three-col">
+                        <!-- Team Members (Custom Multi Select) -->
+                        <div class="form-group full-width-mobile">
+                            <label>Team Members <span class="required">*</span></label>
+
+                            <!-- Backdrop -->
+                            <div class="dropdown-backdrop" *ngIf="isTeamDropdownOpen"
+                                (click)="isTeamDropdownOpen = false"></div>
+
+                            <div class="multi-select-container" [class.open]="isTeamDropdownOpen">
+
+                                <!-- Trigger Box -->
+                                <div class="multi-select-trigger" (click)=" (isTeamDropdownOpen = !isTeamDropdownOpen)"
+                                    [class.has-error]="rf.employee_list?.invalid && (rf.employee_list?.dirty || rf.employee_list?.touched)">
+
+                                    <!-- Selected Chips -->
+                                    <div class="chips-container"
+                                        *ngIf="selectedEmployeeIds.length > 0; else placeholder">
+                                        <span class="chip" *ngFor="let id of selectedEmployeeIds"
+                                            (click)="$event.stopPropagation()">
+                                            <span class="chip-avatar">{{ getInitials(getEmployeeName(id)) }}</span>
+                                            {{ getEmployeeName(id) }}
+                                            <span class="chip-remove" (click)="toggleEmployee(id)">×</span>
+                                        </span>
+                                    </div>
+
+                                    <!-- Placeholder -->
+                                    <ng-template #placeholder>
+                                        <span class="placeholder-text">
+                                            Select members...</span>
+                                    </ng-template>
+
+                                    <!-- Chevron -->
+                                    <div class="trigger-actions">
+                                        <span class="count-badge" *ngIf="selectedEmployeeIds.length > 0">{{
+                                            selectedEmployeeIds.length }}</span>
+                                        <svg class="select-arrow" viewBox="0 0 24 24">
+                                            <path d="M7 10l5 5 5-5z" fill="currentColor" />
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <!-- Dropdown Panel -->
+                                <div class="multi-select-dropdown" *ngIf="isTeamDropdownOpen">
+                                    <!-- Search Header -->
+                                    <div class="dropdown-search">
+                                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg>
+                                        <input type="text" placeholder="Search people..." [(ngModel)]="teamSearch"
+                                            [ngModelOptions]="{standalone: true}" (click)="$event.stopPropagation()">
+                                    </div>
+
+                                    <!-- Options List -->
+                                    <div class="options-list">
+                                        <div class="option-item" *ngFor="let emp of filteredEmployees"
+                                            (click)="toggleEmployee(emp.id)"
+                                            [class.selected]="isEmployeeSelected(emp.id)">
+
+                                            <div class="option-avatar"
+                                                [style.background-color]="getAvatarColor(emp.id)">
+                                                {{ getInitials(emp.employee_name) }}
+                                            </div>
+                                            <div class="option-info">
+                                                <span class="option-name">{{ emp.employee_name }}</span>
+                                                <span class="option-role">{{ emp.role }}</span>
+                                            </div>
+
+                                            <div class="checkbox-custom">
+                                                <svg *ngIf="isEmployeeSelected(emp.id)" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="4">
+                                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                                </svg>
+                                            </div>
+                                        </div>
+
+                                        <div class="no-results" *ngIf="filteredEmployees.length === 0">
+                                            No members found.
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="error-msg"
+                                *ngIf="rf.employee_list?.invalid && (rf.employee_list?.dirty || rf.employee_list?.touched)">
+                                Team Members are required.
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </form>
+        </div>
+        <!-- Sticky Footer -->
+        <div class="drawer-footer">
+            <div class="header-actions">
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

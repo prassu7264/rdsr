@@ -11,9 +11,9 @@
         <div class="nav-item" routerLink="/main/projects" routerLinkActive="active" (click)="closeSubmenus($event)">
             <i class="ri-folder-shield-2-line"></i> <span>Projects</span>
         </div>
-        <div class="nav-item" routerLink="/main/analytics" routerLinkActive="active" (click)="closeSubmenus($event)">
+        <!-- <div class="nav-item" routerLink="/main/analytics" routerLinkActive="active" (click)="closeSubmenus($event)">
             <i class="ri-bar-chart-box-line"></i> <span>Analytics</span>
-        </div>
+        </div> -->
         <div class="nav-item" routerLink="/main/profile" routerLinkActive="active" (click)="closeSubmenus($event)">
             <i class="ri-folder-user-line"></i> <span>User Profile</span>
         </div>
@@ -35,7 +35,7 @@
 
         </div> -->
 
-        <div class="nav-item"
+        <!-- <div class="nav-item"
             [class.active]="router.isActive('/main/general', {paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored'}) || router.isActive('/main/logs', {paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored'}) || router.isActive('/main/billing', {paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored'})"
             [class.open]="openMenuId === 'sub2'" (click)="toggleSubmenu('sub2')">
             <i class="ri-settings-line"></i>
@@ -52,7 +52,7 @@
                 Billing</div>
             <div class="submenu-item" routerLink="/main/logs" routerLinkActive="active" (click)="closeSubmenus($event)">
                 System Logs</div>
-        </div>
+        </div> -->
 
         <div class="nav-item" routerLink="/main/settings" routerLinkActive="active" (click)="closeSubmenus($event)">
             <i class="ri-t-shirt-2-line"></i> <span>Themes</span>
