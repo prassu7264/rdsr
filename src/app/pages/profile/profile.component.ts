@@ -16,6 +16,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { ViewSelectorComponent } from 'src/app/shared/components/view-selector/view-selector.component';
+import Swal from 'sweetalert2';
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 declare var luxon: any
 @Component({
@@ -44,8 +45,11 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     private commonService: CommonService,
     private toasterService: ToasterService,
     private storageService: StorageService,
-    private dialog: MatDialog
-  ) { }
+    private dialog: MatDialog,
+
+  ) {
+
+  }
 
   ngOnInit(): void {
     this.loadInitialData();
@@ -214,18 +218,31 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
         }
         ,
         cellClick: (e: any, cell: any) => {
-          const rowData = cell.getRow().getData();
-          if (e.target.classList.contains("edit")) {
-            this.selectedUser = rowData;
-            console.log("Edit:", rowData);
-            this.viewSelector.toggleFilter();
-          }
+          if (this.storageService.roles.isAdmin || this.storageService.roles.isManager) {
+            const rowData = cell.getRow().getData();
+            if (e.target.classList.contains("edit")) {
+              this.selectedUser = rowData;
+              console.log("Edit:", rowData);
+              this.viewSelector.toggleFilter();
+            }
 
-          if (e.target.classList.contains("delete")) {
-            console.log("Delete:", rowData);
-            this.deleteUser(rowData.id)
-          }
+            if (e.target.classList.contains("delete")) {
+              Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.deleteUser(rowData.id);
+                }
+              });
+            }
 
+          }
         }
       }
     ];
@@ -238,7 +255,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
       movableRows: true,
       pagination: "local",
       paginationSize: 15,
-      editTriggerEvent: "dblclick",
+      editTriggerEvent: this.storageService.roles.isAdmin || this.storageService.roles.isManager ? "dblclick" : '',
       paginationSizeSelector: [5, 10, 15, 25, 35, 45, 100],
       columnDefaults: { tooltip: true },
       groupBy: viewby,
@@ -265,8 +282,6 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
         let obj = this.commonService.getObjectByField(this.departmentList, 'department_name', cell.getRow().getData().department_name);
         this.getDesignationByDepartment(obj.id);
       }
-
-
     });
 
   }

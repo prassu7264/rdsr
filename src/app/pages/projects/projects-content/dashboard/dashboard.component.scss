@@ -11,6 +11,20 @@
     justify-content: space-between;
 }
 
+.chart-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-height: 350px;
+    overflow: scroll;
+}
+
+.chart-wrapper::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background-color: #F5F5F5;
+}
+
 .dsb-page-title {
     font-size: 1.5rem;
     font-weight: 800;
@@ -147,7 +161,7 @@
 }
 
 .dsb-table-header-bar {
-    padding: 16px 20px;
+    padding: 10px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -190,6 +204,10 @@
 .dsb-table-content {
     flex: 1;
     overflow: auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Table Styles */
@@ -247,7 +265,7 @@
 .dsb-empty-text {
     font-size: 0.95rem;
     font-weight: 500;
-    color: var(--text-main);
+    color: var(--border);
 }
 
 /* Responsive */

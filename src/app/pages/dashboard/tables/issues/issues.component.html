@@ -1,0 +1,24 @@
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>Task Code</th>
+                <th>Task</th>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Completion %</th>
+            </tr>
+        </thead>
+        <tbody style="font-size: smaller;">
+            <tr *ngFor="let t of tasks">
+                <td data-label="Task Code" style="color: var(--text-muted);">#{{ t.taskcode }}</td>
+                <td data-label="Task">{{ t.task }}</td>
+                <td data-label="Description">{{ t.description }}</td>
+                <td data-label="Priority">{{ t.priority }}</td>
+                <td data-label="Status">{{ t.status }}</td>
+                <td data-label="Completion %">{{ t.completion_percentage }}%</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

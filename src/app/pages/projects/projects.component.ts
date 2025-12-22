@@ -6,6 +6,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { ToasterService } from 'src/app/core/services/toaster.service';
 import { TableFilterComponent } from 'src/app/shared/components/table-filter/table-filter.component';
+import Swal from 'sweetalert2';
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 declare var luxon: any
 @Component({
@@ -165,7 +166,7 @@ export class ProjectsComponent {
 
     const statusFormatter = function (cell: any) {
       const val = cell.getValue();
-      if (val === true) {
+      if (!val) {
         return `<span class="status-pill status-closed"><i class="ri-checkbox-circle-fill"></i> Open</span>`;
       }
       return `<span class="status-pill status-cancelled"><i class="ri-close-circle-fill"></i> Closed</span>`;
@@ -330,7 +331,7 @@ export class ProjectsComponent {
       {
         title: "Start Date",
         field: "start_date",
-        formatter: dateWithRelativeFormatter,
+        // formatter: dateWithRelativeFormatter,
         editor: "date",
         editorParams: {
           format: "yyyy-MM-dd",
@@ -360,8 +361,8 @@ export class ProjectsComponent {
         editor: "list",
         editorParams: {
           values: [
-            { label: "Open", value: true },
-            { label: "Closed", value: false }
+            { label: "Open", value: false },
+            { label: "Closed", value: true }
           ]
         }
       },
@@ -396,16 +397,37 @@ export class ProjectsComponent {
         }
         ,
         cellClick: (e: any, cell: any) => {
-          const rowData = cell.getRow().getData();
-          if (e.target.classList.contains("edit")) {
-            console.log("Edit:", rowData);
-            this.selectedProject = rowData;
-            this.patchProjectForm(rowData);
-            this.toggleSideTab();
-          }
+          if (this.storageService.roles.isAdmin || this.storageService.roles.isManager) {
+            const rowData = cell.getRow().getData();
+            if (e.target.classList.contains("edit")) {
+              console.log("Edit:", rowData);
+              this.selectedProject = rowData;
+              this.patchProjectForm(rowData);
+              this.toggleSideTab();
+            }
+            if (e.target.classList.contains("delete")) {
+              Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  this.authService.deleteProject(this.storageService.getUsername(), rowData.id).subscribe({
+                    next: (res: any) => {
+                      this.toasterService.success(res?.message)
+                      this.loadInitialData();
+                    }, error: (err) => {
+                      this.toasterService.error(err?.error?.message)
+                    }
+                  });
 
-          if (e.target.classList.contains("delete")) {
-
+                }
+              });
+            }
           }
 
         }
@@ -419,9 +441,9 @@ export class ProjectsComponent {
       resizableRows: true,
       movableRows: true,
       pagination: "local",
-      paginationSize: 15,
-      editTriggerEvent: "dblclick",
-      paginationSizeSelector: [5, 10, 15, 25, 35, 45, 100],
+      paginationSize: 12,
+      editTriggerEvent: this.storageService.roles.isAdmin || this.storageService.roles.isManager ? "dblclick" : "",
+      paginationSizeSelector: [5, 10, 12, 15, 25, 35, 45, 100],
       columnDefaults: { tooltip: true },
       groupBy: viewby,
       resizableColumnFit: true,

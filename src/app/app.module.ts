@@ -32,6 +32,11 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { ProjectsContentModule } from './pages/projects/projects-content/projects-content.module';
 import { SharedModule } from './shared/shared.module';
+import { ProjectStatusComponent } from './pages/dashboard/charts/project-status/project-status.component';
+import { ProjectTeamReportComponent } from './pages/dashboard/charts/project-team-report/project-team-report.component';
+import { A11yModule } from "@angular/cdk/a11y";
+import { IssuesComponent } from './pages/dashboard/tables/issues/issues.component';
+import { DueTableComponent } from './pages/dashboard/tables/due-table/due-table.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +56,10 @@ import { SharedModule } from './shared/shared.module';
     LoginComponent,
     ViewSelectorComponent,
     UserFormComponent,
+    ProjectStatusComponent,
+    ProjectTeamReportComponent,
+    IssuesComponent,
+    DueTableComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -65,12 +74,13 @@ import { SharedModule } from './shared/shared.module';
     SharedModule,
     ProjectsContentModule,
     ToastrModule.forRoot({
-      positionClass: 'toast-top-right',
-      preventDuplicates: true,
-      closeButton: true,
-      progressBar: true,
+        positionClass: 'toast-top-right',
+        preventDuplicates: true,
+        closeButton: true,
+        progressBar: true,
     }),
-  ],
+    A11yModule
+],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,

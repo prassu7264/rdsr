@@ -58,7 +58,7 @@ export class SubTasklistComponent implements OnInit {
       let empid = this.storageService.getEmpId();
       this.taskForm.reset({
         id: null,
-        worked_hours: '08:00:00',
+        // worked_hours: '08:00:00',
         completion_percentage: 0,
         taskid: this.taskid,
         employeeid: empid
@@ -458,7 +458,7 @@ export class SubTasklistComponent implements OnInit {
     start_date: ['2025-12-09', Validators.required],
     end_date: ['2025-12-10', Validators.required],
     // estHours: ['16:00', Validators.required],
-    worked_hours: ['08:00:00', Validators.required],
+    // worked_hours: ['08:00:00', Validators.required],
     completion_percentage: [75], // Optional, handled by slider
     description: ['sub task for task 1', Validators.required],
     taskid: [this.taskid, Validators.required],
@@ -513,7 +513,7 @@ export class SubTasklistComponent implements OnInit {
       status: data.status,
       start_date: data.start_date,
       end_date: data.end_date,
-      worked_hours: data.worked_hours,
+      // worked_hours: data.worked_hours,
       completion_percentage: data.completion_percentage ?? 0,
       description: data.description,
       taskid: data.taskid,

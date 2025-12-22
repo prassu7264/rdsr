@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LayoutService } from 'src/app/core/services/layout.service';
 import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-settings',
@@ -8,6 +10,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
+
 
   // List of themes available for selection
   availableThemes = [
@@ -23,7 +26,7 @@ export class SettingsComponent implements OnInit {
   currentThemeId$: Observable<string> = this.layoutService.currentTheme$;
   isDarkMode$: Observable<boolean> = this.layoutService.isDarkMode$;
 
-  constructor(private layoutService: LayoutService) { }
+  constructor(private layoutService: LayoutService, private authService: AuthService) { }
 
   ngOnInit(): void {
     // Update the header title when this page loads
@@ -43,5 +46,21 @@ export class SettingsComponent implements OnInit {
    */
   toggleDarkMode(): void {
     this.layoutService.toggleTheme();
+  }
+
+  logOut() {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to log out ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, log out!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authService.logout()
+      }
+    });
   }
 }

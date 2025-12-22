@@ -1,0 +1,245 @@
+<div class="main-content">
+
+
+    <div class="content-scroll">
+
+        <!-- =================================================================================
+           TOP SECTION: KPIs & Dashboard Controls
+      ================================================================================== -->
+        <div class="dashboard-top">
+
+            <!-- KPI Stats Cards -->
+            <div class="stats-grid">
+                <!-- Card 1: Total Active -->
+                <div class="card">
+                    <div class="stat-label">Active Releases</div>
+                    <div style="display:flex; align-items:center;">
+                        <div class="stat-value">{{ filteredReleases.length }}</div>
+                        <div class="mini-chart">
+                            <div class="bar" style="height: 30%"></div>
+                            <div class="bar active" style="height: 70%"></div>
+                            <div class="bar" style="height: 50%"></div>
+                            <div class="bar" style="height: 40%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-trend trend-up">
+                        <i class="ri-arrow-up-line"></i>
+                        <span>Pipeline Healthy</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: In Review -->
+                <div class="card">
+                    <div class="stat-label">Pending Approval (Review)</div>
+                    <div class="stat-value" style="color: var(--c-purple)">
+                        {{ getCountByStatus('review') }}
+                    </div>
+                    <div class="stat-trend" style="color: var(--text-muted)">
+                        <span>Awaiting UAT Sign-off</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Production Success -->
+                <div class="card">
+                    <div class="stat-label">Production Success</div>
+                    <div class="stat-value" style="color: var(--c-green)">
+                        {{ getCountByStatus('done') }}
+                    </div>
+                    <div class="stat-trend trend-up">
+                        <i class="ri-check-double-line"></i>
+                        <span>Deployed this month</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: Failed/Blocked -->
+                <div class="card">
+                    <div class="stat-label">Blocked / Failed</div>
+                    <div class="stat-value" style="color: var(--c-red)">
+                        {{ getCountByStatus('failed') }}
+                    </div>
+                    <div class="stat-trend trend-down">
+                        <i class="ri-error-warning-line"></i>
+                        <span>Requires attention</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters & View Switcher -->
+            <div class="section-header">
+                <div class="view-controls">
+                    <button class="btn btn-outline btn-icon" [class.active]="currentView === 'table'"
+                        (click)="setView('table')" title="List View">
+                        <i class="ri-table-line"></i>
+                    </button>
+                    <button class="btn btn-outline btn-icon" [class.active]="currentView === 'kanban'"
+                        (click)="setView('kanban')" title="Kanban Board">
+                        <i class="ri-trello-line"></i>
+                    </button>
+                    <button class="btn btn-outline " [class.active]="currentView === 'add'" (click)="setView('add')"
+                        title="Kanban Board">
+                        + Add
+                    </button>
+                </div>
+
+                <div class="search-box">
+                    <i class="ri-search-line"></i>
+                    <input type="text" class="search-input" placeholder="Search version, feature..."
+                        [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange($event)">
+                </div>
+
+                <div style="color: var(--text-muted); font-size: 13px;">
+                    <strong>{{ filteredReleases.length }}</strong> releases found 
+                </div>
+            </div>
+        </div>
+
+        <!-- =================================================================================
+           VIEW 1: DETAILED TABLE LIST
+      ================================================================================== -->
+        <div class="table-container" *ngIf="currentView === 'table'">
+
+        </div>
+
+        <!-- =================================================================================
+           VIEW 2: KANBAN BOARD (6-Step Lifecycle)
+      ================================================================================== -->
+        <div class="kanban-board" *ngIf="currentView === 'kanban'">
+
+            <!-- Column 1: OPEN (Planning) -->
+            <div class="kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'open')">
+                <div class="kanban-header">
+                    <div>
+                        <div class="k-title">1. OPEN</div>
+                        <div class="k-subtitle">Planning & Scoping</div>
+                    </div>
+                    <span class="kanban-count">{{ getReleasesByStatus('open').length }}</span>
+                </div>
+                <div class="kanban-body">
+                    <ng-container *ngFor="let release of getReleasesByStatus('open'); trackBy: trackById">
+                        <ng-container *ngTemplateOutlet="kanbanCard; context: { $implicit: release }"></ng-container>
+                    </ng-container>
+                </div>
+            </div>
+
+            <!-- Column 2: IN PROGRESS (Dev) -->
+            <div class="kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'in-progress')">
+                <div class="kanban-header">
+                    <div>
+                        <div class="k-title">2. IN PROGRESS</div>
+                        <div class="k-subtitle">Build & Development</div>
+                    </div>
+                    <span class="kanban-count">{{ getReleasesByStatus('in-progress').length }}</span>
+                </div>
+                <div class="kanban-body">
+                    <ng-container *ngFor="let release of getReleasesByStatus('in-progress'); trackBy: trackById">
+                        <ng-container *ngTemplateOutlet="kanbanCard; context: { $implicit: release }"></ng-container>
+                    </ng-container>
+                </div>
+            </div>
+
+            <!-- Column 3: TESTING (QA) -->
+            <div class="kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'testing')">
+                <div class="kanban-header">
+                    <div>
+                        <div class="k-title">3. TESTING</div>
+                        <div class="k-subtitle">Quality Assurance</div>
+                    </div>
+                    <span class="kanban-count">{{ getReleasesByStatus('testing').length }}</span>
+                </div>
+                <div class="kanban-body">
+                    <ng-container *ngFor="let release of getReleasesByStatus('testing'); trackBy: trackById">
+                        <ng-container *ngTemplateOutlet="kanbanCard; context: { $implicit: release }"></ng-container>
+                    </ng-container>
+                </div>
+            </div>
+
+            <!-- Column 4: REVIEW (UAT/Staging) -->
+            <div class="kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'review')">
+                <div class="kanban-header">
+                    <div>
+                        <div class="k-title">4. REVIEW</div>
+                        <div class="k-subtitle">UAT & Staging</div>
+                    </div>
+                    <span class="kanban-count">{{ getReleasesByStatus('review').length }}</span>
+                </div>
+                <div class="kanban-body">
+                    <ng-container *ngFor="let release of getReleasesByStatus('review'); trackBy: trackById">
+                        <ng-container *ngTemplateOutlet="kanbanCard; context: { $implicit: release }"></ng-container>
+                    </ng-container>
+                </div>
+            </div>
+
+            <!-- Column 5: FAILED (Blocked) -->
+            <div class="kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'failed')">
+                <div class="kanban-header">
+                    <div>
+                        <div class="k-title">5. FAILED</div>
+                        <div class="k-subtitle">Blocked / Rolled Back</div>
+                    </div>
+                    <span class="kanban-count">{{ getReleasesByStatus('failed').length }}</span>
+                </div>
+                <div class="kanban-body">
+                    <ng-container *ngFor="let release of getReleasesByStatus('failed'); trackBy: trackById">
+                        <ng-container *ngTemplateOutlet="kanbanCard; context: { $implicit: release }"></ng-container>
+                    </ng-container>
+                </div>
+            </div>
+
+            <!-- Column 6: DONE (Prod) -->
+            <div class="kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'done')">
+                <div class="kanban-header">
+                    <div>
+                        <div class="k-title">6. DONE</div>
+                        <div class="k-subtitle">Production Deployment</div>
+                    </div>
+                    <span class="kanban-count">{{ getReleasesByStatus('done').length }}</span>
+                </div>
+                <div class="kanban-body">
+                    <ng-container *ngFor="let release of getReleasesByStatus('done'); trackBy: trackById">
+                        <ng-container *ngTemplateOutlet="kanbanCard; context: { $implicit: release }"></ng-container>
+                    </ng-container>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- =================================================================================
+       TEMPLATE: Reusable Kanban Card (Drag & Drop Source)
+  ================================================================================== -->
+<ng-template #kanbanCard let-release>
+    <div class="kanban-card" draggable="true" [class.dragging]="isDragging(release.id)"
+        (dragstart)="onDragStart($event, release)" (dragend)="onDragEnd($event)">
+
+        <!-- Card Header -->
+        <div class="k-card-header">
+            <div class="badge" [ngClass]="getStatusClass(release.status)">
+                <span class="badge-dot" [style.backgroundColor]="getStatusColor(release.status)"></span>
+                {{ getStatusLabel(release.status) }}
+            </div>
+            <i class="ri-more-fill" style="color: var(--text-muted); cursor: pointer;"></i>
+        </div>
+
+        <!-- Card Body -->
+        <div class="k-card-title">{{ release.version }}</div>
+        <div class="k-card-desc">{{ release.title }}</div>
+
+        <!-- Card Progress -->
+        <div class="progress-track" style="margin-bottom: 10px;">
+            <div class="progress-fill" [style.width.%]="release.progress"
+                [style.backgroundColor]="getStatusColor(release.status)">
+            </div>
+        </div>
+
+        <!-- Card Footer -->
+        <div class="k-card-footer">
+            <div class="user-cell">
+                <div class="avatar" [style.background]="release.ownerColor">
+                    {{ release.ownerInitials }}
+                </div>
+                <span style="font-size: 11px; color: var(--text-muted);">{{ release.date }}</span>
+            </div>
+        </div>
+    </div>
+</ng-template>

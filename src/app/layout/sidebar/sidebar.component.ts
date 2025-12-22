@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LayoutService } from 'src/app/core/services/layout.service';
 import { Router } from '@angular/router';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,12 +15,16 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private layoutService: LayoutService,
-    public router: Router
+    public router: Router,
+    public storageService: StorageService
   ) {
     this.isMobileOpen$ = this.layoutService.isMobileMenuOpen$;
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+
+    this.storageService
+  }
 
 
   toggleSubmenu(id: string): void {

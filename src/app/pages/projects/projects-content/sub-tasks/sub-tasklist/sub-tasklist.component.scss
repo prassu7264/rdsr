@@ -273,7 +273,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     border-radius: var(--radius);
     cursor: pointer;
     transition: opacity 0.2s;
-    font-size: 0.9rem;
+    font-size: 12px;
 }
 
 .btn-submit:disabled {

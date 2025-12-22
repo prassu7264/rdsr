@@ -13,9 +13,8 @@
             <div class="tab-item" data-id="timesheet" (click)="setActiveTab('timesheet')">Timesheet</div>
             <div class="tab-item" data-id="documents" (click)="setActiveTab('documents')">Documents</div>
             <div class="tab-item" data-id="issues" (click)="setActiveTab('issues')">Issues</div>
-
+            <div class="tab-item" data-id="release" (click)="setActiveTab('release')">Releases</div>
         </div>
-
         <!-- "More" Button & Dropdown -->
         <div class="tab-more" id="tab-more">
             <i class="ri-more-fill"></i>
@@ -35,6 +34,7 @@
         <app-timesheet *ngSwitchCase="'timesheet'"></app-timesheet>
         <app-documents *ngSwitchCase="'documents'"></app-documents>
         <app-issues *ngSwitchCase="'issues'"></app-issues>
+        <app-release-management *ngSwitchCase="'release'"></app-release-management>
 
         <div *ngSwitchDefault>Select a tab</div>
     </ng-container>

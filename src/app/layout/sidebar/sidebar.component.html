@@ -61,10 +61,13 @@
     </nav>
 
     <div class="user-mini">
-        <div class="avatar">PG</div>
+        <div class="avatar">RS</div>
         <div class="user-details">
-            <div class="user-name">Prasadarao Gajula</div>
-            <div class="text-info">Admin</div>
+            <div class="user-name">{{storageService.getUsername()}}</div>
+            <div class="text-info"><span *ngIf="storageService.roles.isAdmin">Admin</span>
+                <span *ngIf="storageService.roles.isManager">Manager</span>
+                <span *ngIf="storageService.roles.isEmployee">Employee</span>
+            </div>
         </div>
     </div>
 </aside>

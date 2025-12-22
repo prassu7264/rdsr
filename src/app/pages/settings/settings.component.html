@@ -1,7 +1,7 @@
 <div class="card">
     <h2>Theme Settings</h2>
     <p style="color:var(--text-muted); margin-bottom: 20px;">Personalize the look and feel of the application.</p>
-    
+
     <div style="padding: 15px; border: 1px solid var(--border); border-radius: 8px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
             <label style="font-weight: 600;">Dark Mode</label>
@@ -13,23 +13,27 @@
                 {{ (isDarkMode$ | async) ? 'Light Mode' : 'Dark Mode' }}
             </button> -->
         </div>
-        
-        <h3 style="margin-bottom: 15px; font-size: 15px; border-top: 1px solid var(--border); padding-top: 15px;">Choose Color Palette</h3>
+
+        <h3 style="margin-bottom: 15px; font-size: 15px; border-top: 1px solid var(--border); padding-top: 15px;">Choose
+            Color Palette</h3>
 
         <div class="theme-grid">
             <ng-container *ngIf="currentThemeId$ | async as activeId">
-                <div 
-                    *ngFor="let theme of availableThemes" 
-                    class="theme-option"
-                    [class.selected]="theme.id === activeId"
+                <div *ngFor="let theme of availableThemes" class="theme-option" [class.selected]="theme.id === activeId"
                     (click)="selectTheme(theme.id)">
-                    
+
                     <div class="color-preview" [attr.data-theme-id]="theme.id"></div>
                     <span style="font-size: 13px;">{{ theme.name }}</span>
                     <i class="ri-check-circle-fill check-icon"></i>
                 </div>
             </ng-container>
         </div>
+        <!-- <div class="card" style="display: flex; justify-content: end; align-items: center;">
+            <br>
+            <br>
+            <button (click)="logOut()"
+                style="padding: 8px 15px; border: 1px solid var(--primary); border-radius: 5px; background: var(--primary-bg); color: var(--primary); cursor: pointer;">Log
+                out</button>
+        </div> -->
     </div>
 </div>
-

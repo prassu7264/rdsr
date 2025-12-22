@@ -1,0 +1,24 @@
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>Task Code</th>
+                <th>Task</th>
+                <th>Owner</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody style="font-size: smaller;">
+            <tr *ngFor="let t of dues">
+                <td data-label="Task Code" style="color: var(--text-muted);">#{{ t.taskcode }}</td>
+                <td data-label="Task">{{ t.task }}</td>
+                <td data-label="Owner">{{ t.employee_name }}</td>
+                <td data-label="Description">{{ t.description }}</td>
+                <td data-label="Date" style="color: var(--danger);">{{ t.end_date }}</td>
+                <td data-label="Type">{{ t.task_type =="requirement"?'Task':'Issue' }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

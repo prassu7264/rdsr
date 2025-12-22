@@ -14,4 +14,7 @@
         <i [ngClass]="(isDarkMode$ | async) ? 'ri-sun-line' : 'ri-moon-line'"></i>
       </button>
     </div> -->
+    <button class="header-actions" (click)="logOut()"
+                style="padding: 6px 15px; border: 1px solid var(--primary); border-radius: 5px; background: var(--primary-bg); color: var(--primary); cursor: pointer;">Log
+                out</button>
 </header>

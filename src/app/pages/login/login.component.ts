@@ -14,6 +14,7 @@ import { ToasterService } from 'src/app/core/services/toaster.service';
 })
 export class LoginComponent implements OnInit {
   VERSION = URL.CURRENT_VERSION();
+  RELEASE=URL.RELEASE_DATE()
   today = new Date();
   // State Management
   currentView: 'login' | 'register' | 'forgot' = 'login';

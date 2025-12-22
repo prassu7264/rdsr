@@ -15,12 +15,12 @@
             </div>
             <div class="dsb-group-body">
                 <div class="dsb-stat-item">
-                    <span class="dsb-stat-val">0</span>
+                    <span class="dsb-stat-val">{{dashboardData?.active_task || 0}}</span>
                     <span class="dsb-stat-label">Open</span>
                 </div>
                 <div class="dsb-stat-divider"></div>
                 <div class="dsb-stat-item">
-                    <span class="dsb-stat-val" style="opacity: 0.5;">0</span>
+                    <span class="dsb-stat-val" style="opacity: 0.5;">{{dashboardData?.closed_task || 0}}</span>
                     <span class="dsb-stat-label">Closed</span>
                 </div>
             </div>
@@ -33,12 +33,12 @@
             </div>
             <div class="dsb-group-body">
                 <div class="dsb-stat-item">
-                    <span class="dsb-stat-val">0</span>
+                    <span class="dsb-stat-val">{{dashboardData?.active_issue || 0}}</span>
                     <span class="dsb-stat-label">Open</span>
                 </div>
                 <div class="dsb-stat-divider"></div>
                 <div class="dsb-stat-item">
-                    <span class="dsb-stat-val" style="opacity: 0.5;">0</span>
+                    <span class="dsb-stat-val" style="opacity: 0.5;">{{dashboardData?.closed_issue || 0}}</span>
                     <span class="dsb-stat-label">Closed</span>
                 </div>
             </div>
@@ -51,12 +51,12 @@
             </div>
             <div class="dsb-group-body">
                 <div class="dsb-stat-item">
-                    <span class="dsb-stat-val">0</span>
+                    <span class="dsb-stat-val">{{dashboardData?.active_phase || 0}}</span>
                     <span class="dsb-stat-label">Open</span>
                 </div>
                 <div class="dsb-stat-divider"></div>
                 <div class="dsb-stat-item">
-                    <span class="dsb-stat-val" style="opacity: 0.5;">0</span>
+                    <span class="dsb-stat-val" style="opacity: 0.5;">{{dashboardData?.completed_phase || 0}}</span>
                     <span class="dsb-stat-label">Closed</span>
                 </div>
             </div>
@@ -64,6 +64,61 @@
 
     </div>
 
+    <div class="dsb-section-title" style="border-color: var(--text-muted);">Backlog</div>
+
+    <div class="dsb-tables-grid">
+
+        <!-- My Tasks -->
+        <div class="dsb-table-card">
+            <div class="dsb-table-header-bar">
+                <span class="dsb-table-badge badge-blue">Project Tasks</span>
+                <div class="dsb-table-actions"><i class="ri-more-fill"></i></div>
+            </div>
+            <div class="dsb-table-content">
+                <table class="dsb-table">
+                    <div class="chart-wrapper" *ngIf="dashboardData?.task_list?.length>0">
+                        <app-p-issues [tasks]="dashboardData?.task_list"></app-p-issues>
+                    </div>
+                    <tbody *ngIf="dashboardData?.task_list?.length==0 || !dashboardData">
+                        <tr>
+                            <td colspan="3">
+                                <div class="dsb-empty-state">
+                                    <i class="ri-inbox-line dsb-empty-icon"></i>
+                                    <div class="dsb-empty-text">No active tasks</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- My Issues -->
+        <div class="dsb-table-card">
+            <div class="dsb-table-header-bar">
+                <span class="dsb-table-badge badge-blue">Project Issues</span>
+                <div class="dsb-table-actions"><i class="ri-more-fill"></i></div>
+            </div>
+            <div class="dsb-table-content">
+                <table class="dsb-table">
+                    <div class="chart-wrapper" *ngIf="dashboardData?.bug_list?.length>0">
+                        <app-p-issues [tasks]="dashboardData?.bug_list"></app-p-issues>
+                    </div>
+                    <tbody *ngIf="dashboardData?.bug_list?.length==0 || !dashboardData">
+                        <tr>
+                            <td colspan="3">
+                                <div class="dsb-empty-state">
+                                    <i class="ri-bug-line dsb-empty-icon"></i>
+                                    <div class="dsb-empty-text">No issues reported</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
     <div class="dsb-section-title">Attention Needed</div>
 
     <div class="dsb-tables-grid">
@@ -76,7 +131,10 @@
             </div>
             <div class="dsb-table-content">
                 <table class="dsb-table">
-                    <tbody>
+                    <div class="chart-wrapper" *ngIf="dashboardData?.overdue_items?.length>0">
+                        <app-p-dues [dues]="dashboardData?.overdue_items"></app-p-dues>
+                    </div>
+                    <tbody *ngIf="dashboardData?.overdue_items?.length==0 || !dashboardData">
                         <tr>
                             <td colspan="3">
                                 <div class="dsb-empty-state">
@@ -98,8 +156,10 @@
             </div>
             <div class="dsb-table-content">
                 <table class="dsb-table">
-
-                    <tbody>
+                    <div class="chart-wrapper" *ngIf="dashboardData?.today_due?.length>0">
+                        <app-p-dues [dues]="dashboardData?.today_due"></app-p-dues>
+                    </div>
+                    <tbody *ngIf="dashboardData?.today_due?.length==0 || !dashboardData">
                         <tr>
                             <td colspan="3">
                                 <div class="dsb-empty-state">
@@ -114,57 +174,4 @@
         </div>
 
     </div>
-
-    <div class="dsb-section-title" style="border-color: var(--text-muted);">Backlog</div>
-
-    <div class="dsb-tables-grid">
-
-        <!-- My Tasks -->
-        <div class="dsb-table-card">
-            <div class="dsb-table-header-bar">
-                <span class="dsb-table-badge badge-blue">My Tasks</span>
-                <div class="dsb-table-actions"><i class="ri-more-fill"></i></div>
-            </div>
-            <div class="dsb-table-content">
-                <table class="dsb-table">
-
-                    <tbody>
-                        <tr>
-                            <td colspan="3">
-                                <div class="dsb-empty-state">
-                                    <i class="ri-inbox-line dsb-empty-icon"></i>
-                                    <div class="dsb-empty-text">No active tasks</div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- My Issues -->
-        <div class="dsb-table-card">
-            <div class="dsb-table-header-bar">
-                <span class="dsb-table-badge badge-blue">My Issues</span>
-                <div class="dsb-table-actions"><i class="ri-more-fill"></i></div>
-            </div>
-            <div class="dsb-table-content">
-                <table class="dsb-table">
-
-                    <tbody>
-                        <tr>
-                            <td colspan="3">
-                                <div class="dsb-empty-state">
-                                    <i class="ri-bug-line dsb-empty-icon"></i>
-                                    <div class="dsb-empty-text">No issues reported</div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    </div>
-
 </div>

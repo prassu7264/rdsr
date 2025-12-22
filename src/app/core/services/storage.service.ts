@@ -136,6 +136,18 @@ export class StorageService {
     localStorage.removeItem(this.REMEMBER_ME);
   }
 
+
+  get roles() {
+    const user = this.getUser();
+    const rolesArray: string[] = user?.roles || [];
+
+    return {
+      isAdmin: rolesArray.includes('ROLE_ADMIN'),
+      isManager: rolesArray.includes('ROLE_MANAGER'),
+      isEmployee: rolesArray.includes('ROLE_EMPLOYEE')
+    };
+  }
+
   // -----------------------------
   // LOGOUT (simple + clean)
   // -----------------------------
@@ -149,6 +161,6 @@ export class StorageService {
   clearAll(): void {
     this.clearToken();
     this.clearUser();
-    this.clearRememberMe();
+    // this.clearRememberMe();
   }
 }

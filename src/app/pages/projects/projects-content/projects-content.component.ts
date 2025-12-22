@@ -1,10 +1,12 @@
 import { AfterViewInit, Component, OnChanges, OnInit } from '@angular/core';
 import { LayoutService } from 'src/app/core/services/layout.service';
 
+
 @Component({
   selector: 'app-projects-content',
   templateUrl: './projects-content.component.html',
-  styleUrls: ['./projects-content.component.scss']
+  styleUrls: ['./projects-content.component.scss'],
+
 })
 export class ProjectsContentComponent implements AfterViewInit, OnInit {
   activeProjectTab: any = "";

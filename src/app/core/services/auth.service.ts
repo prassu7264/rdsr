@@ -149,5 +149,9 @@ export class AuthService {
     return this.http.post(`${BASE_URL}/phase/update`, payload);
   }
 
+  // Dashboard ==========
+  getDashboardDetailsByEmployeeId(employee_id: any, project_id: any) {
+    return this.http.get(`${BASE_URL}/common/dashboarddetails?employee_id=${employee_id}&project_id=${project_id}`);
+  }
 
 }

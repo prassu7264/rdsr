@@ -18,6 +18,9 @@ import { SubTasksComponent } from './sub-tasks/sub-tasks.component';
 import { SubTasklistComponent } from './sub-tasks/sub-tasklist/sub-tasklist.component';
 import {MatSelectModule} from '@angular/material/select';
 import {MatMenuModule} from '@angular/material/menu';
+import { PIssuesComponent } from './dashboard/tables/p-issues/p-issues.component';
+import { PDuesComponent } from './dashboard/tables/p-dues/p-dues.component';
+import { ReleaseManagementComponent } from './release-management/release-management.component';
 @NgModule({
   declarations: [
     ProjectsContentComponent,
@@ -32,6 +35,9 @@ import {MatMenuModule} from '@angular/material/menu';
     IssuesComponent,
     SubTasksComponent,
     SubTasklistComponent,
+    PIssuesComponent,
+    PDuesComponent,
+    ReleaseManagementComponent,
   ],
   imports: [
     CommonModule,

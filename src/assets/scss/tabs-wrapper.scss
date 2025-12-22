@@ -22,7 +22,7 @@
     }
 
     .tab-item {
-        font-size: 14px;
+        font-size: var(--tblr-font-size);
         font-weight: 500;
         color: var(--text-muted);
         cursor: pointer;
