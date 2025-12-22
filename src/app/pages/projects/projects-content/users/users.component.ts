@@ -95,10 +95,10 @@ export class UsersComponent {
       const row = cell.getData();
       return `
         <div class="flex-col">
-            <div style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-primary);">
+            <div style="display:flex; align-items:center; gap:6px;  font-size: var(--tblr-font-size); color:var(--text-primary);">
                 <i class="ri-mail-line" style="color:var(--text-tertiary)"></i> ${row.email}
             </div>
-            <div style="display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-secondary);">
+            <div style="display:flex; align-items:center; gap:6px; font-size: var(--tblr-font-size);color:var(--text-secondary);">
                 <i class="ri-phone-line" style="color:var(--text-tertiary)"></i> ${row.mobile || '--'}
             </div>
         </div>

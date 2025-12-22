@@ -1,63 +1,64 @@
-<div class="main-content">
+<div class="rls-main-content">
+    <!-- Icon Library (Remix Icons) -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
-
-    <div class="content-scroll">
+    <div class="rls-content-scroll">
 
         <!-- =================================================================================
-           TOP SECTION: KPIs & Dashboard Controls
-      ================================================================================== -->
-        <div class="dashboard-top">
+             TOP SECTION: KPIs & Dashboard Controls
+        ================================================================================== -->
+        <div class="rls-dashboard-top">
 
             <!-- KPI Stats Cards -->
-            <div class="stats-grid">
+            <div class="rls-stats-grid">
                 <!-- Card 1: Total Active -->
-                <div class="card">
-                    <div class="stat-label">Active Releases</div>
+                <div class="rls-card">
+                    <div class="rls-stat-label">Active Releases</div>
                     <div style="display:flex; align-items:center;">
-                        <div class="stat-value">{{ filteredReleases.length }}</div>
-                        <div class="mini-chart">
-                            <div class="bar" style="height: 30%"></div>
-                            <div class="bar active" style="height: 70%"></div>
-                            <div class="bar" style="height: 50%"></div>
-                            <div class="bar" style="height: 40%"></div>
+                        <div class="rls-stat-value">{{ filteredReleases.length }}</div>
+                        <div class="rls-mini-chart">
+                            <div class="rls-bar" style="height: 30%"></div>
+                            <div class="rls-bar rls-active" style="height: 70%"></div>
+                            <div class="rls-bar" style="height: 50%"></div>
+                            <div class="rls-bar" style="height: 40%"></div>
                         </div>
                     </div>
-                    <div class="stat-trend trend-up">
+                    <div class="rls-stat-trend rls-trend-up">
                         <i class="ri-arrow-up-line"></i>
                         <span>Pipeline Healthy</span>
                     </div>
                 </div>
 
                 <!-- Card 2: In Review -->
-                <div class="card">
-                    <div class="stat-label">Pending Approval (Review)</div>
-                    <div class="stat-value" style="color: var(--c-purple)">
+                <div class="rls-card">
+                    <div class="rls-stat-label">Pending Approval (Review)</div>
+                    <div class="rls-stat-value" style="color: var(--c-purple)">
                         {{ getCountByStatus('review') }}
                     </div>
-                    <div class="stat-trend" style="color: var(--text-muted)">
+                    <div class="rls-stat-trend" style="color: var(--text-muted)">
                         <span>Awaiting UAT Sign-off</span>
                     </div>
                 </div>
 
                 <!-- Card 3: Production Success -->
-                <div class="card">
-                    <div class="stat-label">Production Success</div>
-                    <div class="stat-value" style="color: var(--c-green)">
+                <div class="rls-card">
+                    <div class="rls-stat-label">Production Success</div>
+                    <div class="rls-stat-value" style="color: var(--c-green)">
                         {{ getCountByStatus('done') }}
                     </div>
-                    <div class="stat-trend trend-up">
+                    <div class="rls-stat-trend rls-trend-up">
                         <i class="ri-check-double-line"></i>
                         <span>Deployed this month</span>
                     </div>
                 </div>
 
                 <!-- Card 4: Failed/Blocked -->
-                <div class="card">
-                    <div class="stat-label">Blocked / Failed</div>
-                    <div class="stat-value" style="color: var(--c-red)">
+                <div class="rls-card">
+                    <div class="rls-stat-label">Blocked / Failed</div>
+                    <div class="rls-stat-value" style="color: var(--c-red)">
                         {{ getCountByStatus('failed') }}
                     </div>
-                    <div class="stat-trend trend-down">
+                    <div class="rls-stat-trend rls-trend-down">
                         <i class="ri-error-warning-line"></i>
                         <span>Requires attention</span>
                     </div>
@@ -65,56 +66,58 @@
             </div>
 
             <!-- Filters & View Switcher -->
-            <div class="section-header">
-                <div class="view-controls">
-                    <button class="btn btn-outline btn-icon" [class.active]="currentView === 'table'"
+            <div class="rls-section-header">
+                <div class="rls-view-controls">
+                    <button class="rls-btn rls-btn-outline rls-btn-icon" [class.rls-active]="currentView === 'table'"
                         (click)="setView('table')" title="List View">
                         <i class="ri-table-line"></i>
                     </button>
-                    <button class="btn btn-outline btn-icon" [class.active]="currentView === 'kanban'"
+                    <button class="rls-btn rls-btn-outline rls-btn-icon" [class.rls-active]="currentView === 'kanban'"
                         (click)="setView('kanban')" title="Kanban Board">
                         <i class="ri-trello-line"></i>
                     </button>
-                    <button class="btn btn-outline " [class.active]="currentView === 'add'" (click)="setView('add')"
-                        title="Kanban Board">
-                        + Add
-                    </button>
                 </div>
 
-                <div class="search-box">
+                <div class="rls-search-box">
                     <i class="ri-search-line"></i>
-                    <input type="text" class="search-input" placeholder="Search version, feature..."
+                    <input type="text" class="rls-search-input" placeholder="Search version, feature..."
                         [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange($event)">
                 </div>
 
-                <div style="color: var(--text-muted); font-size: 13px;">
-                    <strong>{{ filteredReleases.length }}</strong> releases found 
+                <!-- New Release Button triggers openForm() -->
+                <button class="rls-btn rls-btn-primary" style="padding: 0 16px; gap: 8px;" (click)="openForm()">
+                    <i class="ri-add-line" style="font-size: 16px;"></i>
+                    <span>New Release</span>
+                </button>
+
+                <div class="rls-release-count">
+                    <strong>{{ filteredReleases.length }}</strong> releases found
                 </div>
             </div>
         </div>
 
         <!-- =================================================================================
-           VIEW 1: DETAILED TABLE LIST
-      ================================================================================== -->
-        <div class="table-container" *ngIf="currentView === 'table'">
+             VIEW 1: DETAILED TABLE LIST
+        ================================================================================== -->
+        <div class="rls-table-container" *ngIf="currentView === 'table'">
 
         </div>
 
         <!-- =================================================================================
-           VIEW 2: KANBAN BOARD (6-Step Lifecycle)
-      ================================================================================== -->
-        <div class="kanban-board" *ngIf="currentView === 'kanban'">
+             VIEW 2: KANBAN BOARD (6-Step Lifecycle)
+        ================================================================================== -->
+        <div class="rls-kanban-board" *ngIf="currentView === 'kanban'">
 
             <!-- Column 1: OPEN (Planning) -->
-            <div class="kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'open')">
-                <div class="kanban-header">
+            <div class="rls-kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'open')">
+                <div class="rls-kanban-header">
                     <div>
-                        <div class="k-title">1. OPEN</div>
-                        <div class="k-subtitle">Planning & Scoping</div>
+                        <div class="rls-k-title">1. OPEN</div>
+                        <div class="rls-k-subtitle">Planning & Scoping</div>
                     </div>
-                    <span class="kanban-count">{{ getReleasesByStatus('open').length }}</span>
+                    <span class="rls-kanban-count">{{ getReleasesByStatus('open').length }}</span>
                 </div>
-                <div class="kanban-body">
+                <div class="rls-kanban-body">
                     <ng-container *ngFor="let release of getReleasesByStatus('open'); trackBy: trackById">
                         <ng-container *ngTemplateOutlet="kanbanCard; context: { $implicit: release }"></ng-container>
                     </ng-container>
@@ -122,15 +125,15 @@
             </div>
 
             <!-- Column 2: IN PROGRESS (Dev) -->
-            <div class="kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'in-progress')">
-                <div class="kanban-header">
+            <div class="rls-kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'in-progress')">
+                <div class="rls-kanban-header">
                     <div>
-                        <div class="k-title">2. IN PROGRESS</div>
-                        <div class="k-subtitle">Build & Development</div>
+                        <div class="rls-k-title">2. IN PROGRESS</div>
+                        <div class="rls-k-subtitle">Build & Development</div>
                     </div>
-                    <span class="kanban-count">{{ getReleasesByStatus('in-progress').length }}</span>
+                    <span class="rls-kanban-count">{{ getReleasesByStatus('in-progress').length }}</span>
                 </div>
-                <div class="kanban-body">
+                <div class="rls-kanban-body">
                     <ng-container *ngFor="let release of getReleasesByStatus('in-progress'); trackBy: trackById">
                         <ng-container *ngTemplateOutlet="kanbanCard; context: { $implicit: release }"></ng-container>
                     </ng-container>
@@ -138,15 +141,15 @@
             </div>
 
             <!-- Column 3: TESTING (QA) -->
-            <div class="kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'testing')">
-                <div class="kanban-header">
+            <div class="rls-kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'testing')">
+                <div class="rls-kanban-header">
                     <div>
-                        <div class="k-title">3. TESTING</div>
-                        <div class="k-subtitle">Quality Assurance</div>
+                        <div class="rls-k-title">3. TESTING</div>
+                        <div class="rls-k-subtitle">Quality Assurance</div>
                     </div>
-                    <span class="kanban-count">{{ getReleasesByStatus('testing').length }}</span>
+                    <span class="rls-kanban-count">{{ getReleasesByStatus('testing').length }}</span>
                 </div>
-                <div class="kanban-body">
+                <div class="rls-kanban-body">
                     <ng-container *ngFor="let release of getReleasesByStatus('testing'); trackBy: trackById">
                         <ng-container *ngTemplateOutlet="kanbanCard; context: { $implicit: release }"></ng-container>
                     </ng-container>
@@ -154,15 +157,15 @@
             </div>
 
             <!-- Column 4: REVIEW (UAT/Staging) -->
-            <div class="kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'review')">
-                <div class="kanban-header">
+            <div class="rls-kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'review')">
+                <div class="rls-kanban-header">
                     <div>
-                        <div class="k-title">4. REVIEW</div>
-                        <div class="k-subtitle">UAT & Staging</div>
+                        <div class="rls-k-title">4. REVIEW</div>
+                        <div class="rls-k-subtitle">UAT & Staging</div>
                     </div>
-                    <span class="kanban-count">{{ getReleasesByStatus('review').length }}</span>
+                    <span class="rls-kanban-count">{{ getReleasesByStatus('review').length }}</span>
                 </div>
-                <div class="kanban-body">
+                <div class="rls-kanban-body">
                     <ng-container *ngFor="let release of getReleasesByStatus('review'); trackBy: trackById">
                         <ng-container *ngTemplateOutlet="kanbanCard; context: { $implicit: release }"></ng-container>
                     </ng-container>
@@ -170,15 +173,15 @@
             </div>
 
             <!-- Column 5: FAILED (Blocked) -->
-            <div class="kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'failed')">
-                <div class="kanban-header">
+            <div class="rls-kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'failed')">
+                <div class="rls-kanban-header">
                     <div>
-                        <div class="k-title">5. FAILED</div>
-                        <div class="k-subtitle">Blocked / Rolled Back</div>
+                        <div class="rls-k-title">5. FAILED</div>
+                        <div class="rls-k-subtitle">Blocked / Rolled Back</div>
                     </div>
-                    <span class="kanban-count">{{ getReleasesByStatus('failed').length }}</span>
+                    <span class="rls-kanban-count">{{ getReleasesByStatus('failed').length }}</span>
                 </div>
-                <div class="kanban-body">
+                <div class="rls-kanban-body">
                     <ng-container *ngFor="let release of getReleasesByStatus('failed'); trackBy: trackById">
                         <ng-container *ngTemplateOutlet="kanbanCard; context: { $implicit: release }"></ng-container>
                     </ng-container>
@@ -186,15 +189,15 @@
             </div>
 
             <!-- Column 6: DONE (Prod) -->
-            <div class="kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'done')">
-                <div class="kanban-header">
+            <div class="rls-kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'done')">
+                <div class="rls-kanban-header">
                     <div>
-                        <div class="k-title">6. DONE</div>
-                        <div class="k-subtitle">Production Deployment</div>
+                        <div class="rls-k-title">6. DONE</div>
+                        <div class="rls-k-subtitle">Production Deployment</div>
                     </div>
-                    <span class="kanban-count">{{ getReleasesByStatus('done').length }}</span>
+                    <span class="rls-kanban-count">{{ getReleasesByStatus('done').length }}</span>
                 </div>
-                <div class="kanban-body">
+                <div class="rls-kanban-body">
                     <ng-container *ngFor="let release of getReleasesByStatus('done'); trackBy: trackById">
                         <ng-container *ngTemplateOutlet="kanbanCard; context: { $implicit: release }"></ng-container>
                     </ng-container>
@@ -203,42 +206,168 @@
 
         </div>
     </div>
+
+    <!-- =================================================================================
+           SIDE DRAWER: NEW RELEASE FORM (REACTIVE FORM)
+      ================================================================================== -->
+
+    <!-- Backdrop -->
+    <div class="rls-drawer-backdrop" *ngIf="showDrawer" (click)="closeForm()"></div>
+
+    <!-- Drawer Container -->
+    <div class="rls-drawer" [class.rls-open]="showDrawer">
+
+        <div class="rls-drawer-header">
+            <h3>New Release</h3>
+            <button class="icon-btn close-btn" (click)="closeForm()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Reactive Form Container -->
+        <div class="rls-drawer-body" [formGroup]="releaseForm">
+            <p style="margin-bottom: 20px; color: var(--text-muted); font-size: 13px;">
+                Fill in the details below to initiate a new software release cycle.
+            </p>
+
+            <!-- Form Fields -->
+            <div class="rls-form-row">
+                <div class="rls-form-group">
+                    <div class="rls-form-group">
+                        <label>Project <span class="rls-required">*</span></label>
+                        <select class="rls-form-input" formControlName="projectid"
+                            [class.rls-invalid]="isFieldInvalid('projectid')">
+                            <option [ngValue]="null" disabled>Select Project</option>
+                            <option *ngFor="let p of projectList" [ngValue]="p.id">{{ p.project_title }}</option>
+                        </select>
+                        <div class="rls-error-msg" *ngIf="isFieldInvalid('projectid')">Project is required</div>
+                    </div>
+                    <br>
+                    <label>Release Code / Title <span class="rls-required">*</span></label>
+                    <textarea type="text" class="rls-form-input" formControlName="code" placeholder="e.g. REL-2025-01"
+                        [class.rls-invalid]="isFieldInvalid('code')"></textarea>
+                    <div class="rls-error-msg" *ngIf="isFieldInvalid('code')">Release code is required</div>
+                </div>
+
+            </div>
+
+            <div class="rls-form-row">
+                <div class="rls-form-group">
+                    <label>Version <span class="rls-required">*</span></label>
+                    <input type="text" class="rls-form-input" formControlName="version" placeholder="v1.0.0"
+                        [class.rls-invalid]="isFieldInvalid('version')">
+                    <div class="rls-error-msg" *ngIf="isFieldInvalid('version')">Version is required</div>
+                </div>
+                <div class="rls-form-group">
+                    <label>Status <span class="rls-required">*</span></label>
+                    <select class="rls-form-input" formControlName="status">
+                        <!-- <option value="open">Open (Planning)</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="testing">Testing (QA)</option>
+                        <option value="review">Review (UAT)</option>
+                        <option value="done">Done (Prod)</option> -->
+                        <option *ngFor="let status of statusList" [value]="status">{{status}}</option>
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="rls-form-row">
+                <div class="rls-form-group">
+                    <label>Planned Date <span class="rls-required">*</span></label>
+                    <input type="date" class="rls-form-input" formControlName="planned_date"
+                        [class.rls-invalid]="isFieldInvalid('planned_date')">
+                    <div class="rls-error-msg" *ngIf="isFieldInvalid('planned_date')">Date is required</div>
+                </div>
+                <div class="rls-form-group">
+                    <label>Released Date <span class="rls-required">*</span></label>
+                    <input type="date" class="rls-form-input" formControlName="released_date"
+                        [class.rls-invalid]="isFieldInvalid('released_date')">
+                    <div class="rls-error-msg" *ngIf="isFieldInvalid('released_date')">Date is required</div>
+                </div>
+            </div>
+
+            <div class="rls-form-row">
+                <div class="rls-form-group">
+                    <label>Assigned To <span class="rls-required">*</span></label>
+                    <select class="rls-form-input" formControlName="assigned_to"
+                        [class.rls-invalid]="isFieldInvalid('assigned_to')">
+                        <option [ngValue]="null" disabled>Select User</option>
+                        <option *ngFor="let u of users" [ngValue]="u.id">{{ u.name }}</option>
+                    </select>
+                    <div class="rls-error-msg" *ngIf="isFieldInvalid('assigned_to')">Assignee is required</div>
+                </div>
+                <!-- Removed "Created By" Field -->
+            </div>
+
+            <div class="rls-form-group">
+                <label>Artifact File <span class="rls-required">*</span></label>
+                <div class="rls-file-upload-wrapper">
+                    <input type="file" class="rls-form-input rls-file-input" (change)="onFileSelected($event)"
+                        [class.rls-invalid]="isFieldInvalid('file_url')">
+                    <input type="hidden" formControlName="file_url">
+                </div>
+                <div *ngIf="releaseForm.get('file_url')?.value"
+                    style="font-size: 12px; color: var(--primary); margin-top: 6px; font-weight: 500;">
+                    Selected: {{ releaseForm.get('file_url')?.value }}
+                </div>
+                <div class="rls-error-msg" *ngIf="isFieldInvalid('file_url')">File artifact is required</div>
+            </div>
+
+            <div class="rls-form-group">
+                <label>Description (Mail Content) <span class="rls-required">*</span></label>
+                <textarea class="rls-form-input" rows="5" formControlName="mail_content"
+                    placeholder="Release notes or description..."
+                    [class.rls-invalid]="isFieldInvalid('mail_content')"></textarea>
+                <div class="rls-error-msg" *ngIf="isFieldInvalid('mail_content')">Description is required</div>
+            </div>
+        </div>
+
+        <div class="rls-drawer-footer">
+            <button class="rls-btn rls-btn-outline" (click)="closeForm()">Cancel</button>
+            <button class="rls-btn rls-btn-primary" (click)="saveRelease()">Create Release</button>
+        </div>
+    </div>
+
 </div>
 
 <!-- =================================================================================
-       TEMPLATE: Reusable Kanban Card (Drag & Drop Source)
-  ================================================================================== -->
+         TEMPLATE: Reusable Kanban Card (Drag & Drop Source)
+    ================================================================================== -->
 <ng-template #kanbanCard let-release>
-    <div class="kanban-card" draggable="true" [class.dragging]="isDragging(release.id)"
+    <div class="rls-kanban-card" draggable="true" [class.rls-dragging]="isDragging(release.id)"
         (dragstart)="onDragStart($event, release)" (dragend)="onDragEnd($event)">
 
         <!-- Card Header -->
-        <div class="k-card-header">
-            <div class="badge" [ngClass]="getStatusClass(release.status)">
-                <span class="badge-dot" [style.backgroundColor]="getStatusColor(release.status)"></span>
+        <div class="rls-k-card-header">
+            <div class="rls-badge" [ngClass]="getStatusClass(release.status)">
+                <span class="rls-badge-dot" [style.backgroundColor]="getStatusColor(release.status)"></span>
                 {{ getStatusLabel(release.status) }}
             </div>
-            <i class="ri-more-fill" style="color: var(--text-muted); cursor: pointer;"></i>
+            <i class="ri-more-fill" style="color: var(--text-muted); cursor: pointer; font-size: 18px;"></i>
         </div>
 
         <!-- Card Body -->
-        <div class="k-card-title">{{ release.version }}</div>
-        <div class="k-card-desc">{{ release.title }}</div>
+        <div class="rls-k-card-title">{{ release.version }}</div>
+        <div class="rls-k-card-desc">{{ release.title }}</div>
 
         <!-- Card Progress -->
-        <div class="progress-track" style="margin-bottom: 10px;">
-            <div class="progress-fill" [style.width.%]="release.progress"
+        <div class="rls-progress-track" style="margin-bottom: 12px;">
+            <div class="rls-progress-fill" [style.width.%]="release.progress"
                 [style.backgroundColor]="getStatusColor(release.status)">
             </div>
         </div>
 
         <!-- Card Footer -->
-        <div class="k-card-footer">
-            <div class="user-cell">
-                <div class="avatar" [style.background]="release.ownerColor">
+        <div class="rls-k-card-footer">
+            <div class="rls-user-cell">
+                <div class="rls-avatar" [style.background]="release.ownerColor">
                     {{ release.ownerInitials }}
                 </div>
-                <span style="font-size: 11px; color: var(--text-muted);">{{ release.date }}</span>
+                <span style="font-size: 12px; color: var(--text-muted); font-weight: 500;">{{ release.date }}</span>
             </div>
         </div>
     </div>

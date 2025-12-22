@@ -264,7 +264,19 @@ export class ProjectsComponent {
       `;
     };
 
-
+    const taskDescriptionFormatter = function (cell: any) {
+      const row = cell.getData();
+      // <span class="text-muted">${row.description || 'No description'}</span>
+      return `
+          <div class="task-cell-wrapper">
+              <div class="flex-row">
+                  <div class="flex-col">
+                      <span class="text-muted" >${row.description || 'No description'}</span>
+                  </div>
+              </div>
+          </div>
+      `;
+    };
     const taskProgressFormatter = (cell: any) => {
       const row = cell.getData();
       const done = Number(row.tasks_done ?? 0);
@@ -341,7 +353,6 @@ export class ProjectsComponent {
         title: "Due Date",
         field: "end_date",
         formatter: dateWithRelativeFormatter,
-        width: 140,
         editor: "date",
         editorParams: {
           format: "yyyy-MM-dd",
@@ -370,7 +381,7 @@ export class ProjectsComponent {
         title: "Tasks", field: "tasks_done", width: 180, headerSort: false,
         formatter: taskProgressFormatter,
       },
-      { title: "Description", field: "description", editor: "textarea" },
+      { title: "Description", field: "description", editor: "textarea", formatter: taskDescriptionFormatter },
 
       {
         title: "Created Date", field: "created_date", sorter: "datetime"

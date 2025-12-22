@@ -321,7 +321,7 @@ export class SubTasklistComponent implements OnInit {
         title: "Due Date",
         field: "end_date",
         formatter: dateWithRelativeFormatter,
-        width: 140,
+        // width: 140,
         // editor: "date",
         // editorParams: {
         //   format: "yyyy-MM-dd",
@@ -350,10 +350,7 @@ export class SubTasklistComponent implements OnInit {
         hozAlign: "center",
         formatter: () => {
           return `
-            <button  class="edit"
-              style="border:none;background:transparent;cursor:pointer;padding:4px;">
-              <i class="ri-edit-2-line edit" style="font-size:18px;color:var(--c-blue);"></i>
-            </button>
+            
              <button class="dsr"
               style="border:none;background:transparent;cursor:pointer;padding:4px; ">
               <i class="ri-question-answer-line dsr" style="font-size:18px;color:var(--warning);"></i>
@@ -366,6 +363,10 @@ export class SubTasklistComponent implements OnInit {
           `;
         }
         ,
+        // <button  class="edit"
+        //       style="border:none;background:transparent;cursor:pointer;padding:4px;">
+        //       <i class="ri-edit-2-line edit" style="font-size:18px;color:var(--c-blue);"></i>
+        //     </button>
         cellClick: (e: any, cell: any) => {
           const rowData = cell.getRow().getData();
           this.selectTask = rowData;

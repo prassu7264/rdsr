@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 // -------------------------------------------------------------------------
 //  1. Data Models & Types
@@ -12,6 +16,7 @@ type LifecycleStatus =
   | 'failed'      // 5. Blocked or Rolled Back
   | 'done';       // 6. Production Deployment
 
+// View Model for the Dashboard
 interface Release {
   id: string;
   version: string;
@@ -33,17 +38,56 @@ interface Release {
   templateUrl: './release-management.component.html',
   styleUrls: ['./release-management.component.scss']
 })
-export class ReleaseManagementComponent {// State
+export class ReleaseManagementComponent implements OnInit {
+  availableList = ['Open', 'In-Progress', 'In-Testing', 'In-Review', 'failed', 'Completed']
+
   // -------------------------------------------------------------------------
   //  3. Component Logic & State
   // -------------------------------------------------------------------------
-
+  empid: any = 0
   // State
-  currentView: 'table' | 'kanban' | 'add' = 'table';
+  currentView: 'table' | 'kanban' = 'table';
   searchQuery: string = '';
   draggedReleaseId: string | null = null;
+  showDrawer: boolean = false;
 
-  // Mock Data (Release Management Guide Example)
+
+  constructor(private authService: AuthService, private storageService: StorageService) {
+    this.empid = this.storageService.getEmpId();
+  }
+  ngOnInit(): void {
+    this.getProjects();
+    this.getStatusList();
+  }
+
+  // Mock Data for Selects
+  projectList: any = [];
+  statusList: any = []
+  users = [
+    { id: 1, name: 'John Doe' },
+    { id: 2, name: 'Alex M.' },
+    { id: 3, name: 'Sarah J.' },
+    { id: 4, name: 'Rob L.' },
+    { id: 5, name: 'Mike K.' }
+  ];
+
+
+
+  // Reactive Form Definition - ALL FIELDS REQUIRED
+  releaseForm = new FormGroup({
+    code: new FormControl('', Validators.required),
+    projectid: new FormControl<number | null>(null, Validators.required),
+    version: new FormControl('', Validators.required),
+    planned_date: new FormControl(new Date().toISOString().split('T')[0], Validators.required),
+    released_date: new FormControl('', Validators.required),
+    assigned_to: new FormControl<number | null>(null, Validators.required),
+    status: new FormControl<LifecycleStatus>('open', { nonNullable: true, validators: Validators.required }),
+    // Removed username field
+    mail_content: new FormControl('', Validators.required),
+    file_url: new FormControl('', Validators.required)
+  });
+
+  // Mock Data
   releases: Release[] = [
     {
       id: '1', version: 'v2.5.0-plan', title: 'Q4 Strategy Features',
@@ -86,7 +130,6 @@ export class ReleaseManagementComponent {// State
   //  4. Helpers & Actions
   // -------------------------------------------------------------------------
 
-  // Computed Getter for Filtering
   get filteredReleases(): Release[] {
     const query = this.searchQuery.toLowerCase();
     return this.releases.filter(r =>
@@ -95,41 +138,35 @@ export class ReleaseManagementComponent {// State
     );
   }
 
-  // View Switching
-  setView(view: 'table' | 'kanban' | 'add') {
+  setView(view: 'table' | 'kanban') {
     this.currentView = view;
   }
 
-  // Search Handling
   onSearchChange(value: string) {
     this.searchQuery = value;
   }
 
-  // ngFor Optimization
   trackById(index: number, item: Release): string {
     return item.id;
   }
 
-  // Filter by Status
   getReleasesByStatus(status: string | string[]) {
     const statuses = Array.isArray(status) ? status : [status];
     return this.filteredReleases.filter(r => statuses.includes(r.status));
   }
 
-  // Count by Status
   getCountByStatus(status: string | string[]) {
     return this.getReleasesByStatus(status).length;
   }
 
-  // Status Style Maps
   getStatusClass(status: string): string {
     switch (status) {
-      case 'open': return 'status-open';
-      case 'in-progress': return 'status-in-progress';
-      case 'testing': return 'status-testing';
-      case 'review': return 'status-review';
-      case 'failed': return 'status-failed';
-      case 'done': return 'status-done';
+      case 'open': return 'rls-release-open';
+      case 'in-progress': return 'rls-release-in-progress';
+      case 'testing': return 'rls-release-testing';
+      case 'review': return 'rls-release-review';
+      case 'failed': return 'rls-release-failed';
+      case 'done': return 'rls-release-done';
       default: return '';
     }
   }
@@ -158,6 +195,11 @@ export class ReleaseManagementComponent {// State
     }
   }
 
+  isFieldInvalid(fieldName: string): boolean {
+    const control = this.releaseForm.get(fieldName);
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+
   // -------------------------------------------------------------------------
   //  5. Drag & Drop Logic
   // -------------------------------------------------------------------------
@@ -179,7 +221,7 @@ export class ReleaseManagementComponent {// State
   }
 
   onDragOver(event: DragEvent) {
-    event.preventDefault(); // Required to allow dropping
+    event.preventDefault();
     if (event.dataTransfer) {
       event.dataTransfer.dropEffect = 'move';
     }
@@ -198,5 +240,87 @@ export class ReleaseManagementComponent {// State
     this.releases = this.releases.map(item =>
       item.id === id ? { ...item, status: newStatus } : item
     );
+  }
+
+  // -------------------------------------------------------------------------
+  //  6. Form & Drawer Logic
+  // -------------------------------------------------------------------------
+
+  openForm() {
+    this.showDrawer = true;
+    this.releaseForm.reset({
+      code: '',
+      projectid: null,
+      version: '',
+      planned_date: new Date().toISOString().split('T')[0],
+      released_date: '',
+      assigned_to: null,
+      status: 'open',
+      mail_content: '',
+      file_url: ''
+    });
+  }
+
+  closeForm() {
+    this.showDrawer = false;
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.releaseForm.patchValue({ file_url: file.name });
+      // Mark as touched so validation shows up if they select then cancel (rare but good practice)
+      this.releaseForm.get('file_url')?.markAsTouched();
+    }
+  }
+
+  saveRelease() {
+    if (this.releaseForm.invalid) {
+      this.releaseForm.markAllAsTouched(); // Trigger validation UI
+      return;
+    }
+
+    const formValues = this.releaseForm.getRawValue();
+
+    // Map assigned user name based on ID for display
+    let assignedUserName = 'Current User';
+    if (formValues.assigned_to) {
+      const foundUser = this.users.find(u => u.id === formValues.assigned_to);
+      if (foundUser) assignedUserName = foundUser.name;
+    }
+
+    const releaseToAdd: Release = {
+      id: (this.releases.length + 1).toString(),
+      version: formValues.version || 'vX.X.X',
+      title: formValues.code || 'Untitled Release',
+      status: formValues.status,
+      progress: 0,
+      date: formValues.planned_date || 'TBD',
+      owner: assignedUserName,
+      ownerInitials: (assignedUserName || 'U').substring(0, 2).toUpperCase(),
+      ownerColor: 'var(--c-blue)'
+    };
+console.log(formValues);
+
+    this.releases.push(releaseToAdd);
+    this.closeForm();
+  }
+
+  // ==============
+  getProjects() {
+    this.authService.getAllProjectsByEmployeeId(this.empid).subscribe({
+      next: (res: any) => {
+        this.projectList = res
+      }
+    });
+  }
+
+  getStatusList() {
+    this.authService.getStatusList().subscribe({
+      next: (res: any) => {
+        this.statusList = res;
+      }
+    });
   }
 }

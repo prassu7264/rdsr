@@ -10,14 +10,16 @@
                 <th>Completion %</th>
             </tr>
         </thead>
-        <tbody style="font-size: smaller;">
+        <tbody>
             <tr *ngFor="let t of tasks">
-                <td data-label="Task Code" style="color: var(--text-muted);">#{{ t.taskcode }}</td>
-                <td data-label="Task">{{ t.task }}</td>
-                <td data-label="Description">{{ t.description }}</td>
-                <td data-label="Priority">{{ t.priority }}</td>
-                <td data-label="Status">{{ t.status }}</td>
-                <td data-label="Completion %">{{ t.completion_percentage }}%</td>
+                <td data-label="Task Code" [title]="t.taskcode" class="truncate" style="color: var(--text-muted);">#{{
+                    t.taskcode }}</td>
+                <td data-label="Task" [title]="t.task" class="truncate">{{ t.task }}</td>
+                <td data-label="Description" [title]="t.description" class="truncate">{{ t.description }}</td>
+                <td data-label="Priority" [title]="t.priority" class="truncate">{{ t.priority }}</td>
+                <td data-label="Status" [title]="t.status" class="truncate">{{ t.status }}</td>
+                <td data-label="Completion %" [title]="t.completion_percentage" class="truncate">{{
+                    t.completion_percentage }}%</td>
             </tr>
         </tbody>
     </table>

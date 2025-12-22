@@ -10,14 +10,14 @@
                 <th>Type</th>
             </tr>
         </thead>
-        <tbody style="font-size: smaller;">
+        <tbody>
             <tr *ngFor="let t of dues">
-                <td data-label="Task Code" style="color: var(--text-muted);">#{{ t.taskcode }}</td>
-                <td data-label="Task">{{ t.task }}</td>
-                <td data-label="Owner">{{ t.employee_name }}</td>
-                <td data-label="Description">{{ t.description }}</td>
-                <td data-label="Date">{{ t.end_date }}</td>
-                <td data-label="Type">{{ t.task_type =="requirement"?'Task':'Issue' }}</td>
+                <td data-label="Task Code" class="truncate" style="color: var(--text-muted);">#{{ t.taskcode }}</td>
+                <td data-label="Task" class="truncate">{{ t.task }}</td>
+                <td data-label="Owner" class="truncate">{{ t.employee_name }}</td>
+                <td data-label="Description" class="truncate">{{ t.description }}</td>
+                <td data-label="Date" class="truncate">{{ t.end_date }}</td>
+                <td data-label="Type" class="truncate">{{ t.task_type =="requirement"?'Task':'Issue' }}</td>
             </tr>
         </tbody>
     </table>

@@ -345,7 +345,7 @@ export class TasksComponent {
                   </div>
                   <div class="flex-col">
                       <span class="text-main text-bold">${row.task}</span>
-                      <span class="text-muted">${row.description || 'No description'}</span>
+                      <span class="text-muted" >${row.description || 'No description'}</span>
                   </div>
               </div>
               <button class="access-btn">
@@ -354,7 +354,19 @@ export class TasksComponent {
           </div>
       `;
     };
-
+    const taskDescriptionFormatter = function (cell: any) {
+      const row = cell.getData();
+      // <span class="text-muted">${row.description || 'No description'}</span>
+      return `
+          <div class="task-cell-wrapper">
+              <div class="flex-row">
+                  <div class="flex-col">
+                      <span class="text-muted" >${row.description || 'No description'}</span>
+                  </div>
+              </div>
+          </div>
+      `;
+    };
 
     const officeHoursDaysFormatter = (cell: any) => {
       const raw = cell.getValue(); // example: "05:30", "12:00", "80:00"
@@ -543,7 +555,7 @@ export class TasksComponent {
       {
         title: "Start Date",
         field: "start_date",
-        formatter: dateWithRelativeFormatter,
+        // formatter: dateWithRelativeFormatter,
         editor: "date",
         editorParams: {
           format: "yyyy-MM-dd",
@@ -553,7 +565,7 @@ export class TasksComponent {
         title: "Due Date",
         field: "end_date",
         formatter: dateWithRelativeFormatter,
-        width: 140,
+        // width: 140,
         editor: "date",
         editorParams: {
           format: "yyyy-MM-dd",
@@ -569,7 +581,7 @@ export class TasksComponent {
         title: "Completion", field: "tasks_done", width: 180, headerSort: false,
         formatter: taskProgressFormatter, editorParams: { min: 0, max: 100 }
       },
-      { title: "Description", field: "description", editor: "textarea" },
+      { title: "Description", field: "description", editor: "textarea", formatter: taskDescriptionFormatter },
       { title: "phase_title", field: "phase_title" },
 
       {

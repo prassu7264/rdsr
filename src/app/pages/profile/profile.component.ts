@@ -118,10 +118,10 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
       const row = cell.getData();
       return `
         <div class="flex-col">
-            <div style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-primary);">
+            <div style="display:flex; align-items:center; gap:6px; font-size:var(--tblr-font-size); color:var(--text-primary);">
                 <i class="ri-mail-line" style="color:var(--text-tertiary)"></i> ${row.email}
             </div>
-            <div style="display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-secondary);">
+            <div style="display:flex; align-items:center; gap:6px; font-size:var(--tblr-font-size); color:var(--text-secondary);">
                 <i class="ri-phone-line" style="color:var(--text-tertiary)"></i> ${row.mobile || '--'}
             </div>
         </div>
@@ -133,7 +133,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
       if (val) {
         return `<span class="status-pill status-closed"><i class="ri-checkbox-circle-fill"></i> Active</span>`;
       }
-      return `<span class="status-pill status-cancelled"><i class="ri-close-circle-fill"></i> Closed</span>`;
+      return `<span class="status-pill status-cancelled"><i class="ri-close-circle-fill"></i> Inactive</span>`;
     };
 
     const wfhFormatter = (cell: any) => {
@@ -147,7 +147,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
       const val = cell.getValue();
       if (!val) return "-";
       const dt = luxon.DateTime.fromISO(val);
-      return `<div class="flex-col"><span class="text-bold" style="font-size:12px;">${dt.toFormat('dd MMM yyyy')}</span><span class="text-muted">${dt.toRelative()}</span></div>`;
+      return `<div class="flex-col"><span class="text-bold" style="font-size:var(--tblr-font-size);">${dt.toFormat('dd MMM yyyy')}</span><span class="text-muted">${dt.toRelative()}</span></div>`;
     };
     this.columns = [
       { title: "ID", field: "id", sorter: "number", hozAlign: "center", formatter: (cell: any) => `<span class="text-light-gray">EMP-${cell.getValue()}</span>` },
@@ -160,7 +160,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
       {
         title: "Shift", field: "shift_type", width: 140,
         editor: "list", editorParams: { values: ["Day Shift", "Night Shift", "Rotational"] },
-        formatter: (cell: any) => `<span style="font-weight:500; font-size:12px;">${cell.getValue()}</span>`
+        formatter: (cell: any) => `<span style="font-weight:500; font-size:var(--tblr-font-size);">${cell.getValue()}</span>`
       },
 
       {

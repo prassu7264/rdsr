@@ -36,11 +36,8 @@ export class PhasesComponent {
     private storageService: StorageService,
     private router: Router
   ) {
-
     this.projectid = this.route.snapshot.paramMap.get('id');
     this.empid = this.storageService.getEmpId();
-   
-
   }
 
   apppTypeList: any[] = [];
