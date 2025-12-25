@@ -11,7 +11,9 @@ import { LayoutService } from 'src/app/core/services/layout.service';
 export class ProjectsContentComponent implements AfterViewInit, OnInit {
   activeProjectTab: any = "";
   projectDetails: any;
-  constructor(private layoutService: LayoutService) { }
+  constructor(private layoutService: LayoutService) {
+    sessionStorage.setItem("activeProjectTab", 'tasks');
+   }
 
   ngOnInit(): void {
     const saved = localStorage.getItem('projectDetails');

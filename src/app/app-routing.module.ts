@@ -15,6 +15,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './core/services/auth.guard';
 import { ProjectsContentComponent } from './pages/projects/projects-content/projects-content.component';
 import { SubTasksComponent } from './pages/projects/projects-content/sub-tasks/sub-tasks.component';
+import { ReleaseNotesComponent } from './pages/projects/projects-content/release-management/release-notes/release-notes.component';
 
 
 const routes: Routes = [
@@ -40,6 +41,7 @@ const routes: Routes = [
       { path: 'settings', component: SettingsComponent },
       { path: 'projects/projects-content/:id', component: ProjectsContentComponent },
       { path: 'projects/projects-content/:id/:taskid', component: SubTasksComponent },
+      { path: 'projects/projects-content/release/:id/:releaseid', component: ReleaseNotesComponent },
     ]
   },
   // Wildcard Route

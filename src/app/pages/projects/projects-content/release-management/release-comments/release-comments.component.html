@@ -1,0 +1,65 @@
+<div class="app-container">
+    <div class="feed-container">
+      <!-- Feed List -->
+      <div class="feed-list">
+        <div class="feed-item" *ngFor="let comment of comments; trackBy: trackById">
+          
+          <!-- Avatar -->
+          <div class="item-avatar" [style.background-color]="getAvatarColor(comment.author.name)">
+            {{getInitials(comment.author.name)}}
+          </div>
+
+          <!-- Body -->
+          <div class="item-body">
+            <div class="item-meta">
+              <span class="author-name">{{comment.author.name}}</span>
+              <span class="dot">&middot;</span>
+              <span class="timestamp">{{formatTime(comment.timestamp)}}</span>
+            </div>
+
+            <!-- Content (View) -->
+            <div class="item-content" *ngIf="!comment.isEditing">
+              {{comment.content}}
+            </div>
+
+            <!-- Content (Edit) -->
+            <div class="item-edit" *ngIf="comment.isEditing">
+              <textarea [(ngModel)]="editCache" rows="3" class="edit-input"></textarea>
+              <div class="edit-actions">
+                <button class="btn-text" (click)="cancelEdit(comment)">Cancel</button>
+                <button class="btn-solid small" (click)="saveEdit(comment)">Save</button>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="item-actions" *ngIf="!comment.isEditing">
+              <button (click)="enableEdit(comment)">Edit</button>
+              <button class="danger" (click)="deleteComment(comment.id)">Delete</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="empty-state" *ngIf="comments.length === 0">
+          No comments yet. Start the conversation!
+        </div>
+      </div>
+
+      <!-- Input Area (Sticky Bottom) -->
+      <div class="input-section">
+        <div class="input-wrapper">
+          <textarea 
+            [formControl]="commentControl" 
+            placeholder="Add to the discussion..." 
+            rows="3"
+            class="main-input"
+            (keydown.control.enter)="addComment()">
+          </textarea>
+          <div class="input-footer">
+            <span class="hint">Ctrl + Enter to post</span>
+            <button class="btn-solid" (click)="addComment()" [disabled]="!commentControl.valid">Post Comment</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>

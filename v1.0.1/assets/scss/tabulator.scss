@@ -1,0 +1,603 @@
+/* =========================================
+   2. TABLE CONTAINER
+   ========================================= */
+
+.tabulator {
+    font-family: inherit;
+    font-size: var(--tblr-font-size);
+    color: var(--text-main);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-sm);
+
+    &:focus {
+        outline: none;
+    }
+
+    /* =========================================
+     3. HEADER
+     ========================================= */
+    .tabulator-header {
+        background-color: var(--bg-body);
+        border-bottom: 1px solid var(--border);
+        font-weight: 400;
+        color: var(--text-muted);
+        user-select: none;
+        font-family: inherit;
+        // font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+        .tabulator-col {
+            background-color: var(--bg-body);
+            border-right: 1px solid transparent;
+            padding: 0;
+            height: var(--tblr-header-height);
+            position: relative;
+            transition: background-color 0.2s;
+
+            .tabulator-col-content {
+                padding: 0 16px;
+                height: 100%;
+                display: flex;
+                align-items: center;
+
+                .tabulator-col-title {
+                    // font-size: 13px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    font-weight: bold;
+                    color: var(--primary);
+                }
+
+                /* --- BEST SORT ICON (Solid Arrow) --- */
+                .tabulator-arrow {
+                    display: inline-block;
+                    width: 8px;
+                    height: 10px;
+                    margin-left: 8px;
+                    position: relative;
+
+                    /* CRITICAL: Override Tabulator default borders */
+                    border: none !important;
+                    background: none !important;
+
+                    opacity: 0.3;
+                    transition: all 0.2s ease;
+
+                    /* Draw Custom Arrow using CSS Borders */
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        left: 0;
+                        transform: translateY(-50%);
+                        border-left: 4px solid transparent;
+                        border-right: 4px solid transparent;
+                        border-top: 5px solid currentColor;
+                        /* Down pointing by default */
+                        border-bottom: none;
+                    }
+                }
+            }
+
+            /* Hover State */
+            &:hover {
+                background-color: var(--bg-hover);
+
+                .tabulator-col-title {
+                    color: var(--text-main);
+                }
+
+                .tabulator-arrow {
+                    opacity: 0.6;
+                    color: var(--text-main);
+                }
+            }
+
+            /* Ascending (Up) */
+            &[aria-sort="ascending"] {
+                background-color: var(--bg-hover);
+
+                .tabulator-col-title {
+                    color: var(--primary);
+                }
+
+                .tabulator-arrow {
+                    opacity: 1;
+                    color: var(--primary);
+
+                    &::after {
+                        border-top: none;
+                        border-bottom: 5px solid currentColor;
+                        /* Point Up */
+                    }
+                }
+            }
+
+            /* Descending (Down) */
+            &[aria-sort="descending"] {
+                background-color: var(--bg-hover);
+
+                .tabulator-col-title {
+                    color: var(--primary);
+                }
+
+                .tabulator-arrow {
+                    opacity: 1;
+                    color: var(--primary);
+
+                    &::after {
+                        border-top: 5px solid currentColor;
+                        /* Point Down */
+                        border-bottom: none;
+                    }
+                }
+            }
+
+            /* Resize Handle */
+            .tabulator-col-resize-handle {
+                width: 4px;
+                right: 0;
+                opacity: 0;
+                transition: opacity 0.2s;
+
+                &:hover {
+                    background-color: var(--primary);
+                    opacity: 1;
+                }
+            }
+
+            &:hover .tabulator-col-resize-handle {
+                opacity: 0.5;
+            }
+        }
+    }
+
+    /* =========================================
+     4. BODY
+     ========================================= */
+    .tabulator-tableholder {
+
+        // /* Custom Scrollbar */
+        // &::-webkit-scrollbar {
+        //     width: 8px;
+        //     height: 8px;
+        // }
+
+        // &::-webkit-scrollbar-track {
+        //     background: transparent;
+        // }
+
+        // &::-webkit-scrollbar-thumb {
+        //     background-color: var(--border);
+        //     border-radius: 4px;
+        //     border: 2px solid transparent;
+        //     background-clip: content-box;
+        // }
+
+        // &::-webkit-scrollbar-thumb:hover {
+        //     background-color: var(--text-muted);
+        // }
+
+        .tabulator-table {
+            background-color: var(--surface);
+            // width: 100vw;
+            border-collapse: collapse;
+
+            .tabulator-row {
+                background-color: var(--surface);
+                border-bottom: 0px solid var(--border);
+                min-height: var(--tblr-row-height);
+                transition: background-color 0.1s ease;
+
+                .tabulator-cell {
+                    padding: 0 16px;
+                    border-right: 1px solid transparent;
+                    vertical-align: middle;
+                    height: var(--tblr-row-height);
+                    color: var(--text-main);
+                    display: inline-flex;
+                    align-items: center;
+
+                    &.checkbox-col {
+                        justify-content: center;
+                    }
+
+                    /* NATIVE CHECKBOX (No Custom Styles) */
+                    input[type="checkbox"] {
+                        cursor: pointer;
+                        width: 14px;
+                        height: 14px;
+                        accent-color: var(--primary);
+                    }
+
+                    /* Editable Indicator */
+                    &.tabulator-editable {
+                        cursor: pointer;
+
+                        &:hover {
+                            box-shadow: inset 0 0 0 1px var(--border);
+                            background-color: var(--bg-body);
+                            border-radius: 4px;
+                        }
+                    }
+                }
+
+                /* Hover */
+                &:hover {
+                    background-color: var(--bg-hover);
+                    z-index: 1;
+                }
+
+                /* Selected */
+                &.tabulator-selected {
+                    background-color: var(--bg-selected);
+                    border-bottom-color: rgba(0, 0, 0, 0.05);
+                }
+            }
+        }
+    }
+
+    /* =========================================
+     5. EDITING
+     ========================================= */
+    .tabulator-editing {
+        padding: 0 !important;
+        border: none !important;
+
+        /* Inputs match cell aesthetics */
+        input:not([type="checkbox"]),
+        select,
+        textarea {
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--primary) !important;
+            border-radius: var(--radius);
+            padding: 0 14px;
+            font-family: inherit;
+            font-size: inherit;
+            background: var(--surface);
+            color: var(--text-main);
+            box-sizing: border-box;
+            box-shadow: var(--shadow-sm);
+            outline: none;
+        }
+
+        input[type="checkbox"] {
+            display: block;
+            margin: auto;
+        }
+    }
+}
+
+/* =========================================
+   6. HELPER CLASSES (Badges)
+   ========================================= */
+
+.status-pill {
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+
+    &.active {
+        background-color: rgba(16, 185, 129, 0.15);
+        color: var(--success);
+
+        .dot {
+            background-color: var(--success);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+    }
+
+    &.inactive {
+        background-color: var(--bg-hover);
+        color: var(--text-muted);
+        border: 1px solid var(--border);
+
+        .dot {
+            background-color: var(--text-muted);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+    }
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    width: 100%;
+
+    .icon-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 4px;
+        border: none;
+        background: transparent;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+            background-color: var(--bg-hover);
+            color: var(--primary);
+        }
+
+        &.delete:hover {
+            color: var(--danger);
+        }
+    }
+}
+
+/* Specific Component Styles */
+.status-badge-open {
+    background-color: #4ade80;
+    color: white;
+    padding: 2px 12px;
+    border-radius: 2px;
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: capitalize;
+    display: inline-block;
+    min-width: 60px;
+    text-align: center;
+}
+
+.status-badge-closed {
+    background-color: #9ca3af;
+    color: white;
+    padding: 2px 12px;
+    border-radius: 2px;
+    font-size: 11px;
+    text-align: center;
+    min-width: 60px;
+    display: inline-block;
+}
+
+.tabulator .tabulator-footer {
+    background-color: var(--bg-body);
+}
+
+.tabulator .tabulator-footer .tabulator-page.active {
+    color: var(--primary);
+}
+
+.tabulator .tabulator-footer .tabulator-paginator {
+    color: var(--primary);
+    font-weight: 400;
+}
+
+.tabulator .tabulator-footer .tabulator-page:not(disabled):hover {
+    background: var(--primary);
+    color: var(--bg-body);
+    cursor: pointer;
+}
+
+.tabulator-row.tabulator-group span {
+    color: var(--primary);
+}
+
+.tabulator-row.tabulator-group .tabulator-arrow {
+    margin-left: 4px;
+    margin-bottom: 5px;
+}
+
+.tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
+    padding-right: 14px;
+}
+
+.tabulator .tabulator-header .tabulator-frozen.tabulator-frozen-right {
+    border-right: 1px solid #aaa;
+    border-left: 0;
+}
+
+.tabulator-row .tabulator-cell.tabulator-frozen.tabulator-frozen-right {
+    border-right: 1px solid #aaa !important;
+    border-left: 0;
+}
+
+.tabulator-row .tabulator-cell {
+    white-space: wrap;
+}
+
+
+/* --- TABULATOR CUSTOMIZATION --- */
+
+.tabulator-menu {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 4px 0;
+
+}
+
+
+.tabulator-menu .tabulator-menu-item:not(.tabulator-menu-item-disabled):hover {
+    background-color: var(--primary);
+    color: white !important;
+}
+
+
+.tabulator-edit-list .tabulator-edit-list-item:not(.tabulator-edit-list-item-disabled):hover {
+    background-color: var(--primary);
+    color: white !important;
+}
+
+.tabulator-menu .tabulator-menu-separator {
+    border-bottom: 1px solid #eee;
+    margin: 4px 0;
+}
+
+.tabulator-row .tabulator-cell.tabulator-frozen {
+    background-color: var(--primary-bg);
+}
+
+/* ===============================
+   PCAB : TABLE WRAPPER
+================================ */
+.pcab-wrapper {
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* ===============================
+   PCAB : ACTION BAR
+================================ */
+#pcab-action-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 41px;
+    background: var(--primary, #2563eb);
+    color: #fff;
+
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 12px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.pcab-bar-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.pcab-bar-visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* ===============================
+   PCAB : GROUPS
+================================ */
+.pcab-group {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+/* ===============================
+   PCAB : BUTTONS
+================================ */
+.pcab-btn-close {
+    border: none;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    margin-left: 7px;
+}
+
+.pcab-btn-action {
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+/* ===============================
+   PCAB : SELECTED COUNT
+================================ */
+#pcab-selected-count {
+    padding-left: 1em;
+    font-size: 12px;
+}
+
+/* ===============================
+   PCAB : DROPDOWNS
+================================ */
+.pcab-dropdown {
+    position: relative;
+}
+
+.pcab-dropdown-panel {
+    position: absolute;
+    top: 108%;
+    right: 0;
+
+    width: 220px;
+    background: #fff;
+    color: #111;
+
+    border-radius: 6px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    padding: 10px;
+
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+
+    z-index: 20;
+}
+
+.pcab-dropdown-open .pcab-dropdown-panel {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* ===============================
+   PCAB : DROPDOWN CONTENT
+================================ */
+.pcab-dropdown-panel label {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    gap: 4px;
+}
+
+.pcab-dropdown-panel select {
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid #d1d5db;
+}
+
+/* ===============================
+   PCAB : DROPDOWN ACTIONS
+================================ */
+.pcab-dropdown-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.pcab-group-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 6px;
+    background-color: #f3f4f6;
+    border-bottom: 1px solid #e5e7eb;
+    font-weight: 500;
+    font-family: 'YoungSerif', serif;
+    /* your custom font */
+}
+
+.pcab-group-header .text-main {
+    font-weight: bold;
+}

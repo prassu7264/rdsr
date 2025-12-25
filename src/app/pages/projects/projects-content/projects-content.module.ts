@@ -21,6 +21,15 @@ import {MatMenuModule} from '@angular/material/menu';
 import { PIssuesComponent } from './dashboard/tables/p-issues/p-issues.component';
 import { PDuesComponent } from './dashboard/tables/p-dues/p-dues.component';
 import { ReleaseManagementComponent } from './release-management/release-management.component';
+import { SubtaskActivityStreamComponent } from './sub-tasks/subtask-activity-stream/subtask-activity-stream.component';
+import { SubtaskStatusTimelineComponent } from './sub-tasks/subtask-status-timeline/subtask-status-timeline.component';
+import { SubtaskCommentsComponent } from './sub-tasks/subtask-comments/subtask-comments.component';
+import { TaskEditComponent } from './sub-tasks/task-edit/task-edit.component';
+import { ReleaseNotesComponent } from './release-management/release-notes/release-notes.component';
+import { ReleaseCommentsComponent } from './release-management/release-comments/release-comments.component';
+import { ReleaseActivityComponent } from './release-management/release-activity/release-activity.component';
+import { ReleaseStatusTimelineComponent } from './release-management/release-status-timeline/release-status-timeline.component';
+
 @NgModule({
   declarations: [
     ProjectsContentComponent,
@@ -38,6 +47,14 @@ import { ReleaseManagementComponent } from './release-management/release-managem
     PIssuesComponent,
     PDuesComponent,
     ReleaseManagementComponent,
+    SubtaskActivityStreamComponent,
+    SubtaskStatusTimelineComponent,
+    SubtaskCommentsComponent,
+    TaskEditComponent,
+    ReleaseNotesComponent,
+    ReleaseCommentsComponent,
+    ReleaseActivityComponent,
+    ReleaseStatusTimelineComponent,
   ],
   imports: [
     CommonModule,

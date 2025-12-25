@@ -1,0 +1,208 @@
+.app-container {
+    background: var(--bg-body);
+    display: flex;
+    justify-content: center;
+}
+
+.simple-form-card {
+    background: var(--surface);
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header {
+    padding: 20px 30px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-body);
+    border-radius: 8px 8px 0 0;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.task-id {
+    background: var(--border);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-left: 10px;
+    color: var(--text-muted);
+    font-family: monospace;
+}
+
+.form-content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Responsive Grid */
+.form-row {
+    display: grid;
+    gap: 20px;
+}
+
+.three-col {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+@media (max-width: 768px) {
+    .three-col {
+        grid-template-columns: 1fr;
+    }
+
+    .app-container {
+        padding: 20px 10px;
+    }
+
+    .form-content {
+        padding: 20px;
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+label.required::after {
+    content: "*";
+    color: var(--danger);
+    margin-left: 2px;
+}
+
+.input-std {
+    padding: 12px 10px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--text-main);
+    outline: none;
+    transition: border-color 0.2s;
+    background: var(--surface);
+}
+
+.input-std:focus {
+    border-color: var(--primary);
+}
+
+/* Validation Styles */
+.input-std.ng-invalid.ng-touched {
+    border-color: var(--danger);
+}
+
+.error-text {
+    color: var(--danger);
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+/* Custom Select Arrow Styling */
+select.input-std {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+.input-readonly {
+    background: var(--bg-body);
+    color: var(--text-muted);
+    padding: 12px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    pointer-events: none;
+    border: 2px solid #dddddd;
+}
+
+.separator {
+    height: 1px;
+    background: var(--border);
+    margin: 10px 0;
+}
+
+.checkbox-wrapper {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding-top: 24px;
+}
+
+@media (max-width: 768px) {
+    .checkbox-wrapper {
+        padding-top: 0;
+    }
+}
+
+.checkbox-wrapper input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--primary);
+}
+
+.checkbox-wrapper label {
+    margin: 0;
+    cursor: pointer;
+    color: var(--text-main);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+button {
+    padding: 5px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.btn-save {
+    background: var(--primary);
+    color: var(--primary-bg);
+}
+
+.btn-save:hover {
+    opacity: 0.9;
+}
+
+.btn-save:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-cancel {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text-main);
+}
+
+.btn-cancel:hover {
+    background: var(--bg-body);
+}

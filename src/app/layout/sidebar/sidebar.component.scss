@@ -43,20 +43,6 @@ $sidebar-mini: var(--sidebar-mini);
     overflow-y: auto;
 }
 
-.nav::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #F5F5F5;
-}
-
-.nav::-webkit-scrollbar {
-    width: 4px;
-    background-color: #F5F5F5;
-}
-
-.nav::-webkit-scrollbar-thumb {
-    background-color: var(--primary);
-}
-
 .nav-item {
     display: flex;
     align-items: center;
@@ -94,7 +80,6 @@ $sidebar-mini: var(--sidebar-mini);
         font-weight: 600;
         border: 1px solid var(--primary);
         box-shadow: 0 0 0 1px var(--primary);
-        // box-shadow: 0 0 2px 0px var(--primary);
 
         i {
             color: var(--primary);
@@ -135,7 +120,7 @@ $sidebar-mini: var(--sidebar-mini);
     margin-bottom: 2px;
 
     &:hover {
-        color: var(--primary);
+        color: var(--text-main);
         background: var(--bg-body);
     }
 
@@ -171,17 +156,6 @@ $sidebar-mini: var(--sidebar-mini);
     }
 
     .user-details {
-        color: var(--text-muted);
-    }
-
-    .user-name {
-        color: var(--text-muted);
-        font-size: 14px;
-        font-weight: 500;
-    }
-
-
-    .text-info {
         font-size: small;
     }
 }
@@ -217,7 +191,7 @@ $sidebar-mini: var(--sidebar-mini);
         }
 
         span {
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 600;
             display: block !important;
         }
@@ -243,7 +217,7 @@ $sidebar-mini: var(--sidebar-mini);
         }
 
         .user-name {
-            font-size: 10px;
+            font-size: 8px;
             display: block !important;
             white-space: wrap;
             overflow: hidden;

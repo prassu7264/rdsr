@@ -41,6 +41,13 @@ option {
     font-style: normal;
     font-display: swap;
 }
+@font-face {
+    font-family: 'YoungSerif';
+    src: url('/assets/fonts/YoungSerif-Regular.otf') format('otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 
 @font-face {
     font-family: 'Rsp_Semibold';
@@ -51,7 +58,7 @@ option {
 }
 
 body {
-    font-family: sans-serif;
+    font-family: 'Rsp_Semibold',sans-serif;
     font-optical-sizing: auto;
     // font-weight: 500;
     font-style: normal;

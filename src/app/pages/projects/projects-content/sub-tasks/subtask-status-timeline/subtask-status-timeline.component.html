@@ -1,0 +1,53 @@
+<div class="app-container">
+      
+  <!-- HORIZONTAL TIMELINE DESIGN -->
+  <div class="timeline-wrapper">
+    <div class="timeline-track">
+      
+      <div class="timeline-item" *ngFor="let task of events; let last = last">
+        
+        <!-- The Line (Connects center to right, hidden for last item) -->
+        <div class="timeline-line" *ngIf="!last"></div>
+
+        <!-- The Dot (Marker on the line) -->
+        <div class="timeline-marker" [ngClass]="getStatusClass(task.status)">
+          <div class="marker-pulse" [ngClass]="getStatusClass(task.status)"></div>
+        </div>
+
+        <!-- Time Label (Above the line) -->
+        <div class="timeline-date">
+          {{task.duration}}
+        </div>
+
+        <!-- Content Card (Below the line) -->
+        <div class="timeline-card">
+          <div class="card-header">
+            <span class="status-badge" [ngClass]="getStatusClass(task.status)">
+              {{task.status}}
+            </span>
+          </div>
+          
+          <div class="card-body">
+            <div class="user-info" *ngIf="task.assignee">
+              <div class="avatar" [ngClass]="getStatusClass(task.status)">
+                {{task.assignee.charAt(0).toUpperCase()}}
+              </div>
+              <span class="username">{{task.assignee}}</span>
+            </div>
+            <span class="unassigned-text" *ngIf="!task.assignee">Unassigned</span>
+          </div>
+          
+          <!-- Tooltip/Description -->
+          <div class="card-description" [title]="task.description">
+             {{task.description}}
+          </div>
+        </div>
+
+      </div>
+
+      <div class="empty-state" *ngIf="events.length === 0">No events to display.</div>
+      
+    </div>
+  </div>
+
+</div>

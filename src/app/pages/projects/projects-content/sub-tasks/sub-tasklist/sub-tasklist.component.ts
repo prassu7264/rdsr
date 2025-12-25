@@ -278,6 +278,11 @@ export class SubTasklistComponent implements OnInit {
 
     this.columns = [
       {
+        title: "Taskcode",
+        field: "code",
+        formatter: (cell: any) => `<span class="text-light-gray">${cell.getValue()}</span>`
+      },
+      {
         title: "Task Name",
         field: "task",
         frozen: true,

@@ -1,5 +1,4 @@
 <div class="container">
-
     <!-- Sidebar -->
     <aside id="sidebar">
         <button id="closeBtn" class="close-btn mobile-close">&times;</button>
@@ -89,9 +88,8 @@
                             </mat-panel-title>
                         </mat-expansion-panel-header>
                         <div>
-                            <pre>
-                             {{selectedTask | json}}
-                              </pre>
+                            <app-task-edit [rawData]="selectedTask"></app-task-edit>
+                              
                         </div>
                     </mat-expansion-panel>
                 </mat-accordion>
@@ -104,15 +102,14 @@
                     <div class="tab-item" data-id="comments" (click)="setActiveTab('comments')">Comments
                     </div>
                     <div class="tab-item" data-id="tasks" (click)="setActiveTab('tasks')">Sub tasks</div>
-                    <div class="tab-item" data-id="documents" (click)="setActiveTab('documents')">Documents
-                    </div>
+                    <!-- <div class="tab-item" data-id="documents" (click)="setActiveTab('documents')">Documents
+                    </div> -->
                     <div class="tab-item" data-id="issues" (click)="setActiveTab('issues')">Issues</div>
                     <div class="tab-item" data-id="status-timeline" (click)="setActiveTab('status-timeline')">Status
                         Timeline</div>
-                    <div class="tab-item" data-id="dependency" (click)="setActiveTab('dependency')">Dependency</div>
+                    <!-- <div class="tab-item" data-id="dependency" (click)="setActiveTab('dependency')">Dependency</div> -->
                     <div class="tab-item" data-id="activity" (click)="setActiveTab('activity')">Activity Stream
                     </div>
-
                 </div>
 
                 <!-- "More" Button & Dropdown -->
@@ -126,10 +123,15 @@
             <!-- Content Area for Tab Visualization -->
             <div id="tab-content-display">
                 <ng-container [ngSwitch]="activeProjectTab">
-                    <app-documents *ngSwitchCase="'documents'"></app-documents>
-                    <!-- <app-issues *ngSwitchCase="'issues'"></app-issues> -->
+                    <!-- <app-documents *ngSwitchCase="'documents'"></app-documents> -->
+                    <app-issues *ngSwitchCase="'issues'"></app-issues>
                     <app-sub-tasklist *ngSwitchCase="'tasks'"></app-sub-tasklist>
-                    <div *ngSwitchDefault style="font-size: medium;">Select a tab</div>
+                    <app-subtask-activity-stream *ngSwitchCase="'activity'"></app-subtask-activity-stream>
+                    <app-subtask-status-timeline *ngSwitchCase="'status-timeline'"></app-subtask-status-timeline>
+                    <app-subtask-comments *ngSwitchCase="'comments'"></app-subtask-comments>
+                    <div *ngSwitchDefault style="font-size: medium;"><p>
+                            Select a tab
+                        </p> </div>
                 </ng-container>
             </div>
 

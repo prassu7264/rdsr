@@ -1,0 +1,276 @@
+.app-container {
+    // min-height: 55vh;
+    background: var(--bg-page);
+    display: flex;
+    justify-content: center;
+}
+
+.feed-container {
+    width: 100%;
+    height: 45vh;
+    padding: 0 20px;
+    overflow-y: scroll;
+    position: relative;
+    /* Context for sticky */
+}
+
+/* Header */
+.feed-header {
+    margin-bottom: 32px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 16px;
+    padding-top: 20px;
+    /* Added spacing from top of scroll */
+}
+
+.feed-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.count {
+    background: var(--accent);
+    color: var(--text-main);
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    vertical-align: middle;
+}
+
+/* List */
+.feed-list {
+    display: flex;
+    flex-direction: column;
+    // margin-bottom: 40px;
+}
+
+.feed-item {
+    display: flex;
+    gap: 16px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.feed-item:first-child {
+    padding-top: 0;
+}
+
+/* Avatar */
+.item-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    background: #eee;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Body */
+.item-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.item-meta {
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.author-name {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.dot {
+    color: var(--border);
+    margin: 0 8px;
+}
+
+.timestamp {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.item-content {
+    color: #27272a;
+    font-size: 15px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+/* Edit Mode */
+.item-edit {
+    margin-top: 8px;
+}
+
+.edit-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    margin-bottom: 8px;
+    outline: none;
+    background: var(--bg-body);
+    color: var(--text-main);
+}
+
+.edit-input:focus {
+    border-color: var(--primary);
+}
+
+.edit-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+/* Item Actions */
+.item-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 16px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.feed-item:hover .item-actions {
+    opacity: 1;
+}
+
+.item-actions button {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.item-actions button:hover {
+    text-decoration: underline;
+    color: var(--primary);
+}
+
+.item-actions button.danger:hover {
+    color: var(--danger);
+}
+
+/* Empty State */
+.empty-state {
+    padding: 40px 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-style: italic;
+    background: var(--bg-body);
+    border-radius: 8px;
+}
+
+/* Input Section - STICKY BOTTOM */
+.input-section {
+    background: var(--bg-body);
+    /* Sticky positioning logic */
+    position: sticky;
+    bottom: 0px;
+    z-index: 10;
+    padding-top: 20px;
+    /* Breathing room from list */
+    padding-bottom: 20px;
+    /* Padding from bottom edge */
+    border-top: 1px solid transparent;
+    /* Visual separation if needed */
+}
+
+.input-wrapper {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    background: #fff;
+}
+
+.input-wrapper:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.03);
+}
+
+.main-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    resize: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--text-main);
+    min-height: 40px;
+    margin-bottom: 12px;
+}
+
+.input-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
+
+.hint {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* Buttons Shared */
+.btn-solid {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-solid:hover:not(:disabled) {
+    background: var(--primary);
+    /* Fixed: Use defined hover var */
+}
+
+.btn-solid:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-solid.small {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 13px;
+    padding: 6px 12px;
+}
+
+.btn-text:hover {
+    color: var(--text-main);
+}

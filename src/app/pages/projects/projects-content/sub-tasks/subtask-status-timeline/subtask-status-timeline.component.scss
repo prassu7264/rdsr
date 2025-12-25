@@ -1,0 +1,245 @@
+/* Layout */
+.app-container {
+    display: flex;
+    align-items: center;
+    /* Center timeline vertically */
+    justify-content: center;
+}
+
+/* Timeline Specifics */
+.timeline-wrapper {
+    padding: 20px 0 40px 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    width: 100%;
+}
+
+
+.timeline-track {
+    display: flex;
+    min-width: max-content;
+    padding: 0 20px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.timeline-item {
+    position: relative;
+    min-width: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
+}
+
+.timeline-line {
+    position: absolute;
+    top: 68px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: var(--primary);
+    z-index: 0;
+}
+
+.timeline-date {
+    position: absolute;
+    top: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #94a3b8;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+    transform: translateY(10px);
+    white-space: nowrap;
+}
+
+.timeline-marker {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    border: 4px solid;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 24px;
+    margin-top: 19px;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.8);
+}
+
+.timeline-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    width: 200px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.timeline-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: var(--border);
+}
+
+.timeline-card::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-left: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+}
+
+.card-header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.status-badge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.username {
+    font-size: 13px;
+    color: #475569;
+    font-weight: 500;
+}
+
+.unassigned-text {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.card-description {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    text-align: center;
+    padding: 0 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.empty-state {
+    padding: 2rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+/* Status Colors */
+.open {
+    border-color: #10b981;
+    color: #065f46;
+    background-color: #d1fae5;
+}
+
+.open.timeline-marker {
+    background: white;
+    border-color: #10b981;
+}
+
+.open.status-badge {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.open.avatar {
+    background: #10b981;
+    color: white;
+}
+
+.progress {
+    border-color: #3b82f6;
+    color: #1e40af;
+    background-color: #dbeafe;
+}
+
+.progress.timeline-marker {
+    background: white;
+    border-color: #3b82f6;
+}
+
+.progress.status-badge {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.progress.avatar {
+    background: #3b82f6;
+    color: white;
+}
+
+.pending {
+    border-color: #94a3b8;
+    color: #475569;
+    background-color: #f1f5f9;
+}
+
+.pending.timeline-marker {
+    background: white;
+    border-color: #94a3b8;
+}
+
+.pending.status-badge {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.pending.avatar {
+    background: #94a3b8;
+    color: white;
+}
+
+.delayed {
+    border-color: #ef4444;
+}
+
+.delayed.status-badge {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.delayed.timeline-marker {
+    border-color: #ef4444;
+}

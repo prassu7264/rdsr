@@ -1,0 +1,123 @@
+<div class="app-container">
+    <div class="simple-form-card">
+
+        <div class="card-header">
+            <h3> Task <span class="task-id">{{taskForm.get('taskcode')?.value}}</span></h3>
+        </div>
+
+        <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="form-content">
+
+            <!-- Context Row (Read Only) -->
+            <div class="form-row three-col">
+                <div class="form-group">
+                    <label>Project</label>
+                    <input type="text" formControlName="project_title" readonly class="input-readonly">
+                </div>
+                <div class="form-group">
+                    <label>Phase</label>
+                    <input type="text" formControlName="phase_title" readonly class="input-readonly">
+                </div>
+                <div class="form-group">
+                    <label>Version</label>
+                    <input type="text" formControlName="version" class="input-std">
+                </div>
+            </div>
+
+            <div class="separator"></div>
+
+            <!-- Main Info -->
+            <div class="form-group">
+                <label class="required">Task Title</label>
+                <input type="text" formControlName="task" class="input-std">
+                <div *ngIf="taskForm.get('task')?.invalid && (taskForm.get('task')?.dirty || taskForm.get('task')?.touched)"
+                    class="error-text">
+                    Task title is required.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea formControlName="description" rows="4" class="input-std"></textarea>
+                <div *ngIf="taskForm.get('description')?.invalid && (taskForm.get('description')?.dirty || taskForm.get('description')?.touched)"
+                    class="error-text">
+                    Description is required.
+                </div>
+            </div>
+
+            <!-- Details Grid -->
+            <div class="form-row three-col">
+                <div class="form-group">
+                    <label>Type</label>
+                    <select formControlName="task_type" class="input-std">
+                        <option value="Requirement">Requirement</option>
+                        <option value="Bug">Bug</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Priority</label>
+                    <select formControlName="priority" class="input-std">
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select formControlName="status" class="input-std">
+                        <option value="null" disabled>select Status</option>
+                        <option *ngFor="let st of statusList" [value]="st">{{st}}</option>
+
+                    </select>
+                </div>
+            </div>
+
+            <!-- Scheduling -->
+            <div class="form-row three-col">
+                <div class="form-group">
+                    <label>Assignee</label>
+                    <select formControlName="assigned_to" class="input-std">
+                        <option value="null" disabled>select Assignee</option>
+                        <option *ngFor="let emp of employeeList" [value]="emp.id">{{emp?.employee_name}}</option>
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input type="date" formControlName="start_date" class="input-std">
+                </div>
+                <div class="form-group">
+                    <label>Due Date</label>
+                    <input type="date" formControlName="end_date" class="input-std">
+                </div>
+            </div>
+
+            <!-- Metrics
+            <div class="form-row three-col">
+                <div class="form-group">
+                    <label>Est. Hours</label>
+                    <input type="text" formControlName="estimated_hours" class="input-std" placeholder="HH:MM">
+                </div>
+                <div class="form-group">
+                    <label>Completion (%)</label>
+                    <input type="number" formControlName="completion_percentage" class="input-std" min="0" max="100">
+                    <div *ngIf="taskForm.get('completion_percentage')?.errors?.['min'] || taskForm.get('completion_percentage')?.errors?.['max']"
+                        class="error-text">
+                        Must be between 0 and 100.
+                    </div>
+                </div>
+                <div class="form-group checkbox-wrapper">
+                    <input type="checkbox" id="active" formControlName="isactive">
+                    <label for="active">Is Active</label>
+                </div>
+            </div> -->
+
+            <!-- Actions -->
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" (click)="resetForm()">Reset</button>
+                <button type="submit" class="btn-save" [disabled]="taskForm.invalid || taskForm.pristine">Save
+                    Task</button>
+            </div>
+
+        </form>
+    </div>
+</div>

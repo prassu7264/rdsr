@@ -1,0 +1,38 @@
+<h2 style="margin-bottom: 15px;">{{releaseDetails?.title}} <span
+        style="color: var(--text-muted); font-size: medium;">[{{
+        releaseDetails?.code }}]</span></h2>
+<!-- Tabs -->
+<br>
+<div class="tabs-wrapper">
+    <!-- Visible Tabs Area -->
+    <div class="tab-list" id="tab-list">
+        <div class="tab-item" data-id="comments" (click)="setActiveTab('comments')">Comments
+        </div>
+        <!-- <div class="tab-item" data-id="issues" (click)="setActiveTab('issues')">Issues</div> -->
+        <div class="tab-item" data-id="status-timeline" (click)="setActiveTab('status-timeline')">Status Timeline</div>
+        <!-- <div class="tab-item" data-id="dependency" (click)="setActiveTab('dependency')">Dependency</div> -->
+        <div class="tab-item" data-id="activity" (click)="setActiveTab('activity')">Activity Stream </div>
+    </div>
+
+    <!-- "More" Button & Dropdown -->
+    <div class="tab-more" id="tab-more">
+        <i class="ri-more-fill"></i>
+        <div class="more-dropdown" id="more-dropdown">
+
+        </div>
+    </div>
+</div>
+<!-- Content Area for Tab Visualization -->
+<div id="tab-content-display">
+    <ng-container [ngSwitch]="activeProjectTab">
+
+        <app-release-activity *ngSwitchCase="'activity'"></app-release-activity>
+        <app-release-status-timeline *ngSwitchCase="'status-timeline'"></app-release-status-timeline>
+        <app-release-comments *ngSwitchCase="'comments'"></app-release-comments>
+        <div *ngSwitchDefault style="font-size: medium;">
+            <p>
+                Select a tab
+            </p>
+        </div>
+    </ng-container>
+</div>

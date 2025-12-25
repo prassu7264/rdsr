@@ -17,6 +17,8 @@ declare var luxon: any;
   styleUrls: ['./tasks.component.scss']
 })
 export class TasksComponent {
+  @Input() isTaskInformation: any = false;
+  @Input() selectedTask: any
   @Input() type: any = 'requirement';
   selectedCount: any = 0;
   @ViewChild(TableFilterComponent) viewSelector!: TableFilterComponent;
@@ -45,7 +47,7 @@ export class TasksComponent {
     this.projectid = this.route.snapshot.paramMap.get('id');
     this.empid = this.storageService.getEmpId();
     this.getPhasesByProjectId({ target: { value: this.projectid } })
-
+    
   }
 
   apppTypeList: any[] = [];
@@ -68,6 +70,8 @@ export class TasksComponent {
     }
   }
   ngOnInit() {
+    console.log(this.selectTask);
+
     this.getProjects();
     this.getAppsTypes();
     this.getEmployees();
@@ -90,6 +94,11 @@ export class TasksComponent {
       username: [this.storageService.getUsername()],
       phaseid: [null]
     });
+
+    if (this.selectedTask) {
+      this.patchtaskForm(this.selectTask)
+    }
+
   }
   get rf() {
     return {
@@ -192,6 +201,7 @@ export class TasksComponent {
       }
     });
   }
+
   getStatusList() {
     this.authService.getStatusList().subscribe({
       next: (res: any) => {

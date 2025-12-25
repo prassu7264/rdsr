@@ -137,7 +137,7 @@
    .task-footer {
        display: flex;
        justify-content: space-between;
-       //    font-size: x-small;
+       font-size: small;
        color: var(--text-muted);
        margin-top: 10px;
 
@@ -244,7 +244,7 @@
        overflow: hidden;
        position: sticky;
        top: 0;
-       z-index: 2;
+       z-index: 6;
    }
 
    .card-header {

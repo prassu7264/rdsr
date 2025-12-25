@@ -145,13 +145,42 @@ export class AuthService {
   createPhase(payload: any) {
     return this.http.post(`${BASE_URL}/phase/create`, payload);
   }
+
   updatePhase(payload: any) {
     return this.http.post(`${BASE_URL}/phase/update`, payload);
+  }
+
+
+  createRelease(payload: any) {
+    return this.http.post(`${BASE_URL}/release/create`, payload);
+  }
+  updateRelease(payload: any) {
+    return this.http.post(`${BASE_URL}/release/update`, payload);
+  }
+  getReleaseByProjectId(project_id: number) {
+    return this.http.get(`${BASE_URL}/release/getreleasebyproject?project_id=${project_id}`);
   }
 
   // Dashboard ==========
   getDashboardDetailsByEmployeeId(employee_id: any, project_id: any) {
     return this.http.get(`${BASE_URL}/common/dashboarddetails?employee_id=${employee_id}&project_id=${project_id}`);
+  }
+  getActivityLogs(type: any, id: any, tag: any) {
+    return this.http.get(`${BASE_URL}/common/gettasklog?type=${type}&id=${id}&tag=${tag}`);
+  }
+
+
+  createComments(payload: any) {
+    return this.http.post(`${BASE_URL}/common/createcomments`, payload);
+  }
+  updatecomments(payload: any) {
+    return this.http.post(`${BASE_URL}/common/updatecomments`, payload);
+  }
+  getComments(type: any, id: any,) {
+    return this.http.get(`${BASE_URL}/common/getcommentsbyid?type=${type}&id=${id}`);
+  }
+  deleteComment(username: string, id: number) {
+    return this.http.delete(`${BASE_URL}/common/deletecomment?username=${username}&id=${id}`);
   }
 
 }

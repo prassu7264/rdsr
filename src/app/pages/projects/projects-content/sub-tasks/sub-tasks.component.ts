@@ -1,18 +1,22 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { LayoutService } from 'src/app/core/services/layout.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { SubTasklistComponent } from './sub-tasklist/sub-tasklist.component';
+import { SubtaskActivityStreamComponent } from './subtask-activity-stream/subtask-activity-stream.component';
+import { SubtaskStatusTimelineComponent } from './subtask-status-timeline/subtask-status-timeline.component';
 
 @Component({
   selector: 'app-sub-tasks',
   templateUrl: './sub-tasks.component.html',
   styleUrls: ['./sub-tasks.component.scss']
 })
-export class SubTasksComponent {
+export class SubTasksComponent  {
   @ViewChild(SubTasklistComponent) subTasklist!: SubTasklistComponent;
+  @ViewChild(SubtaskActivityStreamComponent) subtaskActivityStreamComponent!: SubtaskActivityStreamComponent;
+  @ViewChild(SubtaskStatusTimelineComponent) subtaskStatusTimelineComponent!: SubtaskStatusTimelineComponent;
   projectid: any = 0;
   phaseid: any = 0;
   phaseList: any = []
@@ -21,7 +25,7 @@ export class SubTasksComponent {
   taskList: any = [];
   viewOptions: any = {}
   panelOpenState = false;
-  selectedTask: any = {}
+  selectedTask: any 
   activeProjectTab: any = "";
   constructor(private authService: AuthService, private route: ActivatedRoute,
     private layoutService: LayoutService, private router: Router,
@@ -30,6 +34,7 @@ export class SubTasksComponent {
     this.empid = this.storageService.getEmpId();
     this.taskid = this.route.snapshot.paramMap.get('taskid');
   }
+  
   setActiveTab(tab: string) {
     this.activeProjectTab = tab;
     this.taskid = this.route.snapshot.paramMap.get('taskid');
@@ -81,12 +86,21 @@ export class SubTasksComponent {
   }
   onTaskSelect(e: any, task: any) {
     this.selectedTask = task;
-    this.subTasklist.loadInitialData(task?.id)
     this.router.navigate([
       '/main/projects/projects-content',
       this.projectid,
       e.target.value
     ]);
+    if (this.subTasklist) {
+      this.subTasklist?.loadInitialData(task?.id)
+    }
+    if (this.subtaskActivityStreamComponent) {
+      this.subtaskActivityStreamComponent.getActivityLogs(task?.id);
+    }
+
+    if (this.subtaskStatusTimelineComponent) {
+      this.subtaskStatusTimelineComponent.getActivityLogs(task?.id)
+    }
 
   }
   onTaskEdit(e: any) {

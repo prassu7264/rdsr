@@ -1,0 +1,59 @@
+<div class="stream-layout">
+    <div class="stream-body custom-scrollbar">
+
+        <!-- TIMELINE FEED -->
+        <div class="timeline-container">
+
+            <div class="timeline-group" *ngFor="let group of groupedLogs">
+                <div class="group-date">
+                    <span>{{ group.dateLabel }}</span>
+                </div>
+
+                <div class="timeline-item" *ngFor="let item of group.items; let last = last">
+                    <!-- Visual Connector -->
+                    <div class="item-visual">
+                        <div class="avatar" [style.background]="getAvatarColor(item.employee_name)">
+                            {{ getInitials(item.employee_name) }}
+                        </div>
+                        <div class="line" *ngIf="!last"></div>
+                    </div>
+
+                    <!-- Content Card -->
+                    <div class="item-card">
+                        <div class="card-header">
+                            <div class="header-left">
+                                <span class="user-name">{{ item.employee_name }}</span>
+                                <span class="action-text">{{ item.action }}</span>
+                            </div>
+                            <span class="time-stamp">{{ formatTime(item.logdate) }}</span>
+                        </div>
+
+                        <!-- Context Badges -->
+                        <div class="card-context" *ngIf="item.taskid || item.sub_taskid">
+                            <span class="context-badge task" *ngIf="item.taskid">
+                                <i class="ri-hashtag"></i> Task-{{ item.taskid }}
+                            </span>
+                            <span class="context-badge subtask" *ngIf="item.sub_taskid">
+                                <i class="ri-node-tree"></i> Subtask-{{ item.sub_taskid }}
+                            </span>
+                        </div>
+
+                        <!-- Remark Box -->
+                        <div class="card-remark">
+                            {{ item.remark }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-feed" *ngIf="groupedLogs.length === 0">
+                <div class="empty-icon"><i class="ri-history-line"></i></div>
+                <p>No activity found matching your search.</p>
+                <button class="btn-link" (click)="clearSearch()">View All</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
